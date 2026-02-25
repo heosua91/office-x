@@ -76,3 +76,69 @@ Các dịch vụ ngoài AWS được liệt kê trong `Infra_Components_2.md`:
 | **Stripe** | Cổng thanh toán. | **~2.9% + $0.30** trên mỗi giao dịch (Không phí duy trì). |
 
 ---
+
+## 5. Phân tích Tăng trưởng Chi phí Data (Scaling Logic)
+
+Khi số lượng người dùng tăng, chi phí **Data Transfer** và **NAT Gateway** sẽ không tăng tuyến tính mà có các cấu phần cố định và biến đổi.
+
+### 5.1. Công thức tính
+1.  **NAT Gateway**:
+    *   **Phí cố định (Hourly Fee):** `$0.045/giờ` (~$32.85/tháng) cho mỗi Gateway (bất kể traffic).
+    *   **Phí xử lý dữ liệu (Processing Fee):** `$0.045/GB` dữ liệu đi qua NAT.
+    *   *Total NAT = $32.85 + (Data_Volume_GB x $0.045)*
+
+2.  **Data Transfer Out (Internet):**
+    *   **Phí truyền tải:** ~$0.10/GB (Tokyo Region, tiered pricing giảm dần khi volume cực lớn).
+    *   *Total Outbound = Data_Volume_GB x $0.10*
+
+### 5.2. Bảng ước tính theo quy mô
+
+Giả định: Mỗi người dùng tiêu thụ trung bình **1GB Data/tháng** qua NAT (Update OS, gọi API ngoài) và **2GB Data/tháng** ra Internet (Dùng Web App, Video Call).
+
+| Quy mô | Traffic qua NAT (GB) | Traffic ra Internet (GB) | Chi phí NAT (Tháng) | Chi phí Outbound (Tháng) | Tổng cộng Data |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **10 Users** | ~10 GB | ~20 GB | **$33.30**<br>($32.85 fix + $0.45) | **$2.00**<br>(20 x $0.1) | **$35.30** |
+| **100 Users** | ~100 GB | ~200 GB | **$37.35**<br>($32.85 fix + $4.50) | **$20.00**<br>(200 x $0.1) | **$57.35** |
+| **500 Users** | ~500 GB | ~1,000 GB | **$55.35**<br>($32.85 fix + $22.50) | **$100.00**<br>(1,000 x $0.1) | **$155.35** |
+| **5,000 Users** | ~5,000 GB | ~10,000 GB | **$257.85**<br>($32.85 fix + $225.00) | **$1,000.00**<br>(10,000 x $0.1) | **$1,257.85** |
+
+### 5.3. Nhận xét
+*   **Ở quy mô nhỏ (< 100 users):** Chi phí NAT Gateway chủ yếu là phí cố định ($32.85). Traffic tăng ít không ảnh hưởng nhiều.
+*   **Ở quy mô lớn (> 1,000 users):** Phí xử lý dữ liệu (Processing Fee) và Outbound Fee trở thành chi phí chính.
+*   **Tối ưu:**
+    *   Sử dụng **VPC Endpoints** cho S3/DynamoDB để tránh đi qua NAT (giảm $0.045/GB).
+    *   Cache nội dung tĩnh (JS/CSS/Images) triệt để tại **CloudFront** để giảm Outbound Data từ EC2.
+
+---
+
+## 6. Phân tích Tăng trưởng Lưu trữ (Storage Scaling - S3)
+
+Chi phí S3 là chi phí tích lũy (Cumulative), vì dữ liệu cứ tăng lên mỗi tháng chứ không reset.
+
+### 6.1. Giả định (Assumptions)
+*   **Audio Format:** MP3 128kbps Standard Quality (~1MB/phút).
+*   **Volume:** Mỗi người dùng họp 2 cuộc/ngày x 60 phút = 120 phút ghi âm/ngày.
+*   **Data rate:** 120MB/ngày x 20 ngày = **2.4 GB / User / Tháng**.
+*   **Giá S3 Standard:** $0.023/GB/tháng.
+
+### 6.2. Bảng Ước tính Tăng trưởng (12 tháng đầu)
+
+| Quy mô Users | Dữ liệu nạp vào / Tháng | Tổng dữ liệu (Cuối Năm 1) | Chi phí lưu trữ (Tháng thứ 12) |
+| :--- | :--- | :--- | :--- |
+| **50 Users** | 120 GB | **1.44 TB** | **$33.12**<br>(1,440 GB x $0.023) |
+| **500 Users** | 1.2 TB | **14.4 TB** | **$331.20**<br>(14,400 GB x $0.023) |
+| **5,000 Users** | 12 TB | **144 TB** | **$3,312.00**<br>(144,000 GB x $0.023) |
+
+> *Lưu ý: Đây là chi phí tại tháng thứ 12. Tổng chi phí cả năm sẽ thấp hơn (do tích lũy từ 0).*
+
+### 6.3. Chiến lược Tối ưu (S3 Cost Optimization)
+Để giảm chi phí khi dữ liệu lên tới hàng chục/trăm TB:
+
+1.  **S3 Intelligent-Tiering:**
+    *   Tự động di chuyển file không truy cập sau 30 ngày xuống lóp **Infrequent Access (IA)**.
+    *   Giá IA: **$0.0125/GB** (Rẻ hơn ~45% so với Standard).
+
+2.  **Lifecycle Policy:**
+    *   **Sau 3 tháng:** Chuyển sang **S3 Glacier Instant Retrieval** ($0.004/GB - Rẻ hơn 80%).
+    *   **Sau 1 năm:** Xóa bản ghi âm (hoặc chuyển sang **Deep Archive** $0.00099/GB nếu bắt buộc lưu trữ compliance).
+    *   *Ví dụ:* Với Lifecycle Policy này, chi phí cho 5,000 Users tại năm thứ 2 có thể giảm từ **$3,312** xuống còn khoảng **$600 - $800/tháng**.
