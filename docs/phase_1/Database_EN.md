@@ -31,13 +31,15 @@ Stores tenant information.
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
 | `name` | VARCHAR(255) | NOT NULL | Company name |
-| `code` | VARCHAR(50) | UNIQUE, NOT NULL | Unique code for company identification/login |
+| `code` | VARCHAR(50) | NOT NULL | Unique code for company identification/login |
 | `address` | TEXT | | |
 | `contact_email` | VARCHAR(255) | | |
 | `billing_email` | VARCHAR(255) | | |
-| `subscription_plan` | VARCHAR(50) | | e.g., 'Starter', 'Business', 'Enterprise' |
+| `subscription_plan_id` | UUID | FK -> subscription_plans.id | Reference to the master plan |
 | `settings` | JSONB | | Company-specific settings (Theme, Logo URL, Rules) |
 | `created_at` | TIMESTAMP | | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `departments`
 Hierarchy within a company.
@@ -47,6 +49,9 @@ Hierarchy within a company.
 | `company_id` | UUID | FK -> companies.id | |
 | `name` | VARCHAR(255) | NOT NULL | |
 | `parent_id` | UUID | FK -> departments.id | For organizational hierarchy |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `company_media`
 Assets for reception screens/tablets (Logos, Slides, Videos).
@@ -57,8 +62,11 @@ Assets for reception screens/tablets (Logos, Slides, Videos).
 | `type` | VARCHAR(50) | NOT NULL | 'logo', 'background', 'slide_image', 'slide_video' |
 | `url` | TEXT | NOT NULL | S3/Storage URL |
 | `display_order` | INT | | Sequence for slides |
+| `play_interval_seconds` | INT | | Interval for screen saver (ADMX-012) |
 | `duration_seconds` | INT | | Display duration for images |
 | `is_active` | BOOLEAN | DEFAULT TRUE | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
 #### `users`
 System users (Employees, Admins).
@@ -67,14 +75,18 @@ System users (Employees, Admins).
 | `id` | UUID | PK | |
 | `company_id` | UUID | FK -> companies.id | |
 | `department_id` | UUID | FK -> departments.id | |
-| `email` | VARCHAR(255) | UNIQUE, NOT NULL | Login ID |
+| `email` | VARCHAR(255) | NOT NULL | Login ID |
 | `password` | VARCHAR(255) | NOT NULL | |
 | `full_name` | VARCHAR(255) | NOT NULL | |
 | `role` | VARCHAR(50) | NOT NULL | 'admin', 'user', 'reception' |
 | `calendar_integration_token`| TEXT | | OAuth token for Google/Outlook |
+| `google_drive_token` | TEXT | | OAuth token for Google Drive integration |
+| `google_drive_refresh_token`| TEXT | | |
 | `avatar_url` | TEXT | | |
 | `status` | VARCHAR(20) | | 'active', 'inactive', 'invited' |
 | `created_at` | TIMESTAMP | | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 ### 3.2. Facilities & Resources
 
@@ -88,7 +100,11 @@ System users (Employees, Admins).
 | `location` | VARCHAR(255) | | Floor, Building |
 | `equipment` | JSONB | | Arrays of tags ['projector', 'whiteboard'] |
 | `calendar_resource_id` | VARCHAR(255)| | ID for External Calendar sync |
+| `is_multi_device` | BOOLEAN | DEFAULT FALSE | Supports ENTR-004 flow |
 | `is_active` | BOOLEAN | DEFAULT TRUE | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `reception_devices`
 Tablets and screens managed by the company.
@@ -96,7 +112,7 @@ Tablets and screens managed by the company.
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
 | `company_id` | UUID | FK -> companies.id | |
-| `device_identifier` | VARCHAR(255) | UNIQUE, NOT NULL | Device ID for login |
+| `device_identifier` | VARCHAR(255) | NOT NULL | Device ID for login |
 | `password` | VARCHAR(255) | NOT NULL | |
 | `name` | VARCHAR(255) | | Friendly name (e.g., "Lobby iPad 1") |
 | `location` | VARCHAR(255) | | Physical location |
@@ -104,6 +120,9 @@ Tablets and screens managed by the company.
 | `status` | VARCHAR(20) | | 'online', 'offline', 'maintenance' |
 | `settings` | JSONB | | Device-specific config (notifications, linked rooms) |
 | `last_active_at` | TIMESTAMP | | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `resource_availability`
 Detailed availability rules for rooms/resources.
@@ -117,6 +136,8 @@ Detailed availability rules for rooms/resources.
 | `end_time` | TIME | NOT NULL | |
 | `is_available` | BOOLEAN | DEFAULT TRUE | |
 | `reason` | VARCHAR(255) | | 'cleaning', 'maintenance' |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
 ### 3.3. Reservations & Reception
 
@@ -133,7 +154,11 @@ Detailed availability rules for rooms/resources.
 | `end_time` | TIMESTAMP | NOT NULL | |
 | `status` | VARCHAR(50) | | 'scheduled', 'ongoing', 'completed', 'cancelled' |
 | `meeting_url` | TEXT | | Online meeting link |
-| `qr_code_hash` | VARCHAR(255) | UNIQUE | For reception check-in |
+| `qr_code_hash` | VARCHAR(255) | | For reception check-in |
+| `thank_you_email_sent_at`| TIMESTAMP | | Track for OFX-015 |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 
 
@@ -147,6 +172,9 @@ External visitors.
 | `name` | VARCHAR(255) | NOT NULL | |
 | `company_name` | VARCHAR(255) | | |
 | `phone` | VARCHAR(50) | | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `reservation_participants`
 Linking Users and Guests to Reservations.
@@ -154,10 +182,12 @@ Linking Users and Guests to Reservations.
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
 | `reservation_id` | UUID | FK -> reservations.id | |
-| `user_id` | UUID | FK -> users.id | Nullable (if external guest) |
+| `user_id` | UUID | FK -> users.id | Nullable (if external user) |
 | `guest_id` | UUID | FK -> guests.id | Nullable (if internal user) |
 | `role` | VARCHAR(20) | | 'organizer', 'attendee' |
 | `rsvp_status` | VARCHAR(20) | | 'accepted', 'declined', 'pending' |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
 #### `check_in_logs`
 Logs of reception interactions.
@@ -168,6 +198,7 @@ Logs of reception interactions.
 | `guest_id` | UUID | FK -> guests.id | |
 | `check_in_time` | TIMESTAMP | | |
 | `check_in_method` | VARCHAR(50) | | 'qr_code', 'manual_code', 'receptionist' |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
 
 ### 3.4. AI & Meeting Intelligence
 
@@ -183,6 +214,8 @@ Storage for raw video/audio files.
 | `file_size_bytes` | BIGINT | | For quota calculation |
 | `status` | VARCHAR(20) | | 'processing', 'available', 'failed' |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `meeting_transcripts`
 Raw audio/text data from meetings.
@@ -193,6 +226,9 @@ Raw audio/text data from meetings.
 | `s3_audio_path` | TEXT | | Path to audio file |
 | `transcript_text` | TEXT | | Full extracted text |
 | `processed_at` | TIMESTAMP | | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `meeting_events`
 Granular events during a meeting (Reactions, Comments, Pins).
@@ -215,6 +251,9 @@ AI-generated insights.
 | `summary_text` | TEXT | | |
 | `key_decisions` | JSONB | | List of decisions |
 | `sentiment_score` | FLOAT | | -1.0 to 1.0 (Future usage) |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `action_items`
 Tasks extracted from meetings.
@@ -227,6 +266,9 @@ Tasks extracted from meetings.
 | `due_date` | DATE | | |
 | `status` | VARCHAR(20) | | 'pending', 'completed' |
 | `external_task_id`| VARCHAR(255)| | ID in Jira/Slack if synced |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 ### 3.5. System & Billing
 
@@ -240,6 +282,38 @@ Billing management.
 | `start_date` | DATE | | |
 | `end_date` | DATE | | |
 | `status` | VARCHAR(20) | | 'active', 'cancelled', 'expired' |
+| `promo_code_id` | UUID | FK -> promo_codes.id | Nullable |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
+
+#### `subscription_plans`
+Master table for plan definitions (ADM-006).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `name` | VARCHAR(50) | NOT NULL | 'Standard', 'Pro', 'Enterprise' |
+| `price_monthly` | DECIMAL(10, 2) | | Base monthly cost |
+| `user_limit` | INT | | Max users allowed |
+| `ai_minutes_limit` | INT | | AI summary quota |
+| `features` | JSONB | | Flags for specific features |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
+
+#### `promo_codes`
+Management of discount codes (ADM-008).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `code` | VARCHAR(50) | NOT NULL| |
+| `discount_type` | VARCHAR(20) | | 'percentage', 'fixed_amount' |
+| `discount_value` | DECIMAL(10, 2) | | |
+| `expires_at` | TIMESTAMP | | |
+| `is_active` | BOOLEAN | DEFAULT TRUE | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `payment_methods`
 stored payment information.
@@ -252,6 +326,9 @@ stored payment information.
 | `last4` | VARCHAR(4) | | |
 | `expiry` | VARCHAR(7) | | MM/YYYY |
 | `is_default` | BOOLEAN | DEFAULT FALSE | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `invoices`
 Billing history.
@@ -267,6 +344,9 @@ Billing history.
 | `issued_date` | DATE | | |
 | `due_date` | DATE | | |
 | `pdf_url` | TEXT | | Link to invoice PDF |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `audit_logs`
 Security and activity tracking.
@@ -309,6 +389,8 @@ External organizations visiting the office.
 | `last_visit` | TIMESTAMP | | |
 | `notes` | TEXT | | Internal notes |
 | `created_at` | TIMESTAMP | DEFAULT NOW()| |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
 
 ### 3.7. Usage & Quotas
 
@@ -322,6 +404,8 @@ Limits for the company's subscription plan.
 | `limit_amount` | INT | NOT NULL | Max allowed quantity |
 | `period` | VARCHAR(20) | | 'monthly', 'total' |
 | `reset_date` | DATE | | Next reset cycle |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
 #### `usage_logs`
 Tracking actual consumption.
@@ -346,8 +430,11 @@ Rules for system alerts (e.g., suspicious activity).
 | `time_window_seconds`| INT | | Duration to check |
 | `notification_email` | VARCHAR(255) | | Recipient for alerts |
 | `is_active` | BOOLEAN | DEFAULT TRUE | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
 ## 4. Scalability & extensibility
+- **Partial Unique Indexes**: For tables using Soft Delete, uniqueness on critical fields (e.g., `users.email`) MUST be enforced via partial indexes: `CREATE UNIQUE INDEX idx_user_email_active ON users(email) WHERE deleted_at IS NULL`.
 - **JSONB Columns**: Used in `users.settings`, `companies.settings`, `meeting_summaries.key_decisions` to allow adding new fields without schema migration.
 - **UUID Keys**: Used for all Primary Keys to prevent enumeration attacks and easier data distribution properties.
 - **Indexes**:

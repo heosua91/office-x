@@ -9,6 +9,17 @@ erDiagram
     companies ||--o{ users : "employs"
     companies ||--o{ meeting_rooms : "owns"
     companies ||--o{ company_media : "manages assets"
+    companies ||--o{ client_companies : "tracks visitor orgs"
+    companies ||--o{ subscriptions : "purchases"
+    companies ||--o{ payment_methods : "stores"
+    companies ||--o{ invoices : "issued"
+    companies ||--o{ usage_quotas : "has limits"
+    companies ||--o{ usage_logs : "tracks consumption"
+    companies ||--o{ monitoring_rules : "configures"
+
+    subscription_plans ||--o{ companies : "assigned to"
+    promo_codes ||--o{ subscriptions : "applied to"
+
     departments ||--o{ departments : "parent of"
     departments ||--o{ users : "contains"
     
@@ -19,9 +30,35 @@ erDiagram
         TEXT address
         VARCHAR contact_email
         VARCHAR billing_email
-        VARCHAR subscription_plan
+        UUID subscription_plan_id FK
         JSONB settings
         TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
+    }
+
+    subscription_plans {
+        UUID id PK
+        VARCHAR name
+        DECIMAL price_monthly
+        INT user_limit
+        INT ai_minutes_limit
+        JSONB features
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
+    }
+
+    promo_codes {
+        UUID id PK
+        VARCHAR code
+        VARCHAR discount_type
+        DECIMAL discount_value
+        TIMESTAMP expires_at
+        BOOLEAN is_active
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     departments {
@@ -29,6 +66,9 @@ erDiagram
         UUID company_id FK
         VARCHAR name
         UUID parent_id FK
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     company_media {
@@ -37,8 +77,11 @@ erDiagram
         VARCHAR type
         TEXT url
         INT display_order
+        INT play_interval_seconds
         INT duration_seconds
         BOOLEAN is_active
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
     }
 
     users {
@@ -46,13 +89,17 @@ erDiagram
         UUID company_id FK
         UUID department_id FK
         VARCHAR email
-        VARCHAR password_hash
+        VARCHAR password
         VARCHAR full_name
         VARCHAR role
         TEXT calendar_integration_token
+        TEXT google_drive_token
+        TEXT google_drive_refresh_token
         TEXT avatar_url
         VARCHAR status
         TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     %% Facilities & Resources
@@ -68,20 +115,27 @@ erDiagram
         VARCHAR location
         JSONB equipment
         VARCHAR calendar_resource_id
+        BOOLEAN is_multi_device
         BOOLEAN is_active
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     reception_devices {
         UUID id PK
         UUID company_id FK
         VARCHAR device_identifier
-        VARCHAR password_hash
+        VARCHAR password
         VARCHAR name
         VARCHAR location
         VARCHAR purpose
         VARCHAR status
         JSONB settings
         TIMESTAMP last_active_at
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     resource_availability {
@@ -93,10 +147,11 @@ erDiagram
         TIME end_time
         BOOLEAN is_available
         VARCHAR reason
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
     }
 
     %% Reservations & Reception
-    companies ||--o{ reservations : "managed by"
     users ||--o{ reservations : "hosts"
     meeting_rooms ||--o{ reservations : "located in"
     
@@ -109,7 +164,6 @@ erDiagram
     guests ||--o{ check_in_logs : "checks in"
     
     client_companies ||--o{ guests : "employs"
-    companies ||--o{ client_companies : "tracks visitor orgs"
 
     reservations {
         UUID id PK
@@ -123,16 +177,22 @@ erDiagram
         VARCHAR status
         TEXT meeting_url
         VARCHAR qr_code_hash
+        TIMESTAMP thank_you_email_sent_at
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     guests {
         UUID id PK
-        UUID reservation_id FK
         UUID client_company_id FK
         VARCHAR email
         VARCHAR name
         VARCHAR company_name
         VARCHAR phone
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     reservation_participants {
@@ -142,6 +202,8 @@ erDiagram
         UUID guest_id FK
         VARCHAR role
         VARCHAR rsvp_status
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
     }
 
     check_in_logs {
@@ -150,6 +212,7 @@ erDiagram
         UUID guest_id FK
         TIMESTAMP check_in_time
         VARCHAR check_in_method
+        TIMESTAMP created_at
     }
 
     client_companies {
@@ -165,6 +228,8 @@ erDiagram
         TIMESTAMP last_visit
         TEXT notes
         TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     %% AI & Meeting Intelligence
@@ -185,6 +250,8 @@ erDiagram
         BIGINT file_size_bytes
         VARCHAR status
         TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     meeting_transcripts {
@@ -193,6 +260,9 @@ erDiagram
         TEXT s3_audio_path
         TEXT transcript_text
         TIMESTAMP processed_at
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     meeting_events {
@@ -211,6 +281,9 @@ erDiagram
         TEXT summary_text
         JSONB key_decisions
         FLOAT sentiment_score
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     action_items {
@@ -221,19 +294,12 @@ erDiagram
         DATE due_date
         VARCHAR status
         VARCHAR external_task_id
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     %% System & Billing
-    companies ||--o{ subscriptions : "purchases"
-    companies ||--o{ payment_methods : "stores"
-    companies ||--o{ invoices : "issued"
-    companies ||--o{ usage_quotas : "has limits"
-    companies ||--o{ usage_logs : "tracks consumption"
-    users ||--o{ usage_logs : "consumes"
-    companies ||--o{ monitoring_rules : "configures"
-    users ||--o{ audit_logs : "activity logged"
-    users ||--o{ access_logs : "access logged"
-
     subscriptions {
         UUID id PK
         UUID company_id FK
@@ -241,6 +307,10 @@ erDiagram
         DATE start_date
         DATE end_date
         VARCHAR status
+        UUID promo_code_id FK
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     payment_methods {
@@ -251,6 +321,9 @@ erDiagram
         VARCHAR last4
         VARCHAR expiry
         BOOLEAN is_default
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     invoices {
@@ -264,25 +337,9 @@ erDiagram
         DATE issued_date
         DATE due_date
         TEXT pdf_url
-    }
-
-    usage_quotas {
-        UUID id PK
-        UUID company_id FK
-        VARCHAR feature_name
-        INT limit_amount
-        VARCHAR period
-        DATE reset_date
-    }
-
-    usage_logs {
-        UUID id PK
-        UUID company_id FK
-        UUID user_id FK
-        VARCHAR feature_name
-        DECIMAL amount_used
-        VARCHAR context
-        TIMESTAMP timestamp
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
     }
 
     audit_logs {
@@ -304,6 +361,27 @@ erDiagram
         TIMESTAMP timestamp
     }
 
+    usage_quotas {
+        UUID id PK
+        UUID company_id FK
+        VARCHAR feature_name
+        INT limit_amount
+        VARCHAR period
+        DATE reset_date
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    usage_logs {
+        UUID id PK
+        UUID company_id FK
+        UUID user_id FK
+        VARCHAR feature_name
+        DECIMAL amount_used
+        VARCHAR context
+        TIMESTAMP timestamp
+    }
+
     monitoring_rules {
         UUID id PK
         UUID company_id FK
@@ -312,5 +390,7 @@ erDiagram
         INT time_window_seconds
         VARCHAR notification_email
         BOOLEAN is_active
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
     }
 ```
