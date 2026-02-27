@@ -1,0 +1,123 @@
+{
+  "name": "office-x-api",
+  "version": "0.0.1",
+  "description": "OfficeX API",
+  "author": "OfficeX",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "prepare": "husky",
+    "build": "nest build",
+    "format": "biome format --write ./src",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "lint": "biome check .",
+    "lint:fix": "biome check --apply-unsafe ./src",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "type:check": "tsc --noEmit",
+    "seed": "ts-node ./prisma/seed.ts",
+    "unused": "knip",
+    "unused:check": "knip --no-exit-code"
+  },
+  "dependencies": {
+    "@nestjs/bullmq": "^10.2.2",
+    "@nestjs/cache-manager": "^2.3.0",
+    "@nestjs/common": "^10.4.7",
+    "@nestjs/config": "^3.3.0",
+    "@nestjs/core": "^10.4.7",
+    "@nestjs/jwt": "^10.2.0",
+    "@nestjs/microservices": "^10.4.7",
+    "@nestjs/passport": "^10.0.3",
+    "@nestjs/platform-express": "^10.4.7",
+    "@nestjs/schedule": "^6.0.0",
+    "@nestjs/swagger": "^8.0.5",
+    "@nestjs/throttler": "^6.2.1",
+    "@prisma/client": "^6.2.1",
+    "@scalar/nestjs-api-reference": "^0.3.171",
+    "basic-auth": "^2.0.1",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "bullmq": "^5.25.6",
+    "cache-manager": "^5.7.6",
+    "cache-manager-redis-store": "^3.0.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "crypto-js": "^4.2.0",
+    "csv-parser": "^3.2.0",
+    "helmet": "^8.0.0",
+    "lodash": "^4.17.23",
+    "ms": "^2.1.3",
+    "nestjs-prisma": "^0.24.0",
+    "node-fetch": "2",
+    "passport-jwt": "^4.0.1",
+    "redis": "^5.5.6",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "uuid": "^11.0.3",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.2",
+    "@faker-js/faker": "^9.4.0",
+    "@nestjs/cli": "^10.4.7",
+    "@nestjs/schematics": "^10.2.3",
+    "@nestjs/testing": "^10.4.7",
+    "@swc/cli": "^0.5.0",
+    "@swc/core": "^1.9.2",
+    "@types/basic-auth": "^1.1.8",
+    "@types/bcrypt": "^5.0.2",
+    "@types/crypto-js": "^4.2.2",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/lodash": "^4.17.13",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^22.9.0",
+    "@types/node-fetch": "^2.6.13",
+    "@types/supertest": "^6.0.2",
+    "@typescript-eslint/eslint-plugin": "^8.14.0",
+    "@typescript-eslint/parser": "^8.14.0",
+    "husky": "^9.1.6",
+    "jest": "^29.7.0",
+    "knip": "^5.46.0",
+    "lint-staged": "^15.2.10",
+    "node-forge": "^1.3.1",
+    "prisma": "^6.2.1",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.6.3"
+  },
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+      "biome check --write --no-errors-on-unmatched"
+    ]
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}

@@ -36,6 +36,9 @@ Stores tenant information.
 | `contact_email` | VARCHAR(255) | | |
 | `billing_email` | VARCHAR(255) | | |
 | `subscription_plan_id` | UUID | FK -> subscription_plans.id | Reference to the master plan |
+| `user_limit_override` | INT | | Individual cap for ADM-002 |
+| `ai_minutes_limit_override` | INT | | Individual cap for ADM-002 |
+| `ai_overage_unit_price_override`| DECIMAL(10, 2) | | For ADM-002 |
 | `settings` | JSONB | | Company-specific settings (Theme, Logo URL, Rules) |
 | `created_at` | TIMESTAMP | | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
@@ -87,6 +90,19 @@ System users (Employees, Admins).
 | `created_at` | TIMESTAMP | | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
+| `created_at` | TIMESTAMP | | |
+
+#### `verification_codes`
+Required for `REG-002` and `REG-004` (Email verification flow).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `email` | VARCHAR(255) | NOT NULL | |
+| `code` | VARCHAR(6) | NOT NULL | 6-digit verification code |
+| `purpose` | VARCHAR(20) | | 'registration', 'password_reset' |
+| `expires_at` | TIMESTAMP | NOT NULL | |
+| `used_at` | TIMESTAMP | | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
 
 ### 3.2. Facilities & Resources
 
@@ -119,6 +135,8 @@ Tablets and screens managed by the company.
 | `purpose` | VARCHAR(50) | | 'reception', 'room_display' |
 | `status` | VARCHAR(20) | | 'online', 'offline', 'maintenance' |
 | `settings` | JSONB | | Device-specific config (notifications, linked rooms) |
+| `auth_token_hash` | TEXT | | Persistent token for UKET-001 |
+| `auth_token_expires_at` | TIMESTAMP | | Expiry for persistent login |
 | `last_active_at` | TIMESTAMP | | |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
@@ -155,6 +173,7 @@ Detailed availability rules for rooms/resources.
 | `status` | VARCHAR(50) | | 'scheduled', 'ongoing', 'completed', 'cancelled' |
 | `meeting_url` | TEXT | | Online meeting link |
 | `qr_code_hash` | VARCHAR(255) | | For reception check-in |
+| `ai_template_id` | UUID | FK -> meeting_ai_templates.id | AI prompt/format preference |
 | `thank_you_email_sent_at`| TIMESTAMP | | Track for OFX-015 |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
@@ -208,6 +227,8 @@ Storage for raw video/audio files.
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
 | `reservation_id` | UUID | FK -> reservations.id | |
+| `user_id` | UUID | FK -> users.id | individual stream owner (ENTR-008) |
+| `guest_id` | UUID | FK -> guests.id | individual stream owner (ENTR-008) |
 | `file_url` | TEXT | NOT NULL | S3/Storage URL |
 | `file_type` | VARCHAR(50) | NOT NULL | 'video/mp4', 'audio/mp3' |
 | `duration_seconds` | INT | | |
@@ -249,6 +270,8 @@ AI-generated insights.
 | `id` | UUID | PK | |
 | `reservation_id` | UUID | FK -> reservations.id | |
 | `summary_text` | TEXT | | |
+| `internal_notes` | TEXT | | Private company notes (OFX-019) |
+| `is_shared_with_client` | BOOLEAN | DEFAULT FALSE | Visibility control (OFX-019) |
 | `key_decisions` | JSONB | | List of decisions |
 | `sentiment_score` | FLOAT | | -1.0 to 1.0 (Future usage) |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
@@ -266,6 +289,22 @@ Tasks extracted from meetings.
 | `due_date` | DATE | | |
 | `status` | VARCHAR(20) | | 'pending', 'completed' |
 | `external_task_id`| VARCHAR(255)| | ID in Jira/Slack if synced |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
+
+#### `meeting_ai_templates`
+AI prompt/format definitions for summaries and emails (ADMX-030, 031).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `company_id` | UUID | FK -> companies.id | |
+| `name` | VARCHAR(100) | NOT NULL | Template name (e.g., 'Concise', 'Formal') |
+| `type` | VARCHAR(50) | NOT NULL | 'summary', 'thank_you_email' |
+| `prompt_text` | TEXT | NOT NULL | The system prompt or instructions for AI |
+| `output_format` | TEXT | | Markdown/JSON structure requirements |
+| `is_default` | BOOLEAN | DEFAULT FALSE | |
+| `is_active` | BOOLEAN | DEFAULT TRUE | |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
@@ -348,6 +387,33 @@ Billing history.
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
+#### `ai_credit_purchases`
+Tracking pre-paid AI minutes/units (ADMX-025, 026).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `company_id` | UUID | FK -> companies.id | |
+| `amount_minutes` | INT | NOT NULL | Minutes purchased |
+| `amount_paid` | DECIMAL(10, 2) | NOT NULL | |
+| `purchase_date` | TIMESTAMP | DEFAULT NOW() | |
+| `payment_token` | VARCHAR(255) | | Link to invoice/transaction |
+| `status` | VARCHAR(20) | | 'pending', 'applied', 'cancelled' |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+
+#### `device_catalog`
+Master list of hardware provided by TNG (ADM-009).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `model_name` | VARCHAR(100) | NOT NULL | e.g., 'iPad Pro 11"', 'Jabra Mic' |
+| `type` | VARCHAR(50) | | 'tablet', 'microphone', 'camera' |
+| `rental_price_jpy` | INT | | Monthly rental fee |
+| `purchase_price_jpy`| INT | | One-time purchase cost |
+| `specifications` | JSONB | | Hardware specs |
+| `is_active` | BOOLEAN | DEFAULT TRUE | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+
 #### `audit_logs`
 Security and activity tracking.
 | Column | Type | Constraints | Description |
@@ -428,6 +494,9 @@ Rules for system alerts (e.g., suspicious activity).
 | `rule_type` | VARCHAR(100) | NOT NULL | 'mass_deletion', 'consecutive_failures' |
 | `threshold` | INT | | Count limit |
 | `time_window_seconds`| INT | | Duration to check |
+| `notification_target` | VARCHAR(50) | | 'admin', 'all_users' (ADMX-028) |
+| `notification_frequency`| VARCHAR(50) | | 'once', 'daily', 'weekly' |
+| `integration_type` | VARCHAR(50) | | 'email', 'slack', 'teams' |
 | `notification_email` | VARCHAR(255) | | Recipient for alerts |
 | `is_active` | BOOLEAN | DEFAULT TRUE | |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |

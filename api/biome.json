@@ -1,0 +1,65 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "main"
+  },
+  "files": {
+    "ignoreUnknown": true
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "attributePosition": "auto",
+    "formatWithErrors": true,
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedVariables": "error",
+        "noUnusedImports": "error",
+        "useExhaustiveDependencies": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noRedundantUseStrict": "error"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "noBannedTypes": "error",
+        "noStaticOnlyClass": "off",
+        "noUselessConstructor": "warn"
+      },
+      "performance": {
+        "noDelete": "warn"
+      },
+      "style": {
+        "useTemplate": "error",
+        "useConst": "error",
+        "useEnumInitializers": "error",
+        "noNonNullAssertion": "warn",
+        "useImportType": "off"
+      }
+    }
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
+    "formatter": {
+      "quoteStyle": "single",
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "quoteProperties": "asNeeded",
+      "semicolons": "always",
+      "trailingCommas": "es5"
+    }
+  }
+}

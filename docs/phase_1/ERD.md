@@ -16,9 +16,13 @@ erDiagram
     companies ||--o{ usage_quotas : "has limits"
     companies ||--o{ usage_logs : "tracks consumption"
     companies ||--o{ monitoring_rules : "configures"
+    companies ||--o{ meeting_ai_templates : "defines"
+    companies ||--o{ ai_credit_purchases : "buys"
+    companies ||--o{ verification_codes : "verifies emails"
 
     subscription_plans ||--o{ companies : "assigned to"
     promo_codes ||--o{ subscriptions : "applied to"
+    meeting_ai_templates ||--o{ reservations : "used by"
 
     departments ||--o{ departments : "parent of"
     departments ||--o{ users : "contains"
@@ -31,6 +35,9 @@ erDiagram
         VARCHAR contact_email
         VARCHAR billing_email
         UUID subscription_plan_id FK
+        INT user_limit_override
+        INT ai_minutes_limit_override
+        DECIMAL ai_overage_unit_price_override
         JSONB settings
         TIMESTAMP created_at
         TIMESTAMP updated_at
@@ -55,6 +62,20 @@ erDiagram
         VARCHAR discount_type
         DECIMAL discount_value
         TIMESTAMP expires_at
+        BOOLEAN is_active
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
+    }
+
+    meeting_ai_templates {
+        UUID id PK
+        UUID company_id FK
+        VARCHAR name
+        VARCHAR type
+        TEXT prompt_text
+        TEXT output_format
+        BOOLEAN is_default
         BOOLEAN is_active
         TIMESTAMP created_at
         TIMESTAMP updated_at
@@ -102,10 +123,22 @@ erDiagram
         TIMESTAMP deleted_at
     }
 
+    verification_codes {
+        UUID id PK
+        VARCHAR email
+        VARCHAR code
+        VARCHAR purpose
+        TIMESTAMP expires_at
+        TIMESTAMP used_at
+        TIMESTAMP created_at
+    }
+
     %% Facilities & Resources
     companies ||--o{ reception_devices : "deploys"
     companies ||--o{ resource_availability : "defines rules"
     meeting_rooms ||--o{ resource_availability : "has specific rules"
+
+    device_catalog ||--o{ reception_devices : "master model for"
 
     meeting_rooms {
         UUID id PK
@@ -132,10 +165,24 @@ erDiagram
         VARCHAR purpose
         VARCHAR status
         JSONB settings
+        TEXT auth_token_hash
+        TIMESTAMP auth_token_expires_at
         TIMESTAMP last_active_at
         TIMESTAMP created_at
         TIMESTAMP updated_at
         TIMESTAMP deleted_at
+    }
+
+    device_catalog {
+        UUID id PK
+        VARCHAR model_name
+        VARCHAR type
+        INT rental_price_jpy
+        INT purchase_price_jpy
+        JSONB specifications
+        BOOLEAN is_active
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
     }
 
     resource_availability {
@@ -177,6 +224,7 @@ erDiagram
         VARCHAR status
         TEXT meeting_url
         VARCHAR qr_code_hash
+        UUID ai_template_id FK
         TIMESTAMP thank_you_email_sent_at
         TIMESTAMP created_at
         TIMESTAMP updated_at
@@ -241,9 +289,14 @@ erDiagram
     users ||--o{ meeting_events : "triggers"
     users ||--o{ action_items : "assigned to"
 
+    users ||--o{ meeting_recordings : "owns individual stream"
+    guests ||--o{ meeting_recordings : "owns individual stream"
+
     meeting_recordings {
         UUID id PK
         UUID reservation_id FK
+        UUID user_id FK
+        UUID guest_id FK
         TEXT file_url
         VARCHAR file_type
         INT duration_seconds
@@ -279,6 +332,8 @@ erDiagram
         UUID id PK
         UUID reservation_id FK
         TEXT summary_text
+        TEXT internal_notes
+        BOOLEAN is_shared_with_client
         JSONB key_decisions
         FLOAT sentiment_score
         TIMESTAMP created_at
@@ -300,6 +355,17 @@ erDiagram
     }
 
     %% System & Billing
+    ai_credit_purchases {
+        UUID id PK
+        UUID company_id FK
+        INT amount_minutes
+        DECIMAL amount_paid
+        TIMESTAMP purchase_date
+        VARCHAR payment_token
+        VARCHAR status
+        TIMESTAMP created_at
+    }
+
     subscriptions {
         UUID id PK
         UUID company_id FK
@@ -388,6 +454,9 @@ erDiagram
         VARCHAR rule_type
         INT threshold
         INT time_window_seconds
+        VARCHAR notification_target
+        VARCHAR notification_frequency
+        VARCHAR integration_type
         VARCHAR notification_email
         BOOLEAN is_active
         TIMESTAMP created_at
