@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-export class GuestReserveRequestDto {
+export class GuestMeetingRequestDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -38,5 +38,5 @@ export class ReceptionCheckInRequestDto {
 export class ReceptionNotifyHostRequestDto {
   @ApiProperty()
   @IsNotEmpty()
-  reservationId: number;
+  meetingId: number;
 }

@@ -6,7 +6,11 @@ import {
 } from 'src/common/response/decorators/response.decorator';
 import type { AppResponseSuccess } from 'src/common/response/dtos/response.dto';
 import { ResponseService } from 'src/common/response/services/response.service';
-import { RoomConsentRequestDto, RoomLinkRequestDto } from '../dtos/request/room.request.dto';
+import {
+  RoomConsentRequestDto,
+  RoomEventRequestDto,
+  RoomLinkRequestDto,
+} from '../dtos/request/room.request.dto';
 import { RoomStatusResponseDto } from '../dtos/response/room.status.response.dto';
 import { RoomSuccessResponseDto } from '../dtos/response/room.success.response.dto';
 
@@ -31,7 +35,7 @@ export class RoomPublicController {
 
   @Get('/:id/status')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Fetch current/next reservation status' })
+  @ApiOperation({ summary: 'Fetch current/next meeting status' })
   @ApiSuccessResponse(RoomStatusResponseDto)
   @ApiErrorResponse()
   async getStatus(@Param('id') _id: string): Promise<AppResponseSuccess<RoomStatusResponseDto>> {
@@ -96,6 +100,18 @@ export class RoomPublicController {
   @ApiErrorResponse()
   async extendMeeting(
     @Param('id') _id: string
+  ): Promise<AppResponseSuccess<RoomSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, RoomSuccessResponseDto);
+  }
+
+  @Post('/:id/event')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Log real-time event (memo, reaction, marker)' })
+  @ApiSuccessResponse(RoomSuccessResponseDto)
+  @ApiErrorResponse()
+  async logEvent(
+    @Param('id') _id: string,
+    @Body() _body: RoomEventRequestDto
   ): Promise<AppResponseSuccess<RoomSuccessResponseDto>> {
     return this.responseService.success({ success: true }, RoomSuccessResponseDto);
   }

@@ -19,13 +19,29 @@ erDiagram
     companies ||--o{ meeting_ai_templates : "defines"
     companies ||--o{ ai_credit_purchases : "buys"
     companies ||--o{ verification_codes : "verifies emails"
+    companies ||--o{ notification_integrations : "configures"
+    companies ||--o{ csv_import_logs : "tracks data imports"
+    users ||--o{ csv_import_logs : "performs imports"
+
+
+
+    users ||--o{ notification_integrations : "owns personal"
+    reception_devices ||--o{ notification_integrations : "triggers"
 
     subscription_plans ||--o{ companies : "assigned to"
+
     promo_codes ||--o{ subscriptions : "applied to"
     meeting_ai_templates ||--o{ reservations : "used by"
 
     departments ||--o{ departments : "parent of"
     departments ||--o{ users : "contains"
+    
+    users ||--o{ user_availability : "defines schedule"
+    reservations ||--o{ meeting_permissions : "has granular permissions"
+    departments ||--o{ meeting_permissions : "grants access to"
+    users ||--o{ meeting_permissions : "grants access to"
+
+
     
     companies {
         UUID id PK
@@ -336,10 +352,12 @@ erDiagram
         BOOLEAN is_shared_with_client
         JSONB key_decisions
         FLOAT sentiment_score
+        JSONB analysis_data
         TIMESTAMP created_at
         TIMESTAMP updated_at
         TIMESTAMP deleted_at
     }
+
 
     action_items {
         UUID id PK
@@ -462,4 +480,55 @@ erDiagram
         TIMESTAMP created_at
         TIMESTAMP updated_at
     }
+
+    notification_integrations {
+        UUID id PK
+        UUID user_id FK
+        UUID company_id FK
+        UUID device_id FK
+        VARCHAR integration_type
+        TEXT webhook_url
+        TEXT api_key
+        BOOLEAN is_active
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    user_availability {
+        UUID id PK
+        UUID user_id FK
+        INT day_of_week
+        TIME start_time
+        TIME end_time
+        BOOLEAN is_available
+        VARCHAR reason
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    meeting_permissions {
+        UUID id PK
+        UUID meeting_id FK
+        VARCHAR grantee_type
+        UUID grantee_id
+        VARCHAR permission_level
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    csv_import_logs {
+        UUID id PK
+        UUID company_id FK
+        UUID admin_user_id FK
+        VARCHAR import_type
+        VARCHAR file_name
+        TEXT file_url
+        INT total_rows
+        INT success_count
+        INT failure_count
+        JSONB error_details
+        VARCHAR status
+        TIMESTAMP created_at
+    }
 ```
+

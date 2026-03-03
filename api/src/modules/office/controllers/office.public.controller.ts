@@ -7,7 +7,6 @@ import {
   Param,
   Patch,
   Post,
-  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
@@ -16,21 +15,23 @@ import {
 } from 'src/common/response/decorators/response.decorator';
 import type { AppResponseSuccess } from 'src/common/response/dtos/response.dto';
 import { ResponseService } from 'src/common/response/services/response.service';
-import { OfficeGenerateEmailRequestDto } from '../dtos/request/office.generate-email.request.dto';
-import {
-  OfficePresenceResponseDto,
-  OfficeUpdatePresenceRequestDto,
+import type { OfficeGenerateEmailRequestDto } from '../dtos/request/office.generate-email.request.dto';
+import type {
+  OfficeUpdateAvailabilityRequestDto,
+  OfficeUpdateIntegrationRequestDto,
   OfficeUpdatePrivacyRequestDto,
-  OfficeUpdateWebhookRequestDto,
-  OfficeWebhookResponseDto,
 } from '../dtos/request/office.settings.request.dto';
-import { OfficeSmartUrlRequestDto } from '../dtos/request/office.smart-url.request.dto';
-import { OfficeUpdateReservationRequestDto } from '../dtos/request/office.update-reservation.request.dto';
-import { OfficeUpdateSummaryRequestDto } from '../dtos/request/office.update-summary.request.dto';
+import {
+  OfficeAvailabilityResponseDto,
+  OfficeIntegrationResponseDto,
+} from '../dtos/request/office.settings.request.dto';
+import type { OfficeSmartUrlRequestDto } from '../dtos/request/office.smart-url.request.dto';
+import type { OfficeUpdateMeetingRequestDto } from '../dtos/request/office.update-meeting.request.dto';
+import type { OfficeUpdateSummaryRequestDto } from '../dtos/request/office.update-summary.request.dto';
 import { OfficeCustomerResponseDto } from '../dtos/response/office.customer.response.dto';
 import { OfficeDashboardResponseDto } from '../dtos/response/office.dashboard.response.dto';
+import { OfficeMeetingResponseDto } from '../dtos/response/office.meeting.response.dto';
 import { OfficeMeetingAiResponseDto } from '../dtos/response/office.meeting-ai.response.dto';
-import { OfficeReservationResponseDto } from '../dtos/response/office.reservation.response.dto';
 import { OfficeSuccessResponseDto } from '../dtos/response/office.success.response.dto';
 
 @ApiTags('[Public] Office')
@@ -68,12 +69,12 @@ export class OfficePublicController {
     );
   }
 
-  @Get('/reservations')
+  @Get('/meetings')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'List active and historical reservations' })
-  @ApiSuccessResponse(OfficeReservationResponseDto, true)
+  @ApiOperation({ summary: 'List active and historical meetings' })
+  @ApiSuccessResponse(OfficeMeetingResponseDto, true)
   @ApiErrorResponse()
-  async getReservations(): Promise<AppResponseSuccess<OfficeReservationResponseDto[]>> {
+  async getMeetings(): Promise<AppResponseSuccess<OfficeMeetingResponseDto[]>> {
     return this.responseService.success(
       [
         {
@@ -87,11 +88,11 @@ export class OfficePublicController {
           hostName: 'Admin User',
         },
       ],
-      OfficeReservationResponseDto
+      OfficeMeetingResponseDto
     );
   }
 
-  @Post('/reservations/smart-url')
+  @Post('/meetings/smart-url')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Create guest booking link with AI templates' })
   @ApiSuccessResponse(OfficeSuccessResponseDto)
@@ -102,14 +103,37 @@ export class OfficePublicController {
     return this.responseService.success({ success: true }, OfficeSuccessResponseDto);
   }
 
-  @Patch('/reservations/:id')
+  @Patch('/meetings/:id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update meeting details, participants, or seat map' })
   @ApiSuccessResponse(OfficeSuccessResponseDto)
   @ApiErrorResponse()
-  async updateReservation(
+  async updateMeeting(
     @Param('id') _id: string,
-    @Body() _body: OfficeUpdateReservationRequestDto
+    @Body() _body: OfficeUpdateMeetingRequestDto
+  ): Promise<AppResponseSuccess<OfficeSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, OfficeSuccessResponseDto);
+  }
+
+  @Get('/meetings/:id/permissions')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'List granular sharing permissions for a meeting' })
+  @ApiSuccessResponse(OfficeSuccessResponseDto)
+  @ApiErrorResponse()
+  async getMeetingPermissions(
+    @Param('id') _id: string
+  ): Promise<AppResponseSuccess<OfficeSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, OfficeSuccessResponseDto);
+  }
+
+  @Post('/meetings/:id/permissions')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Grant meeting access to users/departments' })
+  @ApiSuccessResponse(OfficeSuccessResponseDto)
+  @ApiErrorResponse()
+  async grantMeetingPermissions(
+    @Param('id') _id: string,
+    @Body() _body: OfficeUpdateMeetingRequestDto
   ): Promise<AppResponseSuccess<OfficeSuccessResponseDto>> {
     return this.responseService.success({ success: true }, OfficeSuccessResponseDto);
   }
@@ -165,7 +189,7 @@ export class OfficePublicController {
 
   @Get('/meetings/:id/ai')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Fetch transcript, summary, and action items' })
+  @ApiOperation({ summary: 'Fetch transcript, segments, summary, and action items' })
   @ApiSuccessResponse(OfficeMeetingAiResponseDto)
   @ApiErrorResponse()
   async getMeetingAi(
@@ -174,11 +198,27 @@ export class OfficePublicController {
     return this.responseService.success(
       {
         transcript: 'Meeting transcript here...',
+        segments: [
+          { id: 1, startTime: 0, endTime: 10, speaker: 'User A', text: 'Hello' },
+          { id: 2, startTime: 10, endTime: 20, speaker: 'User B', text: 'Hi there' },
+        ],
         summary: 'Meeting summary here...',
         actionItems: ['Item 1', 'Item 2'],
       },
       OfficeMeetingAiResponseDto
     );
+  }
+
+  @Patch('/meetings/segments/:id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Correct transcript segment text/speaker' })
+  @ApiSuccessResponse(OfficeSuccessResponseDto)
+  @ApiErrorResponse()
+  async updateTranscriptSegment(
+    @Param('id') _id: string,
+    @Body() _body: OfficeUpdateSummaryRequestDto
+  ): Promise<AppResponseSuccess<OfficeSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, OfficeSuccessResponseDto);
   }
 
   @Patch('/meetings/:id/summary')
@@ -225,48 +265,55 @@ export class OfficePublicController {
     return this.responseService.success({ success: true }, OfficeSuccessResponseDto);
   }
 
-  @Get('/settings/webhooks')
+  @Get('/settings/integrations')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'List Slack/Teams integrations' })
-  @ApiSuccessResponse(OfficeWebhookResponseDto, true)
+  @ApiOperation({ summary: 'List Slack/Teams/Email integrations' })
+  @ApiSuccessResponse(OfficeIntegrationResponseDto, true)
   @ApiErrorResponse()
-  async getWebhooks(): Promise<AppResponseSuccess<OfficeWebhookResponseDto[]>> {
+  async getIntegrations(): Promise<AppResponseSuccess<OfficeIntegrationResponseDto[]>> {
     return this.responseService.success(
       [{ id: 1, platform: 'Slack', url: 'https://slack.com/...', isEnabled: true }],
-      OfficeWebhookResponseDto
+      OfficeIntegrationResponseDto
     );
   }
 
-  @Post('/settings/webhooks')
+  @Post('/settings/integrations')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Create Slack/Teams integration' })
+  @ApiOperation({ summary: 'Create Slack/Teams/Email integration' })
   @ApiSuccessResponse(OfficeSuccessResponseDto)
   @ApiErrorResponse()
-  async createWebhook(
-    @Body() _body: OfficeUpdateWebhookRequestDto
+  async createIntegration(
+    @Body() _body: OfficeUpdateIntegrationRequestDto
   ): Promise<AppResponseSuccess<OfficeSuccessResponseDto>> {
     return this.responseService.success({ success: true }, OfficeSuccessResponseDto);
   }
 
-  @Get('/settings/presence')
+  @Get('/settings/availability')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Fetch personal reservation rules' })
-  @ApiSuccessResponse(OfficePresenceResponseDto)
+  @ApiOperation({ summary: 'Fetch personal availability schedule & blackout dates' })
+  @ApiSuccessResponse(OfficeAvailabilityResponseDto)
   @ApiErrorResponse()
-  async getPresence(): Promise<AppResponseSuccess<OfficePresenceResponseDto>> {
+  async getAvailability(): Promise<AppResponseSuccess<OfficeAvailabilityResponseDto>> {
     return this.responseService.success(
-      { id: 1, blackoutDates: [], isAutoAcceptEnabled: true },
-      OfficePresenceResponseDto
+      {
+        id: 1,
+        schedule: [
+          { dayOfWeek: 1, startTime: '09:00', endTime: '18:00' },
+          { dayOfWeek: 2, startTime: '09:00', endTime: '18:00' },
+        ],
+        blackoutDates: [],
+      },
+      OfficeAvailabilityResponseDto
     );
   }
 
-  @Patch('/settings/presence')
+  @Post('/settings/availability')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Update personal reservation rules' })
+  @ApiOperation({ summary: 'Update personal availability schedule & blackout dates' })
   @ApiSuccessResponse(OfficeSuccessResponseDto)
   @ApiErrorResponse()
-  async updatePresence(
-    @Body() _body: OfficeUpdatePresenceRequestDto
+  async updateAvailability(
+    @Body() _body: OfficeUpdateAvailabilityRequestDto
   ): Promise<AppResponseSuccess<OfficeSuccessResponseDto>> {
     return this.responseService.success({ success: true }, OfficeSuccessResponseDto);
   }

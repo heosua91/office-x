@@ -71,9 +71,9 @@ export class UserPublicController {
   @Get('options')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'List users for dropdown (更新者 options)',
+    summary: 'List users for dropdown',
     description:
-      'Returns list of users (id, name) for dropdowns such as 更新者 filter. Supports optional keyword and role filter.',
+      'Returns list of users (id, name) for dropdowns. Supports optional keyword and role filter.',
   })
   @ApiSuccessResponse(UserOptionDto, true)
   @ApiErrorResponse()

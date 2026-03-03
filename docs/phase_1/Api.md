@@ -21,19 +21,22 @@ Endpoints for daily operations by company employees.
 | Method | Endpoint | Screen ID | Description | Key Tables |
 | :--- | :--- | :--- | :--- | :--- |
 | GET | `/office/dashboard` | OFX-001 | Fetch schedule, room status, and AI usage widgets. | `reservations`, `usage_logs` |
-| GET | `/office/reservations` | OFX-002 | List active and historical reservations. | `reservations` |
-| POST | `/office/reservations/smart-url`| OFX-003/008 | Create guest booking link with AI templates. | `reservations`, `meeting_ai_templates` |
-| PATCH | `/office/reservations/:id` | OFX-004/009 | Update meeting details, participants, or seat map. | `reservations`, `reservation_participants` |
+| GET | `/office/meetings` | OFX-002 | List active and historical meetings. | `meetings` |
+| POST | `/office/meetings/smart-url`| OFX-003/008 | Create guest booking link with AI templates. | `meetings`, `meeting_ai_templates` |
+| PATCH | `/office/meetings/:id` | OFX-004/009 | Update meeting details, participants, or seat map. | `meetings`, `meeting_participants` |
+| GET | `/office/meetings/:id/permissions` | OFX-014 | List granular sharing permissions for a meeting. | `meeting_permissions` |
+| POST | `/office/meetings/:id/permissions` | OFX-014 | Grant meeting access to users/departments. | `meeting_permissions` |
 | GET | `/office/schedule/gantt` | OFX-005 | Fetch timeline data for all company rooms. | `meeting_rooms`, `reservations` |
 | GET | `/office/customers` | OFX-010 | Search/List client companies. | `client_companies` |
 | GET | `/office/customers/:id` | OFX-011 | Detailed profile, visit timeline, and AI insights. | `client_companies`, `reservations`, `meeting_summaries` |
-| GET | `/office/meetings/:id/ai` | OFX-013 | Fetch transcript, summary, and action items. | `meeting_transcripts`, `meeting_summaries`, `action_items` |
+| GET | `/office/meetings/:id/ai` | OFX-013 | Fetch transcript, segments, summary, and action items. | `meeting_transcripts`, `transcript_segments`, `meeting_summaries`, `action_items` |
 | PATCH | `/office/meetings/:id/summary` | OFX-014 | Edit AI generated summary/notes. | `meeting_summaries` |
+| PATCH | `/office/meetings/segments/:id` | OFX-013 | Correct transcript segment text/speaker. | `transcript_segments` |
 | POST | `/office/meetings/:id/email` | OFX-015 | Generate AI draft for thank-you email. | `meeting_summaries`, `users` (signatures) |
 | GET | `/office/google-drive/files` | OFX-022 | Proxy to fetch Google Drive files (Read-only). | `users` (tokens) |
 | PATCH | `/office/settings/privacy` | OFX-019 | Set summary visibility (Internal vs Client). | `users` |
-| GET/POST | `/office/settings/webhooks` | OFX-021 | Management of Slack/Teams integrations. | `users` (webhooks) |
-| GET/PATCH | `/office/settings/presence` | OFX-020 | Personal reservation rules & blackout dates. | `resource_availability` |
+| GET/POST | `/office/settings/integrations` | OFX-021 | Management of Slack/Teams/Email integrations. | `notification_integrations` |
+| GET/POST | `/office/settings/availability` | OFX-020 | Personal availability schedule & blackout dates. | `user_availability` |
 
 ## 3. Company Administration (`/admin`)
 Endpoints for company-level setup and billing management.
@@ -41,7 +44,9 @@ Endpoints for company-level setup and billing management.
 | Method | Endpoint | Screen ID | Description | Key Tables |
 | :--- | :--- | :--- | :--- | :--- |
 | GET | `/admin/dashboard` | ADMX-002 | High-level analytics for the entire organization. | `usage_logs`, `companies` |
-| GET/POST | `/admin/users` | ADMX-003/004 | Bulk management of company employees. | `users` |
+| GET/POST | `/admin/users` | ADMX-003/004 | CRUD for company employees. | `users` |
+| POST | `/admin/users/import` | ADMX-003 | Bulk import users via CSV. | `csv_import_logs`, `users` |
+| GET | `/admin/users/import/history` | ADMX-003 | List CSV import history and errors. | `csv_import_logs` |
 | GET/POST | `/admin/rooms` | ADMX-007/008 | Manage meeting rooms and generate device QRs. | `meeting_rooms` |
 | GET/POST | `/admin/master/:type` | ADMX-010 | CRUD for Departments, Tools, Floors, Contractors. | `departments`, `floors` etc. |
 | GET/PATCH | `/admin/settings/branding` | ADMX-011/012 | Update logos, backgrounds, and signage slides. | `company_media` |
@@ -57,11 +62,11 @@ Endpoints used by guests and foyer tablets.
 
 | Method | Endpoint | Screen ID | Description | Key Tables |
 | :--- | :--- | :--- | :--- | :--- |
-| POST | `/guest/reserve` | GRES-004 | Guest self-booking via smart link. | `reservations`, `guests` |
+| POST | `/guest/reserve` | GRES-004 | Guest self-booking via smart link. | `meetings`, `guests` |
 | POST | `/reception/auth` | UKET-001 | Device authentication for Tablet foyer. | `reception_devices` (tokens) |
 | GET | `/reception/signage` | UKET-002 | Fetch media slides for digital signage. | `company_media` |
-| POST | `/reception/check-in/qr` | UKET-004/005 | Validate guest QR/Code and trigger notifications. | `reservations`, `check_in_logs` |
-| POST | `/reception/notify-host` | UKET-008 | Send Slack/Teams/Email alert to host. | `users`, `reservations` |
+| POST | `/reception/check-in/qr` | UKET-004/005 | Validate guest QR/Code and trigger notifications. | `meetings`, `visit_logs` |
+| POST | `/reception/notify-host` | UKET-008 | Send Slack/Teams/Email alert to host. | `users`, `meetings`, `notification_integrations` |
 | POST | `/reception/calls/signal` | UKET-009 | WebRTC signaling for Audio/Video calls. | N/A (Redis/Socket) |
 | GET | `/reception/map/:room_id` | UKET-010 | Fetch guiding map for visitor path. | `meeting_rooms` |
 
@@ -71,12 +76,13 @@ Real-time endpoints for meeting room tablets.
 | Method | Endpoint | Screen ID | Description | Key Tables |
 | :--- | :--- | :--- | :--- | :--- |
 | POST | `/room/:id/link` | ENTR-001 | Link device to a specific meeting room. | `meeting_rooms` |
-| GET | `/room/:id/status` | ENTR-002 | Fetch current/next reservation status. | `reservations` |
-| POST | `/room/:id/start` | ENTR-003/008 | Initialize meeting and recording handshake. | `reservations` |
-| POST | `/room/:id/consent` | ENTR-008 | Capture participant consent for recording. | `reservation_participants` |
+| GET | `/room/:id/status` | ENTR-002 | Fetch current/next meeting status. | `meetings` |
+| POST | `/room/:id/start` | ENTR-003/008 | Initialize meeting and recording handshake. | `meetings` |
+| POST | `/room/:id/consent` | ENTR-008 | Capture participant consent for recording. | `meeting_participants` |
 | POST | `/room/:id/stream` | ENTR-008 | Upload individual participant audio stream. | `meeting_recordings` |
 | GET | `/room/:id/live` | ENTR-009 | WebSocket/SSE for real-time transcript & sync. | `meeting_events` |
-| PATCH | `/room/:id/extend` | ENTR-009 | Quick-extend meeting duration by 15 mins. | `reservations` |
+| POST | `/room/:id/event` | ENTR-009 | Log reactions, comments, or markers during meeting. | `meeting_events` |
+| PATCH | `/room/:id/extend` | ENTR-009 | Quick-extend meeting duration by 15 mins. | `meetings` |
 
 ## 6. Global TNG Admin (`/tng`)
 Endpoints for platform owners to manage multi-tenancy.

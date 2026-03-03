@@ -5,19 +5,72 @@ This document outlines the database schema for the Office X system. The design p
 
 **Database Engine:** PostgreSQL (Recommended for structured data, JSONB support for flexibility, and vector extension support for future AI RAG).
 
-## 2. Entity-Relationship Diagram (ERD) Concepts
+## 2. Entity Relationship Diagram
 
-### Core Entities
-- **Company**: The tenant/organization using the system.
-- **User**: Employees, Admins, Receptionists belonging to a Company.
-- **MeetingRoom**: Physical resources managed by the Company.
-- **Reservation**: The core transaction linking Users, MeetingRooms, and Guests.
-- **Guest/Visitor**: External users interacting via Reception/QR.
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        ORGANIZATION & USERS                             │
+│                                                                         │
+│  companies ──┬── departments (tree: parent_id)                          │
+│              ├── company_master_data (vendors, floors, etc.)            │
+│              ├── company_media (logos, signage ads)                     │
+│              ├── users ──┬── verification_codes (OTP)                   │
+│              │           └── user_availability (personal schedule)      │
+│              └── subscription_plans (link to pricing)                   │
+└─────────────────────────────────────────────────────────────────────────┘
 
-### AI & Data Analysis Features
-- **MeetingTranscript**: Raw speech-to-text data.
-- **MeetingSummary**: AI-generated summaries.
-- **ActionItem**: Extracted tasks from meetings.
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        FACILITIES & DEVICES                             │
+│                                                                         │
+│  meeting_rooms ──┬── resource_availability (working hours)              │
+│                  └── reception_devices (reception/room tablets)         │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        MEETINGS & VISITS                                │
+│                                                                         │
+│  meetings (QR/PIN/Invite Token)                                         │
+│     ├── meeting_participants ──┬── users                                │
+│     │                          └── guests ── client_companies           │
+│     ├── visit_logs (check-in/out logs)                                  │
+│     ├── meeting_documents (files/Google Drive links)                    │
+│     └── meeting_permissions (sharing scope)                             │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        AI & INTELLIGENCE                                │
+│                                                                         │
+│  meetings                                                               │
+│     ├── meeting_recordings ── meeting_transcripts                       │
+│     │                           └── transcript_segments (time-synced)   │
+│     ├── meeting_events (reactions, pins)                                │
+│     ├── meeting_summaries (AI summary, decisions)                       │
+│     ├── action_items ── users (assignee)                                │
+│     └── meeting_ai_templates (prompts)                                  │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        BILLING & USAGE                                  │
+│                                                                         │
+│  subscriptions ──┬── subscription_plans                                 │
+│                  ├── promo_codes                                        │
+│                  └── subscription_requests (slot expansions)            │
+│  payment_methods ── invoices                                            │
+│  ai_credit_purchases (prepaid minutes)                                  │
+│  usage_quotas ── usage_logs (AI minutes, storage tracking)              │
+│  device_catalog (hardware rental/purchase pricing)                      │
+└─────────────────────────────────────────────────────────────────────────┘
+ 
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        SYSTEM MONITORING                                │
+│                                                                         │
+│  audit_logs (admin actions)                                             │
+│  access_logs (login history)                                            │
+│  csv_import_logs (CSV import history)                                   │
+│  monitoring_rules (security alerts)                                     │
+│  notification_integrations (Slack, Teams, etc.)                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -26,26 +79,30 @@ This document outlines the database schema for the Office X system. The design p
 ### 3.1. Organization & Users (Multi-tenant Foundation)
 
 #### `companies`
-Stores tenant information.
+Stores core identification, basic configurations, and quota policies for companies (Tenants) using the system.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
 | `name` | VARCHAR(255) | NOT NULL | Company name |
 | `code` | VARCHAR(50) | NOT NULL | Unique code for company identification/login |
 | `address` | TEXT | | |
+| `contact_person` | VARCHAR(255) | | |
+| `contact_phone` | VARCHAR(50) | | |
 | `contact_email` | VARCHAR(255) | | |
 | `billing_email` | VARCHAR(255) | | |
+| `expected_users` | INT | | Initially declared users |
 | `subscription_plan_id` | UUID | FK -> subscription_plans.id | Reference to the master plan |
 | `user_limit_override` | INT | | Individual cap for ADM-002 |
 | `ai_minutes_limit_override` | INT | | Individual cap for ADM-002 |
 | `ai_overage_unit_price_override`| DECIMAL(10, 2) | | For ADM-002 |
+| `ai_limit_policy` | VARCHAR(50) | DEFAULT 'auto_postpaid' | 'auto_postpaid', 'force_stop' (ADMX-027) |
 | `settings` | JSONB | | Company-specific settings (Theme, Logo URL, Rules) |
 | `created_at` | TIMESTAMP | | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `departments`
-Hierarchy within a company.
+Manages the organizational structure and departments within a company for permission control and personnel organization.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -56,8 +113,20 @@ Hierarchy within a company.
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
+#### `company_master_data`
+Stores custom data categories for companies such as Vendors, Visit Purposes, Floors, Equipment, etc. (Supports ADMX-010).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `company_id` | UUID | FK -> companies.id | |
+| `category` | VARCHAR(50) | NOT NULL | 'vendor', 'purpose', 'floor', 'equipment' |
+| `value` | VARCHAR(255) | NOT NULL | Display text |
+| `is_active` | BOOLEAN | DEFAULT TRUE | |
+| `display_order` | INT | DEFAULT 0 | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+
 #### `company_media`
-Assets for reception screens/tablets (Logos, Slides, Videos).
+Manages digital assets (Logos, Videos, Backgrounds) displayed on Reception Tablets or company standby screens.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -72,7 +141,7 @@ Assets for reception screens/tablets (Logos, Slides, Videos).
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
 #### `users`
-System users (Employees, Admins).
+Information about company user accounts (Employees, Admins), including permission data and Calendar/Drive integration links.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -86,14 +155,14 @@ System users (Employees, Admins).
 | `google_drive_token` | TEXT | | OAuth token for Google Drive integration |
 | `google_drive_refresh_token`| TEXT | | |
 | `avatar_url` | TEXT | | |
+| `signature_text` | TEXT | | |
 | `status` | VARCHAR(20) | | 'active', 'inactive', 'invited' |
 | `created_at` | TIMESTAMP | | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
-| `created_at` | TIMESTAMP | | |
 
 #### `verification_codes`
-Required for `REG-002` and `REG-004` (Email verification flow).
+Stores OTP verification codes sent via Email for new registration or password reset processes.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -107,6 +176,7 @@ Required for `REG-002` and `REG-004` (Email verification flow).
 ### 3.2. Facilities & Resources
 
 #### `meeting_rooms`
+List of physical meeting rooms with capacity configurations, equipment, and operating modes (Single/Multi-device).
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -123,11 +193,12 @@ Required for `REG-002` and `REG-004` (Email verification flow).
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `reception_devices`
-Tablets and screens managed by the company.
+Manages physical Tablet devices assigned for Reception or directly linked with meeting rooms (ENTR-001).
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
 | `company_id` | UUID | FK -> companies.id | |
+| `meeting_room_id` | UUID | FK -> meeting_rooms.id | Nullable, bound to room (ENTR-001) |
 | `device_identifier` | VARCHAR(255) | NOT NULL | Device ID for login |
 | `password` | VARCHAR(255) | NOT NULL | |
 | `name` | VARCHAR(255) | | Friendly name (e.g., "Lobby iPad 1") |
@@ -143,7 +214,7 @@ Tablets and screens managed by the company.
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `resource_availability`
-Detailed availability rules for rooms/resources.
+Detailed rules for available time slots, closing times, or periodic maintenance schedules for resources (Meeting Rooms).
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -157,32 +228,47 @@ Detailed availability rules for rooms/resources.
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
-### 3.3. Reservations & Reception
+#### `user_availability`
+Manages the availability schedule of individual users (Employees) for external or internal meeting bookings (OFX-020).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `user_id` | UUID | FK -> users.id | |
+| `day_of_week` | INT | NOT NULL | 0=Sunday, 1=Monday... |
+| `start_time` | TIME | NOT NULL | |
+| `end_time` | TIME | NOT NULL | |
+| `is_available` | BOOLEAN | DEFAULT TRUE | |
+| `reason` | VARCHAR(255) | | E.g., 'vacation', 'private' |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
-#### `reservations`
+### 3.3. Meetings & Reception
+
+#### `meetings`
+Detailed information for scheduled meetings, including time, location, status, and check-in identifiers (QR/PIN).
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
 | `company_id` | UUID | FK -> companies.id | |
 | `host_user_id` | UUID | FK -> users.id | The organizer |
 | `meeting_room_id` | UUID | FK -> meeting_rooms.id | Nullable (if external meeting) |
+| `invite_token` | VARCHAR(255) | UNIQUE | Random hash for guest information entry (Smart URL) |
 | `title` | VARCHAR(255) | NOT NULL | |
 | `description` | TEXT | | |
 | `start_time` | TIMESTAMP | NOT NULL | |
 | `end_time` | TIMESTAMP | NOT NULL | |
 | `status` | VARCHAR(50) | | 'scheduled', 'ongoing', 'completed', 'cancelled' |
 | `meeting_url` | TEXT | | Online meeting link |
-| `qr_code_hash` | VARCHAR(255) | | For reception check-in |
+| `qr_code_hash` | VARCHAR(255) | | For reception check-in (UKET-004) |
+| `booking_code` | VARCHAR(20) | | PIN Code for manual reception entry (UKET-005) |
 | `ai_template_id` | UUID | FK -> meeting_ai_templates.id | AI prompt/format preference |
 | `thank_you_email_sent_at`| TIMESTAMP | | Track for OFX-015 |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
-
-
 #### `guests`
-External visitors.
+Information about external visitors or partners participating in meetings or visiting the company.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -195,38 +281,70 @@ External visitors.
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
-#### `reservation_participants`
-Linking Users and Guests to Reservations.
+#### `meeting_participants`
+Linking table managing the list of participants (Users & Guests) for each meeting, including RSVP status and seat positions.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
-| `reservation_id` | UUID | FK -> reservations.id | |
+| `meeting_id` | UUID | FK -> meetings.id | |
 | `user_id` | UUID | FK -> users.id | Nullable (if external user) |
 | `guest_id` | UUID | FK -> guests.id | Nullable (if internal user) |
 | `role` | VARCHAR(20) | | 'organizer', 'attendee' |
 | `rsvp_status` | VARCHAR(20) | | 'accepted', 'declined', 'pending' |
+| `seat_position` | VARCHAR(50) | | Position or ID for Multi-device seat adjustment (ENTR-006) |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
-#### `check_in_logs`
-Logs of reception interactions.
+#### `visit_logs`
+Detailed logs of guest visits, including Check-in/Check-out times and authentication methods at Reception.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
-| `reservation_id` | UUID | FK -> reservations.id | |
+| `meeting_id` | UUID | FK -> meetings.id | |
 | `guest_id` | UUID | FK -> guests.id | |
 | `check_in_time` | TIMESTAMP | | |
+| `check_out_time` | TIMESTAMP | | Time the guest left or meeting ended |
 | `check_in_method` | VARCHAR(50) | | 'qr_code', 'manual_code', 'receptionist' |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
+
+#### `meeting_documents`
+Manages documents uploaded directly or linked from Google Drive to support meeting preparation and execution.
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `meeting_id` | UUID | FK -> meetings.id | |
+| `uploader_user_id` | UUID | FK -> users.id | Nullable |
+| `uploader_guest_id`| UUID | FK -> guests.id | Nullable |
+| `file_name` | VARCHAR(255) | NOT NULL | |
+| `source` | VARCHAR(50) | NOT NULL | 'local_upload', 'google_drive' |
+| `file_url` | TEXT | | S3/Storage URL or Google Drive WebContentLink |
+| `external_file_id` | VARCHAR(255) | | Google Drive File ID |
+| `file_type` | VARCHAR(100) | | MIME type (e.g., 'application/pdf', 'image/jpeg') |
+| `file_size_bytes` | BIGINT | | Helpful for quotas if local_upload |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
+
+#### `meeting_permissions`
+Handles granular sharing and permission control (View/Edit) for meetings based on users or departments (OFX-014).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `meeting_id` | UUID | FK -> meetings.id | |
+| `grantee_type` | VARCHAR(50) | NOT NULL | 'user', 'department', 'all_participants' |
+| `grantee_id` | UUID | | FK -> users.id or departments.id |
+| `permission_level` | VARCHAR(20) | NOT NULL | 'view', 'edit' |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
 ### 3.4. AI & Meeting Intelligence
 
 #### `meeting_recordings`
-Storage for raw video/audio files.
+Information for managing audio or video files (S3 paths, duration, processing status) for each meeting.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
-| `reservation_id` | UUID | FK -> reservations.id | |
+| `meeting_id` | UUID | FK -> meetings.id | |
 | `user_id` | UUID | FK -> users.id | individual stream owner (ENTR-008) |
 | `guest_id` | UUID | FK -> guests.id | individual stream owner (ENTR-008) |
 | `file_url` | TEXT | NOT NULL | S3/Storage URL |
@@ -239,51 +357,73 @@ Storage for raw video/audio files.
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `meeting_transcripts`
-Raw audio/text data from meetings.
+Raw text data describing the entire meeting content after processing through the Speech-to-Text (STT) system.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
-| `reservation_id` | UUID | FK -> reservations.id | |
+| `meeting_id` | UUID | FK -> meetings.id | |
 | `s3_audio_path` | TEXT | | Path to audio file |
-| `transcript_text` | TEXT | | Full extracted text |
+| `transcript_text` | TEXT | | Full extracted text (fallback) |
 | `processed_at` | TIMESTAMP | | |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
-#### `meeting_events`
-Granular events during a meeting (Reactions, Comments, Pins).
+#### `transcript_segments`
+Detailed dialogue segments mapped to timestamps, supporting synchronized audio playback and manual corrections.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
-| `reservation_id` | UUID | FK -> reservations.id | |
+| `transcript_id` | UUID | FK -> meeting_transcripts.id | |
+| `speaker_user_id`| UUID | FK -> users.id | Nullable |
+| `speaker_guest_id`| UUID | FK -> guests.id | Nullable |
+| `speaker_name` | VARCHAR(255) | | Fallback if ID is unknown |
+| `start_time_ms` | INT | NOT NULL | Milliseconds from recording start |
+| `end_time_ms` | INT | NOT NULL | |
+| `text_content` | TEXT | NOT NULL | |
+| `confidence_score`| FLOAT | | STT confidence |
+| `is_edited` | BOOLEAN | DEFAULT FALSE| Flag for manual edits |
+| `display_order` | INT | | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+
+#### `meeting_events`
+Stores real-time interaction events during the meeting such as Reactions, Comments, Pinned content, or Markers.
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `meeting_id` | UUID | FK -> meetings.id | |
 | `user_id` | UUID | FK -> users.id | Nullable (if guest) |
-| `event_type` | VARCHAR(50) | NOT NULL | 'reaction', 'comment', 'pin', 'section_marker' |
-| `content` | TEXT | | Comment text or reaction type |
+| `event_type` | VARCHAR(50) | NOT NULL | 'reaction', 'comment', 'pin', 'section_marker', 'memo' |
+| `content` | TEXT | | Comment text, reaction type, or memo content |
 | `timestamp_in_meeting` | INT | | Offset in seconds from start |
 | `created_at` | TIMESTAMP | | |
 
+
 #### `meeting_summaries`
-AI-generated insights.
+AI-generated analysis results including content summaries, internal notes, key decisions, and sharing permissions.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
-| `reservation_id` | UUID | FK -> reservations.id | |
+| `meeting_id` | UUID | FK -> meetings.id | |
 | `summary_text` | TEXT | | |
 | `internal_notes` | TEXT | | Private company notes (OFX-019) |
 | `is_shared_with_client` | BOOLEAN | DEFAULT FALSE | Visibility control (OFX-019) |
+| `shared_with_departments`| JSONB | | Array of department UUIDs allowed to view (OFX-014) |
+| `shared_with_users` | JSONB | | Array of user UUIDs allowed to view (OFX-014) |
 | `key_decisions` | JSONB | | List of decisions |
 | `sentiment_score` | FLOAT | | -1.0 to 1.0 (Future usage) |
+| `analysis_data` | JSONB | | AI Analysis data (OFX-011) |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `action_items`
-Tasks extracted from meetings.
+List of tasks or Todo items extracted from meetings and assigned to specific individuals.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
-| `reservation_id` | UUID | FK -> reservations.id | |
+| `meeting_id` | UUID | FK -> meetings.id | |
 | `assignee_id` | UUID | FK -> users.id | |
 | `content` | TEXT | NOT NULL | |
 | `due_date` | DATE | | |
@@ -294,7 +434,7 @@ Tasks extracted from meetings.
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `meeting_ai_templates`
-AI prompt/format definitions for summaries and emails (ADMX-030, 031).
+Manages AI Prompts and output format definitions for generating meeting minutes or automated emails.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -312,7 +452,7 @@ AI prompt/format definitions for summaries and emails (ADMX-030, 031).
 ### 3.5. System & Billing
 
 #### `subscriptions`
-Billing management.
+Manages service subscription status, current plan, and contract validity periods for a company.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -326,8 +466,21 @@ Billing management.
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
+#### `subscription_requests`
+Records requests for plan changes or user slot expansions awaiting processing or approval.
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `company_id` | UUID | FK -> companies.id | |
+| `request_type` | VARCHAR(50) | NOT NULL | 'add_user_slots', 'change_plan' |
+| `requested_quantity` | INT | | e.g. 5 extra users |
+| `prorated_amount` | DECIMAL(10, 2) | | Calculated amount for current month |
+| `status` | VARCHAR(20) | DEFAULT 'pending' | 'pending', 'approved', 'applied', 'rejected' |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+
 #### `subscription_plans`
-Master table for plan definitions (ADM-006).
+Master table defining the provided service plans (Standard, Pro, Enterprise) with default feature quotas.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -341,7 +494,7 @@ Master table for plan definitions (ADM-006).
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `promo_codes`
-Management of discount codes (ADM-008).
+Manages promotional codes and discounts applicable to companies during registration or plan upgrades.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -355,7 +508,7 @@ Management of discount codes (ADM-008).
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `payment_methods`
-stored payment information.
+Stored information for available payment methods (Cards, Transfers) helping facilitate automated transactions.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -370,7 +523,7 @@ stored payment information.
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `invoices`
-Billing history.
+Monthly billing history, amount details, and payment status for each company.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -388,7 +541,7 @@ Billing history.
 | `deleted_at` | TIMESTAMP | | Soft delete |
 
 #### `ai_credit_purchases`
-Tracking pre-paid AI minutes/units (ADMX-025, 026).
+Tracks prepaid AI minutes purchased by companies when they exceed default quotas.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -401,7 +554,7 @@ Tracking pre-paid AI minutes/units (ADMX-025, 026).
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 
 #### `device_catalog`
-Master list of hardware provided by TNG (ADM-009).
+Master list of hardware devices (Tablets, Mics...) provided by TNG with rental/purchase unit prices.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -415,7 +568,7 @@ Master list of hardware provided by TNG (ADM-009).
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
 #### `audit_logs`
-Security and activity tracking.
+Records history of important Admin actions (C/U/D) on system data for control and auditing.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -426,7 +579,7 @@ Security and activity tracking.
 | `timestamp` | TIMESTAMP | DEFAULT NOW()| |
 
 #### `access_logs`
-Login and access history.
+Stores login/logout logs and visitor device information for security monitoring.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -437,10 +590,28 @@ Login and access history.
 | `status` | VARCHAR(20) | | 'success', 'failure' |
 | `timestamp` | TIMESTAMP | DEFAULT NOW()| |
 
+#### `csv_import_logs`
+Tracks history of bulk CSV imports for users or other master data (ADMX-003).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `company_id` | UUID | FK -> companies.id | |
+| `admin_user_id` | UUID | FK -> users.id | Who performed the import |
+| `import_type` | VARCHAR(50) | NOT NULL | 'user_import', 'master_data_import' |
+| `file_name` | VARCHAR(255) | | |
+| `file_url` | TEXT | | S3 path to the original file |
+| `total_rows` | INT | | |
+| `success_count` | INT | | |
+| `failure_count` | INT | | |
+| `error_details` | JSONB | | Array of row-level errors |
+| `status` | VARCHAR(20) | | 'processing', 'completed', 'failed' |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+
+
 ### 3.6. Client Management (CRM)
 
 #### `client_companies`
-External organizations visiting the office.
+List of external client companies or partners frequently interacting with the Tenant.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -461,7 +632,7 @@ External organizations visiting the office.
 ### 3.7. Usage & Quotas
 
 #### `usage_quotas`
-Limits for the company's subscription plan.
+Manages resource usage limits (AI, Storage, User seats) allocated according to the company's subscription plan.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -474,7 +645,7 @@ Limits for the company's subscription plan.
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
 #### `usage_logs`
-Tracking actual consumption.
+Tracks actual resource consumption per user session for billing and quota statistics.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -486,7 +657,7 @@ Tracking actual consumption.
 | `timestamp` | TIMESTAMP | DEFAULT NOW()| |
 
 #### `monitoring_rules`
-Rules for system alerts (e.g., suspicious activity).
+Defines automated monitoring rules and triggers Alerts when abnormal behavior or limit thresholds are detected.
 | Column | Type | Constraints | Description |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | |
@@ -502,6 +673,23 @@ Rules for system alerts (e.g., suspicious activity).
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
+### 3.8. Notifications & Integrations
+
+#### `notification_integrations`
+Manages external communication channels (Slack, Microsoft Teams, Email) for delivering system notifications and alerts to users or companies.
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `user_id` | UUID | FK -> users.id | Nullable (for personal notifications) |
+| `company_id` | UUID | FK -> companies.id | |
+| `device_id` | UUID | FK -> reception_devices.id| Nullable (if bound to a specific device) |
+| `integration_type` | VARCHAR(50) | NOT NULL | 'slack', 'teams', 'email' |
+| `webhook_url` | TEXT | | For webhook-based integrations |
+| `api_key` | TEXT | | For API-based authentication |
+| `is_active` | BOOLEAN | DEFAULT TRUE | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+
 ## 4. Scalability & extensibility
 - **Partial Unique Indexes**: For tables using Soft Delete, uniqueness on critical fields (e.g., `users.email`) MUST be enforced via partial indexes: `CREATE UNIQUE INDEX idx_user_email_active ON users(email) WHERE deleted_at IS NULL`.
 - **JSONB Columns**: Used in `users.settings`, `companies.settings`, `meeting_summaries.key_decisions` to allow adding new fields without schema migration.
@@ -511,3 +699,5 @@ Rules for system alerts (e.g., suspicious activity).
   - `reservations(start_time, end_time)`: Efficient conflict checking.
   - `reservations(qr_code_hash)`: Fast reception scan lookups.
   - `companies(code)`: Fast tenant resolution.
+  - `notification_integrations(company_id, is_active)`: Fast lookup for active integrations.
+

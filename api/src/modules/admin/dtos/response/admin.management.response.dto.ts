@@ -44,3 +44,30 @@ export class AdminRoomResponseDto {
   @Expose()
   qrCodeUrl?: string;
 }
+
+export class AdminImportLogResponseDto {
+  @ApiProperty()
+  @Expose()
+  id: number;
+
+  @ApiProperty()
+  @Expose()
+  fileName: string;
+
+  @ApiProperty()
+  @Expose()
+  status: string;
+
+  @ApiProperty()
+  @Expose()
+  processedCount: number;
+
+  @ApiProperty()
+  @Expose()
+  errorCount: number;
+
+  @ApiProperty()
+  @Expose()
+  createdAt: Date;
+}
+

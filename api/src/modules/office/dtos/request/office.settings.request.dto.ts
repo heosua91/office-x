@@ -10,7 +10,7 @@ export class OfficeUpdatePrivacyRequestDto {
   internalOnly: boolean;
 }
 
-export class OfficeWebhookResponseDto {
+export class OfficeIntegrationResponseDto {
   @ApiProperty()
   id: number;
 
@@ -24,7 +24,7 @@ export class OfficeWebhookResponseDto {
   isEnabled: boolean;
 }
 
-export class OfficeUpdateWebhookRequestDto {
+export class OfficeUpdateIntegrationRequestDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -41,24 +41,29 @@ export class OfficeUpdateWebhookRequestDto {
   isEnabled?: boolean;
 }
 
-export class OfficePresenceResponseDto {
+export class OfficeAvailabilityResponseDto {
   @ApiProperty()
   id: number;
 
+  @ApiProperty({
+    description: 'Availability schedule by day of week (0-6)',
+    example: [{ dayOfWeek: 1, startTime: '09:00', endTime: '18:00' }],
+  })
+  schedule: any[];
+
   @ApiProperty({ type: [String] })
   blackoutDates: string[];
-
-  @ApiProperty()
-  isAutoAcceptEnabled: boolean;
 }
 
-export class OfficeUpdatePresenceRequestDto {
+export class OfficeUpdateAvailabilityRequestDto {
+  @ApiProperty({
+    description: 'Availability schedule by day of week (0-6)',
+  })
+  @IsOptional()
+  schedule?: any[];
+
   @ApiProperty({ type: [String] })
   @IsOptional()
   blackoutDates?: string[];
-
-  @ApiProperty()
-  @IsBoolean()
-  @IsOptional()
-  isAutoAcceptEnabled?: boolean;
 }
+

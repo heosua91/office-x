@@ -18,6 +18,7 @@ import {
 } from '../dtos/response/admin.billing.response.dto';
 import { AdminDashboardResponseDto } from '../dtos/response/admin.dashboard.response.dto';
 import {
+  AdminImportLogResponseDto,
   AdminRoomResponseDto,
   AdminUserResponseDto,
 } from '../dtos/response/admin.management.response.dto';
@@ -41,8 +42,9 @@ export class AdminPublicController {
         totalUsers: 50,
         totalRooms: 10,
         aiUsageThisMonth: 450,
-        activeReservations: 5,
+        activeMeetings: 5,
       },
+
       AdminDashboardResponseDto
     );
   }
@@ -71,6 +73,36 @@ export class AdminPublicController {
     @Body() _body: AdminCreateUserRequestDto
   ): Promise<AppResponseSuccess<AdminSuccessResponseDto>> {
     return this.responseService.success({ success: true }, AdminSuccessResponseDto);
+  }
+
+  @Post('/users/import')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Bulk import users via CSV' })
+  @ApiSuccessResponse(AdminSuccessResponseDto)
+  @ApiErrorResponse()
+  async importUsers(): Promise<AppResponseSuccess<AdminSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, AdminSuccessResponseDto);
+  }
+
+  @Get('/users/import/history')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'List CSV import history' })
+  @ApiSuccessResponse(AdminImportLogResponseDto, true)
+  @ApiErrorResponse()
+  async getImportHistory(): Promise<AppResponseSuccess<AdminImportLogResponseDto[]>> {
+    return this.responseService.success(
+      [
+        {
+          id: 1,
+          fileName: 'users.csv',
+          status: 'COMPLETED',
+          processedCount: 100,
+          errorCount: 0,
+          createdAt: new Date(),
+        },
+      ],
+      AdminImportLogResponseDto
+    );
   }
 
   @Get('/rooms')
