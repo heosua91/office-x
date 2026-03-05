@@ -6,6 +6,8 @@ import {
 } from 'src/common/response/decorators/response.decorator';
 import type { AppResponseSuccess } from 'src/common/response/dtos/response.dto';
 import { ResponseService } from 'src/common/response/services/response.service';
+import { AdminPaymentMethodRequestDto, AdminPurchaseUserSlotsRequestDto, AdminUpdateBillingLimitRequestDto } from '../dtos/request/admin.billing.request.dto';
+import { AdminCreateMonitoringRuleRequestDto } from '../dtos/request/admin.monitoring.request.dto';
 import {
   AdminBuyAiCreditsRequestDto,
   AdminCreateRoomRequestDto,
@@ -17,12 +19,9 @@ import {
   AdminInvoiceResponseDto,
 } from '../dtos/response/admin.billing.response.dto';
 import { AdminDashboardResponseDto } from '../dtos/response/admin.dashboard.response.dto';
-import {
-  AdminImportLogResponseDto,
-  AdminRoomResponseDto,
-  AdminUserResponseDto,
-} from '../dtos/response/admin.management.response.dto';
+import { AdminImportLogResponseDto, AdminRoomResponseDto, AdminUserResponseDto } from '../dtos/response/admin.management.response.dto';
 import { AdminSuccessResponseDto } from '../dtos/response/admin.success.response.dto';
+import { AdminVisitLogResponseDto } from '../dtos/response/admin.visit-logs.response.dto';
 
 @ApiTags('[Public] Admin')
 @Controller({
@@ -186,6 +185,71 @@ export class AdminPublicController {
   @ApiErrorResponse()
   async buyAiCredits(
     @Body() _body: AdminBuyAiCreditsRequestDto
+  ): Promise<AppResponseSuccess<AdminSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, AdminSuccessResponseDto);
+  }
+
+  @Patch('/billing/status')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update AI usage limits and alert thresholds' })
+  @ApiSuccessResponse(AdminSuccessResponseDto)
+  @ApiErrorResponse()
+  async updateBillingStatus(
+    @Body() _body: AdminUpdateBillingLimitRequestDto
+  ): Promise<AppResponseSuccess<AdminSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, AdminSuccessResponseDto);
+  }
+
+  @Post('/billing/user-slots')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Purchase additional user slots (pro-rated)' })
+  @ApiSuccessResponse(AdminSuccessResponseDto)
+  @ApiErrorResponse()
+  async buyUserSlots(
+    @Body() _body: AdminPurchaseUserSlotsRequestDto
+  ): Promise<AppResponseSuccess<AdminSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, AdminSuccessResponseDto);
+  }
+
+  @Get('/settings/payment-methods')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'List company payment methods' })
+  @ApiSuccessResponse(AdminSuccessResponseDto, true)
+  @ApiErrorResponse()
+  async getPaymentMethods(): Promise<AppResponseSuccess<AdminSuccessResponseDto[]>> {
+    return this.responseService.success([{ id: 1, type: 'Credit Card', lastFour: '4242' }], AdminSuccessResponseDto);
+  }
+
+  @Post('/settings/payment-methods')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Add new company payment method' })
+  @ApiSuccessResponse(AdminSuccessResponseDto)
+  @ApiErrorResponse()
+  async addPaymentMethod(
+    @Body() _body: AdminPaymentMethodRequestDto
+  ): Promise<AppResponseSuccess<AdminSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, AdminSuccessResponseDto);
+  }
+
+  @Get('/visit-logs')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Search and export historical visitor logs' })
+  @ApiSuccessResponse(AdminVisitLogResponseDto, true)
+  @ApiErrorResponse()
+  async getVisitLogs(): Promise<AppResponseSuccess<AdminVisitLogResponseDto[]>> {
+    return this.responseService.success(
+      [{ id: 1, visitorName: 'John Doe', purpose: 'Meeting', checkInTime: new Date(), roomName: 'Room A' }],
+      AdminVisitLogResponseDto
+    );
+  }
+
+  @Post('/monitoring/rules')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Create automated monitoring/alert rules' })
+  @ApiSuccessResponse(AdminSuccessResponseDto)
+  @ApiErrorResponse()
+  async createMonitoringRule(
+    @Body() _body: AdminCreateMonitoringRuleRequestDto
   ): Promise<AppResponseSuccess<AdminSuccessResponseDto>> {
     return this.responseService.success({ success: true }, AdminSuccessResponseDto);
   }

@@ -15,19 +15,18 @@ import {
 } from 'src/common/response/decorators/response.decorator';
 import type { AppResponseSuccess } from 'src/common/response/dtos/response.dto';
 import { ResponseService } from 'src/common/response/services/response.service';
-import type { OfficeGenerateEmailRequestDto } from '../dtos/request/office.generate-email.request.dto';
-import type {
+import { OfficeGenerateEmailRequestDto } from '../dtos/request/office.generate-email.request.dto';
+import {
+  OfficeAvailabilityResponseDto,
+  OfficeIntegrationResponseDto,
   OfficeUpdateAvailabilityRequestDto,
   OfficeUpdateIntegrationRequestDto,
   OfficeUpdatePrivacyRequestDto,
 } from '../dtos/request/office.settings.request.dto';
-import {
-  OfficeAvailabilityResponseDto,
-  OfficeIntegrationResponseDto,
-} from '../dtos/request/office.settings.request.dto';
-import type { OfficeSmartUrlRequestDto } from '../dtos/request/office.smart-url.request.dto';
-import type { OfficeUpdateMeetingRequestDto } from '../dtos/request/office.update-meeting.request.dto';
-import type { OfficeUpdateSummaryRequestDto } from '../dtos/request/office.update-summary.request.dto';
+import { OfficeSmartUrlRequestDto } from '../dtos/request/office.smart-url.request.dto';
+import { OfficeUpdateCustomerRequestDto } from '../dtos/request/office.update-customer.request.dto';
+import { OfficeUpdateMeetingRequestDto } from '../dtos/request/office.update-meeting.request.dto';
+import { OfficeUpdateSummaryRequestDto } from '../dtos/request/office.update-summary.request.dto';
 import { OfficeCustomerResponseDto } from '../dtos/response/office.customer.response.dto';
 import { OfficeDashboardResponseDto } from '../dtos/response/office.dashboard.response.dto';
 import { OfficeMeetingResponseDto } from '../dtos/response/office.meeting.response.dto';
@@ -185,6 +184,18 @@ export class OfficePublicController {
       },
       OfficeCustomerResponseDto
     );
+  }
+
+  @Patch('/customers/:id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update client company profile details' })
+  @ApiSuccessResponse(OfficeSuccessResponseDto)
+  @ApiErrorResponse()
+  async updateCustomer(
+    @Param('id') _id: string,
+    @Body() _body: OfficeUpdateCustomerRequestDto
+  ): Promise<AppResponseSuccess<OfficeSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, OfficeSuccessResponseDto);
   }
 
   @Get('/meetings/:id/ai')

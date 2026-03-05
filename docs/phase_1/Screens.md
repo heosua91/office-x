@@ -32,8 +32,8 @@
 | :--- | :--- | :--- | :--- | :--- |
 | Dashboard | OFX-001 | Dashboard cá nhân | User | Lịch trình trong ngày<br>Tình trạng sử dụng phòng họp<br>Thời gian tóm tắt AI đã sử dụng (cá nhân) |
 | Quản lý Meeting khách hàng | OFX-002 | Danh sách URL điều chỉnh lịch đã đăng ký | User | Hiển thị danh sách các URL điều chỉnh lịch trình đã đăng ký trước đó 【Tên】【Tên User đăng ký】 |
-| Quản lý Meeting khách hàng | OFX-003 | Đăng ký điều chỉnh lịch trình Meeting | User | Thiết lập liên kết tài nguyên (Resource), chọn thành viên tham gia, tự động hóa đảm bảo phòng họp.<br>Chọn AI Template Biên bản (Meeting Minutes).<br>Đối với phòng họp Multi-device mode, tự động phân bổ chỗ ngồi trước.<br>Upload tài liệu (PDF/Image) chia sẻ trong meeting, hoặc chọn từ Google Drive cá nhân. |
-| Quản lý Meeting khách hàng | OFX-004 | Chi tiết/Chỉnh sửa điều chỉnh lịch trình Meeting, Hiển thị URL | User | Hiển thị status (trạng thái điều chỉnh lịch trình khách hàng), thông tin chi tiết, URL đã tạo.<br>Trong màn hình có thể thay đổi các thông tin: Thiết lập liên kết tài nguyên, chọn thành viên tham gia, thiết lập tự động đảm bảo phòng họp, AI Template định dạng Biên bản. Đối với Multi-device mode có thể điều chỉnh chỗ ngồi.<br>Xóa, upload thêm tài liệu (PDF/Image) chia sẻ trong meeting, hoặc chọn từ Google Drive cá nhân. |
+| Quản lý Meeting khách hàng | OFX-003 | Đăng ký điều chỉnh lịch trình Meeting | User | Thiết lập liên kết tài nguyên (Resource), chọn thành viên tham gia, tự động hóa đảm bảo phòng họp.<br>Nếu hình thức Online: Bật/tắt tự động tạo URL meeting (chỉ bật được khi đã liên kết Calendar (OFX-018), nếu chưa liên kết thì mặc định OFF và không thể bật). Nếu tắt, thiết lập tin nhắn hướng dẫn (có thể chỉnh sửa nội dung).<br>Chọn AI Template Biên bản (Meeting Minutes).<br>Đối với phòng họp Multi-device mode, tự động phân bổ chỗ ngồi trước.<br>Upload tài liệu (PDF/Image) chia sẻ trong meeting, hoặc chọn từ Google Drive cá nhân. |
+| Quản lý Meeting khách hàng | OFX-004 | Chi tiết/Chỉnh sửa điều chỉnh lịch trình Meeting, Hiển thị URL | User | Hiển thị status (trạng thái điều chỉnh lịch trình khách hàng), thông tin chi tiết, URL đã tạo.<br>Trong màn hình có thể thay đổi các thông tin: Thiết lập liên kết tài nguyên, chọn thành viên tham gia, thiết lập tự động đảm bảo phòng họp, AI Template định dạng Biên bản, Bật/tắt tự động tạo URL meeting online và tin nhắn hướng dẫn. Đối với Multi-device mode có thể điều chỉnh chỗ ngồi.<br>Xóa, upload thêm tài liệu (PDF/Image) chia sẻ trong meeting, hoặc chọn từ Google Drive cá nhân. |
 | Quản lý Meeting khách hàng | OFX-005 | Danh sách tình trạng sử dụng phòng họp | User | Hiển thị danh sách tình trạng sử dụng các phòng họp. |
 | Quản lý Meeting khách hàng | OFX-006 | Danh sách lịch Meeting dự kiến | User | Hiển thị danh sách lịch meeting đã được đặt trước. (Bao gồm cả meeting được chia sẻ) |
 | Quản lý Meeting nội bộ | OFX-007 | Danh sách lịch Meeting nội bộ dự kiến | User | Hiển thị danh sách các meeting nội bộ đã đặt trước hoặc được chia sẻ |
@@ -68,7 +68,7 @@
 | Thiết lập phòng họp | ADMX-007 | Danh sách phòng họp | Admin | Nhấn các nút như: Thiết lập doanh nghiệp, Đăng ký phòng họp mới, Chi tiết phòng họp, Cài đặt Tablet Lễ tân (Reception Tablet)<br>Hiển thị các Tên phòng họp, Tầng, Thiết bị trong phòng họp... |
 | Thiết lập phòng họp | ADMX-008 | Đăng ký phòng họp mới | Admin | ・Chọn Dropdown 【Tầng】 từ ADMX-010, Chọn nhiều Dropdown cho 【Thiết bị】, nhập Tên phòng, Số lượng người tối đa, Upload hình ảnh bản đồ chỉ dẫn.<br>・Chọn Single-mode hoặc Multi-device mode.<br>・Hệ thống sẽ Auto-generate ra "QR code thiết bị dành riêng cho phòng" để Bind (liên kết) tablet với phòng học.<br>・Sau khi Submit đăng ký hoàn tất, sẽ xuất QR Code (có nút download). |
 | Thiết lập phòng họp | ADMX-009 | Chi tiết phòng họp (Edit, Xóa) | Admin | ・Màn hình cho phép đổi Dropdown【Tầng】, thay đổi/xóa 【Thiết bị】, Tên phòng, Số người tối đâ, hình ảnh hướng dẫn.<br>・Có thể thay đổi Single-mode / Multi-device mode.<br>・URL Map hướng dẫn đến Meeting Room được show dưới dạng QR Code (Có thể download).<br>・Hiển thị "QR Code liên kết thiết bị với meeting room" (Có thể download). |
-| Cài đặt Master | ADMX-010 | Danh sách Master Data: Tên đối tác (Vendor), Tên Phòng Ban (Department), Mục đích, Tầng, Thiết bị phòng họp | Admin | Màn hình Master Data. List các danh sách Vendor, Department, Mục đích, Tầng, Thiết bị để cài đặt vào Tablet Lễ tân.<br>Có thể thêm, sửa, xóa trực tiếp trên data grid (dạng Table). |
+| Cài đặt Master | ADMX-010 | Danh sách Master Data: Tên đối tác (Vendor), Tên Phòng Ban (Department), Mục đích, Tầng, Thiết bị phòng họp | Admin | Màn hình Master Data. List các danh sách Vendor, Department, Mục đích, Tầng, Thiết bị để cài đặt vào Tablet Lễ tân.<br>Có thể thêm, sửa, xóa trực tiếp trên data grid (dạng Table).<br>Đối với Vendor và Mục đích, có thể cài đặt cờ từ chối tiếp nhận và thông báo từ chối. |
 | Cài đặt Reception Màn Hình chờ | ADMX-011 | Logo Corporate & Hình Background | Admin | Upload/Sửa Logo và Ảnh Background màn hình chờ |
 | Cài đặt Reception Màn Hình chờ | ADMX-012 | Cài đặt Screensaver | Admin | Upload Image Slide/ Video file và cài đặt timer lặp. |
 | Setup Tablet Lễ Tân | ADMX-013 | Danh sách Tablet Lễ Tân (Reception Tablet) | Admin | Hiển thị list Reception Tablet đã đăng ký |
@@ -95,10 +95,10 @@
 
 | Phân loại | Screen ID | Tên màn hình | Role thao tác | Tổng quan màn hình |
 | :--- | :--- | :--- | :--- | :--- |
-| Booking Regis | GRES-001 | Màn hình Select Date/Time | Visitor | Logo Corporate, Select Component Calendar (Auto AND logic tình trạng phòng và Tình trạng schedule user), Setup Timezone. |
-| Booking Regis | GRES-002 | Nhập thông tin Guest | Visitor | Nhập Tên doanh nghiệp, Tên, email, mobile, format Offline/Online, số lượng người tham gia |
+| Booking Regis | GRES-001 | Màn hình Select Date/Time | Visitor | Logo Corporate, hiển thị hình thức (Offline/Online - đã cố định từ OFX-003), nhập số lượng người tham gia (nếu Offline), Select Component Calendar (Auto AND logic tình trạng phòng và Tình trạng schedule user), Setup Timezone. |
+| Booking Regis | GRES-002 | Nhập thông tin Guest | Visitor | Nhập Tên doanh nghiệp, Tên, Email, Mobile.<br>Nếu có đồng hành (số lượng người ≥ 2), nhập thêm Tên, Email, Mobile của từng người đồng hành. |
 | Booking Regis | GRES-003 | Confirm Registration | Visitor | Confirm lại thông tin đã nhập có lỗi không |
-| Booking Regis | GRES-004 | Hoàn tất Regis | Visitor | Tự ghi vào lịch bên User Calendar. Nếu là offline, sẽ chọn phòng cho khớp, build ra QR Code tự động/Booking Code tự động và Auto mail. |
+| Booking Regis | GRES-004 | Hoàn tất Regis | Visitor | Tự ghi vào lịch bên User Calendar. Nếu là offline: chọn phòng cho khớp, build QR Code/Booking Code tự động. Nếu là online: Auto-generate URL ON → hiển thị link Meet/Teams từ Calendar API; OFF → hiển thị tin nhắn hướng dẫn do Host thiết lập. Gửi Auto mail. |
 
 ### 📂 Tablet Lễ Tân (Reception)
 
@@ -109,8 +109,8 @@
 | TOP Screen | UKET-003 | Lựa chọn Lễ Tân | Visitor | Các nút: "Đã có QR Code Booking" / "Chưa Appointment" / "Logistics Vendor" |
 | Quét QR Code | UKET-004 | Quét Booking QR Code | Visitor | Bật camera quyét QR Code (Sinh ra ở GRES-004) |
 | Nhập Booking code | UKET-005 | Input Booking Code | Visitor | Nhập PinCode sinh ra ở GRES-004 |
-| No-Appointment | UKET-006 | Visitor Info Input | Visitor | Khách nhập tay list field sau:<br>Company name<br>Tên<br>Department muốn gặp<br>Mục đích<br>Khác |
-| Vendor Input | UKET-007 | Lựa chọn Vendor (Đơn vị Giao Vận) | Visitor | Lựa danh sách pre-configured (Yamato, Sagawa...) |
+| No-Appointment | UKET-006 | Visitor Info Input | Visitor | Khách nhập tay list field sau:<br>Company name<br>Tên<br>Department muốn gặp<br>Mục đích<br>Khác<br>Nếu mục đích bị từ chối được chọn, không gửi thông báo mà hiển thị màn hình từ chối kèm lời nhắn. |
+| Vendor Input | UKET-007 | Lựa chọn Vendor (Đơn vị Giao Vận) | Visitor | Lựa danh sách pre-configured (Yamato, Sagawa...)<br>Nếu Vendor bị từ chối được chọn, không gửi thông báo mà hiển thị màn hình từ chối kèm lời nhắn. |
 | Notification | UKET-008 | Standby màn hình (TH không có booking trước) | Visitor | Hệ thống trigger gọi sang thiết bị PIC (Slack/Team Webhook). Tablet hiện "Vui Lòng chờ Contact". |
 | Notification | UKET-009 | Màn hình WebRTC Gọi Điện (Voice Call) | Visitor | Nếu PIC muốn nói chuyện, Audio của Guest được truyền còn màn hình hiển thị live video của PIC. |
 | Notification | UKET-010 | Chỉ đường Map & QR Code | Visitor | Giao diện hiện Bản Đồ (Map) đường đi đến Meeting room + Render cái Image ra QR code cho guest sài quét qua đt đi tìm phòng riêng. |

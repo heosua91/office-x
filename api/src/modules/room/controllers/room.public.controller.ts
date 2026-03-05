@@ -11,6 +11,8 @@ import {
   RoomEventRequestDto,
   RoomLinkRequestDto,
 } from '../dtos/request/room.request.dto';
+import { RoomSeatsRequestDto } from '../dtos/request/room.seats.request.dto';
+import { RoomParticipantResponseDto } from '../dtos/response/room.participant.response.dto';
 import { RoomStatusResponseDto } from '../dtos/response/room.status.response.dto';
 import { RoomSuccessResponseDto } from '../dtos/response/room.success.response.dto';
 
@@ -112,6 +114,35 @@ export class RoomPublicController {
   async logEvent(
     @Param('id') _id: string,
     @Body() _body: RoomEventRequestDto
+  ): Promise<AppResponseSuccess<RoomSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, RoomSuccessResponseDto);
+  }
+
+  @Get('/:id/participants')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'List all participants in the room for manual assignment' })
+  @ApiSuccessResponse(RoomParticipantResponseDto, true)
+  @ApiErrorResponse()
+  async getParticipants(
+    @Param('id') _id: string
+  ): Promise<AppResponseSuccess<RoomParticipantResponseDto[]>> {
+    return this.responseService.success(
+      [
+        { id: 1, name: 'John Doe', avatarUrl: 'https://avatar.com/1', seatName: 'A1' },
+        { id: 2, name: 'Alice Smith', avatarUrl: 'https://avatar.com/2', seatName: 'A2' },
+      ],
+      RoomParticipantResponseDto
+    );
+  }
+
+  @Post('/:id/seats')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update/Save participant seat arrangements' })
+  @ApiSuccessResponse(RoomSuccessResponseDto)
+  @ApiErrorResponse()
+  async updateSeats(
+    @Param('id') _id: string,
+    @Body() _body: RoomSeatsRequestDto
   ): Promise<AppResponseSuccess<RoomSuccessResponseDto>> {
     return this.responseService.success({ success: true }, RoomSuccessResponseDto);
   }

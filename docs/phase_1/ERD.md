@@ -21,9 +21,13 @@ erDiagram
     companies ||--o{ verification_codes : "verifies emails"
     companies ||--o{ notification_integrations : "configures"
     companies ||--o{ csv_import_logs : "tracks data imports"
+    companies ||--o{ subscription_requests : "requests upgrades"
+    companies ||--o{ company_master_data : "defines"
     users ||--o{ csv_import_logs : "performs imports"
-
-
+    
+    meetings ||--o{ visit_logs : "associated with"
+    guests ||--o{ visit_logs : "checks in"
+    meetings ||--o{ meeting_documents : "contains"
 
     users ||--o{ notification_integrations : "owns personal"
     reception_devices ||--o{ notification_integrations : "triggers"
@@ -31,18 +35,16 @@ erDiagram
     subscription_plans ||--o{ companies : "assigned to"
 
     promo_codes ||--o{ subscriptions : "applied to"
-    meeting_ai_templates ||--o{ reservations : "used by"
+    meetings ||--o{ meeting_ai_templates : "used by"
 
     departments ||--o{ departments : "parent of"
     departments ||--o{ users : "contains"
     
     users ||--o{ user_availability : "defines schedule"
-    reservations ||--o{ meeting_permissions : "has granular permissions"
+    meetings ||--o{ meeting_permissions : "has granular permissions"
     departments ||--o{ meeting_permissions : "grants access to"
     users ||--o{ meeting_permissions : "grants access to"
 
-
-    
     companies {
         UUID id PK
         VARCHAR name
@@ -106,6 +108,18 @@ erDiagram
         TIMESTAMP created_at
         TIMESTAMP updated_at
         TIMESTAMP deleted_at
+    }
+
+    company_master_data {
+        UUID id PK
+        UUID company_id FK
+        VARCHAR category
+        VARCHAR value
+        BOOLEAN is_active
+        BOOLEAN is_reject
+        TEXT reject_message
+        INT display_order
+        TIMESTAMP created_at
     }
 
     company_media {
@@ -215,20 +229,24 @@ erDiagram
     }
 
     %% Reservations & Reception
-    users ||--o{ reservations : "hosts"
-    meeting_rooms ||--o{ reservations : "located in"
+    users ||--o{ meetings : "hosts"
+    meeting_rooms ||--o{ meetings : "located in"
+
     
-    reservations ||--o{ guests : "invites"
-    reservations ||--o{ reservation_participants : "includes"
-    users ||--o{ reservation_participants : "attends"
-    guests ||--o{ reservation_participants : "attends"
+    meetings ||--o{ guests : "invites"
+    meetings ||--o{ meeting_participants : "includes"
+    users ||--o{ meeting_participants : "attends"
+    guests ||--o{ meeting_participants : "attends"
     
-    reservations ||--o{ check_in_logs : "associated with"
-    guests ||--o{ check_in_logs : "checks in"
+    meetings ||--o{ visit_logs : "associated with"
+    guests ||--o{ visit_logs : "checks in"
+    meetings ||--o{ meeting_documents : "contains"
+
+
     
     client_companies ||--o{ guests : "employs"
 
-    reservations {
+    meetings {
         UUID id PK
         UUID company_id FK
         UUID host_user_id FK
@@ -240,12 +258,15 @@ erDiagram
         VARCHAR status
         TEXT meeting_url
         VARCHAR qr_code_hash
+        VARCHAR booking_code
+        VARCHAR booking_timezone
         UUID ai_template_id FK
         TIMESTAMP thank_you_email_sent_at
         TIMESTAMP created_at
         TIMESTAMP updated_at
         TIMESTAMP deleted_at
     }
+
 
     guests {
         UUID id PK
@@ -259,25 +280,51 @@ erDiagram
         TIMESTAMP deleted_at
     }
 
-    reservation_participants {
+    meeting_participants {
         UUID id PK
-        UUID reservation_id FK
+        UUID meeting_id FK
         UUID user_id FK
         UUID guest_id FK
         VARCHAR role
         VARCHAR rsvp_status
+        VARCHAR seat_position
         TIMESTAMP created_at
         TIMESTAMP updated_at
     }
 
-    check_in_logs {
+
+    visit_logs {
         UUID id PK
-        UUID reservation_id FK
+        UUID meeting_id FK
         UUID guest_id FK
         TIMESTAMP check_in_time
+        TIMESTAMP check_out_time
         VARCHAR check_in_method
+        UUID purpose_id FK
+        UUID department_id FK
+        UUID vendor_id FK
+        UUID host_user_id FK
         TIMESTAMP created_at
     }
+
+
+    meeting_documents {
+        UUID id PK
+        UUID meeting_id FK
+        UUID uploader_user_id FK
+        UUID uploader_guest_id FK
+        VARCHAR file_name
+        VARCHAR source
+        TEXT file_url
+        VARCHAR external_file_id
+        VARCHAR file_type
+        BIGINT file_size_bytes
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        TIMESTAMP deleted_at
+    }
+
+
 
     client_companies {
         UUID id PK
@@ -296,12 +343,18 @@ erDiagram
         TIMESTAMP deleted_at
     }
 
+    meetings ||--o{ meeting_documents : "contains"
+    users ||--o{ meeting_documents : "uploads"
+    guests ||--o{ meeting_documents : "uploads"
+    
     %% AI & Meeting Intelligence
-    reservations ||--o{ meeting_recordings : "recorded in"
-    reservations ||--o{ meeting_transcripts : "has"
-    reservations ||--o{ meeting_summaries : "has"
-    reservations ||--o{ meeting_events : "has"
-    reservations ||--o{ action_items : "generates"
+    meetings ||--o{ meeting_recordings : "recorded in"
+    meetings ||--o{ meeting_transcripts : "has"
+    meetings ||--o{ meeting_summaries : "has"
+    meeting_transcripts ||--o{ transcript_segments : "has"
+    meetings ||--o{ meeting_events : "has"
+    meetings ||--o{ action_items : "generates"
+
     users ||--o{ meeting_events : "triggers"
     users ||--o{ action_items : "assigned to"
 
@@ -310,7 +363,7 @@ erDiagram
 
     meeting_recordings {
         UUID id PK
-        UUID reservation_id FK
+        UUID meeting_id FK
         UUID user_id FK
         UUID guest_id FK
         TEXT file_url
@@ -325,7 +378,7 @@ erDiagram
 
     meeting_transcripts {
         UUID id PK
-        UUID reservation_id FK
+        UUID meeting_id FK
         TEXT s3_audio_path
         TEXT transcript_text
         TIMESTAMP processed_at
@@ -334,9 +387,26 @@ erDiagram
         TIMESTAMP deleted_at
     }
 
+    transcript_segments {
+        UUID id PK
+        UUID transcript_id FK
+        UUID speaker_user_id FK
+        UUID speaker_guest_id FK
+        VARCHAR speaker_name
+        INT start_time_ms
+        INT end_time_ms
+        TEXT text_content
+        FLOAT confidence_score
+        BOOLEAN is_edited
+        INT display_order
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+
     meeting_events {
         UUID id PK
-        UUID reservation_id FK
+        UUID meeting_id FK
         UUID user_id FK
         VARCHAR event_type
         TEXT content
@@ -346,7 +416,7 @@ erDiagram
 
     meeting_summaries {
         UUID id PK
-        UUID reservation_id FK
+        UUID meeting_id FK
         TEXT summary_text
         TEXT internal_notes
         BOOLEAN is_shared_with_client
@@ -361,7 +431,7 @@ erDiagram
 
     action_items {
         UUID id PK
-        UUID reservation_id FK
+        UUID meeting_id FK
         UUID assignee_id FK
         TEXT content
         DATE due_date
@@ -480,6 +550,18 @@ erDiagram
         TIMESTAMP created_at
         TIMESTAMP updated_at
     }
+
+    subscription_requests {
+        UUID id PK
+        UUID company_id FK
+        VARCHAR request_type
+        INT requested_quantity
+        DECIMAL prorated_amount
+        VARCHAR status
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
 
     notification_integrations {
         UUID id PK

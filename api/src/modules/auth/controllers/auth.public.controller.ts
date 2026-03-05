@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   ApiErrorResponse,
@@ -9,12 +9,16 @@ import { ResponseService } from 'src/common/response/services/response.service';
 import { AuthLoginRequestDto } from '../dtos/request/auth.login.request.dto';
 import { AuthPasswordResetConfirmRequestDto } from '../dtos/request/auth.password-reset-confirm.request.dto';
 import { AuthPasswordResetRequestDto } from '../dtos/request/auth.password-reset-request.request.dto';
+import { AuthProfileUpdateRequestDto } from '../dtos/request/auth.profile-update.request.dto';
+import { AuthRegisterCheckPromoRequestDto } from '../dtos/request/auth.register-check-promo.request.dto';
 import { AuthRegisterCompanyRequestDto } from '../dtos/request/auth.register-company.request.dto';
+import { AuthRegisterPaymentRequestDto } from '../dtos/request/auth.register-payment.request.dto';
 import { AuthVerifyCodeRequestDto } from '../dtos/request/auth.verify-code.request.dto';
 import { AuthVerifyEmailRequestDto } from '../dtos/request/auth.verify-email.request.dto';
 import { AuthLoginResponseDto } from '../dtos/response/auth.login.response.dto';
 import { AuthPlanResponseDto } from '../dtos/response/auth.plans.response.dto';
 import { AuthSuccessResponseDto } from '../dtos/response/auth.success.response.dto';
+import { AuthTermsResponseDto } from '../dtos/response/auth.terms.response.dto';
 
 @ApiTags('[Public] Auth')
 @Controller({
@@ -43,6 +47,22 @@ export class AuthPublicController {
     @Body() _body: AuthVerifyCodeRequestDto
   ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
     return this.responseService.success({ success: true }, AuthSuccessResponseDto);
+  }
+
+  @Get('/register/terms')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Fetch Terms & Conditions and Privacy Policy' })
+  @ApiSuccessResponse(AuthTermsResponseDto)
+  @ApiErrorResponse()
+  async getTerms(): Promise<AppResponseSuccess<AuthTermsResponseDto>> {
+    return this.responseService.success(
+      {
+        termsContent: 'Terms and Conditions content...',
+        privacyPolicyContent: 'Privacy Policy content...',
+        version: 'v1.0.0',
+      },
+      AuthTermsResponseDto
+    );
   }
 
   @Post('/register/company')
@@ -85,6 +105,37 @@ export class AuthPublicController {
     );
   }
 
+  @Post('/register/check-promo')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Validate promotion code during registration' })
+  @ApiSuccessResponse(AuthSuccessResponseDto)
+  @ApiErrorResponse()
+  async checkPromo(
+    @Body() _body: AuthRegisterCheckPromoRequestDto
+  ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, AuthSuccessResponseDto);
+  }
+
+  @Post('/register/payment')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Register payment method via service (Paid)' })
+  @ApiSuccessResponse(AuthSuccessResponseDto)
+  @ApiErrorResponse()
+  async registerPayment(
+    @Body() _body: AuthRegisterPaymentRequestDto
+  ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, AuthSuccessResponseDto);
+  }
+
+  @Post('/register/finalize')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Finalize registration & trigger onboarding email' })
+  @ApiSuccessResponse(AuthSuccessResponseDto)
+  @ApiErrorResponse()
+  async finalizeRegistration(): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, AuthSuccessResponseDto);
+  }
+
   @Post('/login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'User/Admin login' })
@@ -101,6 +152,17 @@ export class AuthPublicController {
       },
       AuthLoginResponseDto
     );
+  }
+
+  @Patch('/profile')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update user profile details and password' })
+  @ApiSuccessResponse(AuthSuccessResponseDto)
+  @ApiErrorResponse()
+  async updateProfile(
+    @Body() _body: AuthProfileUpdateRequestDto
+  ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, AuthSuccessResponseDto);
   }
 
   @Post('/password-reset/request')

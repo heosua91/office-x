@@ -1,4 +1,6 @@
 # Database Design - Office X (Phase 1)
+Version: 1.3
+Release Date: 2026-03-04
 
 ## 1. Overview
 This document outlines the database schema for the Office X system. The design prioritizes scalability, data integrity, and support for future AI-driven features.
@@ -6,6 +8,8 @@ This document outlines the database schema for the Office X system. The design p
 **Database Engine:** PostgreSQL (Recommended for structured data, JSONB support for flexibility, and vector extension support for future AI RAG).
 
 ## 2. Entity Relationship Diagram
+
+ERD Link: https://drive.google.com/file/d/1-e07taT2NPCk_pN7I7RqbzdGOvkswyIN/view?usp=drive_link
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -122,6 +126,8 @@ Stores custom data categories for companies such as Vendors, Visit Purposes, Flo
 | `category` | VARCHAR(50) | NOT NULL | 'vendor', 'purpose', 'floor', 'equipment' |
 | `value` | VARCHAR(255) | NOT NULL | Display text |
 | `is_active` | BOOLEAN | DEFAULT TRUE | |
+| `is_reject` | BOOLEAN | DEFAULT FALSE | Reject visitor if matched (ADMX-010) |
+| `reject_message` | TEXT | | Custom message when rejected |
 | `display_order` | INT | DEFAULT 0 | |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 
@@ -261,6 +267,7 @@ Detailed information for scheduled meetings, including time, location, status, a
 | `meeting_url` | TEXT | | Online meeting link |
 | `qr_code_hash` | VARCHAR(255) | | For reception check-in (UKET-004) |
 | `booking_code` | VARCHAR(20) | | PIN Code for manual reception entry (UKET-005) |
+| `booking_timezone` | VARCHAR(50) | | Timezone selected by visitor (GRES-001) |
 | `ai_template_id` | UUID | FK -> meeting_ai_templates.id | AI prompt/format preference |
 | `thank_you_email_sent_at`| TIMESTAMP | | Track for OFX-015 |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
@@ -305,6 +312,10 @@ Detailed logs of guest visits, including Check-in/Check-out times and authentica
 | `check_in_time` | TIMESTAMP | | |
 | `check_out_time` | TIMESTAMP | | Time the guest left or meeting ended |
 | `check_in_method` | VARCHAR(50) | | 'qr_code', 'manual_code', 'receptionist' |
+| `purpose_id` | UUID | FK -> company_master_data.id | For no-app visit (UKET-006) |
+| `department_id` | UUID | FK -> departments.id | For no-app visit |
+| `vendor_id` | UUID | FK -> company_master_data.id | Linked vendor (UKET-007) |
+| `host_user_id` | UUID | FK -> users.id | Staff being visited |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 
 #### `meeting_documents`

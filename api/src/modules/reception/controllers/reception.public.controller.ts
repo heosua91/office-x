@@ -6,14 +6,15 @@ import {
 } from 'src/common/response/decorators/response.decorator';
 import type { AppResponseSuccess } from 'src/common/response/dtos/response.dto';
 import { ResponseService } from 'src/common/response/services/response.service';
+import { ReceptionVendorCheckInRequestDto, ReceptionWalkInCheckInRequestDto } from '../dtos/request/reception.check-in.request.dto';
 import {
   ReceptionAuthRequestDto,
   ReceptionCheckInRequestDto,
   ReceptionNotifyHostRequestDto,
 } from '../dtos/request/reception.request.dto';
 import {
-  ReceptionSignageResponseDto,
   ReceptionMapResponseDto,
+  ReceptionSignageResponseDto,
 } from '../dtos/response/reception.response.dto';
 import { ReceptionSuccessResponseDto } from '../dtos/response/reception.success.response.dto';
 
@@ -54,6 +55,28 @@ export class ReceptionPublicController {
   @ApiErrorResponse()
   async checkIn(
     @Body() _body: ReceptionCheckInRequestDto
+  ): Promise<AppResponseSuccess<ReceptionSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, ReceptionSuccessResponseDto);
+  }
+
+  @Post('/check-in/no-appointment')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Manual check-in for walk-in visitors' })
+  @ApiSuccessResponse(ReceptionSuccessResponseDto)
+  @ApiErrorResponse()
+  async checkInNoAppointment(
+    @Body() _body: ReceptionWalkInCheckInRequestDto
+  ): Promise<AppResponseSuccess<ReceptionSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, ReceptionSuccessResponseDto);
+  }
+
+  @Post('/check-in/vendor')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Log-in for contractors/vendor visits' })
+  @ApiSuccessResponse(ReceptionSuccessResponseDto)
+  @ApiErrorResponse()
+  async checkInVendor(
+    @Body() _body: ReceptionVendorCheckInRequestDto
   ): Promise<AppResponseSuccess<ReceptionSuccessResponseDto>> {
     return this.responseService.success({ success: true }, ReceptionSuccessResponseDto);
   }
