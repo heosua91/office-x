@@ -10,7 +10,7 @@ Endpoints for user onboarding, security, and identity management.
 | POST | `/auth/register/verify-email` | REG-002 | Send 6-digit verification code to email. | `verification_codes` |
 | POST | `/auth/register/verify-code` | REG-004 | Validate 6-digit code against DB. | `verification_codes` |
 | GET | `/auth/register/terms` | REG-001 | Fetch Terms & Conditions and Privacy Policy. | N/A |
-| POST | `/auth/register/company` | REG-005 | Initial company & first admin registration. | `companies`, `users` |
+| POST | `/auth/register/company` | REG-006 | Initial company & first admin registration. | `companies`, `users` |
 | GET | `/auth/register/plans` | REG-007 | Fetch available subscription plans. | `subscription_plans` |
 | POST | `/auth/register/check-promo`| REG-007 | Validate promotion code during registration. | `promo_codes` |
 | POST | `/auth/register/payment` | REG-008 | Register payment method via service (Paid). | `payment_methods` |
