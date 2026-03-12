@@ -8,6 +8,7 @@ Endpoints for user onboarding, security, and identity management.
 | Method | Endpoint | Screen ID | Description | Key Tables |
 | :--- | :--- | :--- | :--- | :--- |
 | POST | `/auth/register/verify-email` | REG-002 | Send 6-digit verification code to email. | `verification_codes` |
+| POST | `/auth/register/resend-code` | REG-004 | Resend 6-digit verification code to email. | `verification_codes` |
 | POST | `/auth/register/verify-code` | REG-004 | Validate 6-digit code against DB. | `verification_codes` |
 | GET | `/auth/register/terms` | REG-001 | Fetch Terms & Conditions and Privacy Policy. | N/A |
 | POST | `/auth/register/company` | REG-006 | Initial company & first admin registration. | `companies`, `users` |
