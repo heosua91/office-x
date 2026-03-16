@@ -17,8 +17,8 @@ Screen Overview: Account for TNG Admin to sign in and manage the platform.
 | ID | 項目名 | 種別 | I/O | 表示条件 | 活性条件 | 入力項目定義<br>超過時表示 | 入力項目定義<br>出力フォーマット | 入力項目定義<br>必須 | 入力項目定義<br>桁数 | 入力項目定義<br>文字種 | 入力項目定義<br>その他の単項目チェック | 入力項目定義<br>相関チェック | 備考 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | 1 | 画面タイトル | ラベル | O | － | － | － | － | － | － | 全角 | － | － | 固定文言「TNG管理サインイン」 |
-| 2 | 管理用アカウントID | テキストボックス | I | － | － | － | － | 〇 | Max 50 | 半角英数記号 | － | － | |
-| 3 | パスワード | テキストボックス | I | － | － | － | ●●● (伏せ字) | 〇 | 8-32 | 半角英数記号 | － | － | |
+| 2 | 管理用アカウントID | テキストボックス | I | － | － | － | － | 〇 | Max 50 | 半角英数記号 | － | － |  |
+| 3 | パスワード | テキストボックス | I | － | － | － | ●●● (伏せ字) | 〇 | 8-32 | 半角英数記号 | － | － |  |
 | 4 | パスワードを表示 | チェックボックス | I | － | － | － | － | － | － | － | － | － | ONの場合、ID:3の伏せ字を解除 |
 | 5 | ログイン | ボタン | － | － | 必須入力済 | － | － | － | － | － | － | DB認証照合 | 押下時、認証API実行 |
 | 6 | エラーメッセージ | ラベル | O | 認証失敗時 | － | － | － | － | － | － | － | － | 初期表示は非表示 |
@@ -28,8 +28,8 @@ Screen Overview: Account for TNG Admin to sign in and manage the platform.
 | ID | Item Name | Type | I/O | Display conditions | Active conditions | Over display | Output format | Required | Character length | Character type | Single item check | Correlation check | Note |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | 1 | Screen Title | Label | O | - | - | - | - | - | - | Full-width | - | - | Fixed text "TNG Admin Sign In" |
-| 2 | Admin Account ID | Text Box | I | - | - | - | - | 〇 | Max 50 | Half-width alphanumeric/symbols | - | - | |
-| 3 | Password | Text Box | I | - | - | - | ●●● (Masked) | 〇 | 8-32 | Half-width alphanumeric/symbols | - | - | |
+| 2 | Admin Account ID | Text Box | I | - | - | - | - | 〇 | Max 50 | Half-width alphanumeric/symbols | - | - |  |
+| 3 | Password | Text Box | I | - | - | - | ●●● (Masked) | 〇 | 8-32 | Half-width alphanumeric/symbols | - | - |  |
 | 4 | Show Password | Checkbox | I | - | - | - | - | - | - | - | - | - | If ON, unmask ID:3 |
 | 5 | Login | Button | - | - | Required fields filled | - | - | - | - | - | - | DB Auth check | Execute Auth API on press |
 | 6 | Error Message | Label | O | On Auth failure | - | - | - | - | - | - | - | - | Hidden by default |
@@ -45,8 +45,8 @@ Screen Overview: Account for TNG Admin to sign in and manage the platform.
 
 | No | Item Name | Constraint type | Message ID | Note |
 |---|---|---|---|---|
-| 1 | Admin Account ID | Required | AUTH-002-001 | Field cannot be empty. |
-| 2 | Password | Required | AUTH-002-002 | Field cannot be empty. |
+| 1 | Admin Account ID | Required | AUTH-002-ERR-01 | Field cannot be empty. |
+| 2 | Password | Required | AUTH-002-ERR-01 | Field cannot be empty. |
 
 ## Processing Details
 

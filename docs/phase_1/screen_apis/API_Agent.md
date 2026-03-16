@@ -8,6 +8,7 @@ Use the following documentation to ensure technical accuracy and consistency:
 2. `docs/phase_1/screen_apis/[Group]_Screens.md`: Used to confirm the mapping between screens and APIs within a specific functional group (e.g., REG, ADM).
 3. `docs/phase_1/screen_details/[Group]_Screens/[Screen ID].md`: The main source for **Processing Details** and **Validation Logic**. Look at "Actions" and "Processing Details" sections to understand how the API is triggered and what it does.
 4. `docs/phase_1/Database_EN.md`: Mandatory reference for identifying **Database Tables** and column names used in the processing logic.
+5. `docs/phase_1/Error_Messages.md`: Centralized list of error codes and messages. Use the `MessageId` from this file for error responses.
 
 ## Output Path and Naming
 Proposed save location:
@@ -24,7 +25,7 @@ Your output MUST follow the structure shown below. All **table headers and conte
 ### Item
 | Item | Description |
 | :--- | :--- |
-| API Name | [English Name] ([Vietnamese Translation]) |
+| API Name | [English Name] |
 | Endpoint | [URL] |
 | Method | [METHOD] |
 
@@ -59,6 +60,7 @@ Your output MUST follow the structure shown below. All **table headers and conte
     - Use the 5-phase structure as the standard template for back-end processing.
 3. **Payload & Response**:
     - Identify required fields from the screen's interactive items and validation requirements.
-    - Provide realistic JSON examples for success and failure scenarios, including relevant error codes.
+    - Provide realistic JSON examples for success and failure scenarios.
+    - **Error Formatting**: For error responses, use the standard format `{ "success": false, "message": "[MessageID]" }` where `[MessageID]` is the code defined in `docs/phase_1/Error_Messages.md` (e.g., `[AUTH-001-ERR-01]`). This creates a link-like reference to the central error list.
 4. **Language Rule**:
     - **Table headers and content**: All headers, logic descriptions, names, and notes MUST be in **English**.

@@ -11,7 +11,7 @@
 | 項目名 (Field) | 型 (Type) | 必須 (Required) | 備考 (Note) |
 | :--- | :--- | :--- | :--- |
 | company_id | String | 〇 | ID of the registering company |
-| payment_method_type| String | 〇 | 'credit_card' or 'invoice' |
+| payment_method_type | String | 〇 | 'credit_card' or 'invoice' |
 | card_details | Object | － | Required if type is 'credit_card'. Includes token from gateway. |
 | billing_details | Object | － | Required if type is 'invoice'. Includes billing email and address. |
 
@@ -27,5 +27,5 @@
 ### レスポンス (Response)
 | ケース | 内容 |
 | :--- | :--- |
-| 成功時 (200 OK) | `{ "id": "payment_method_uuid", "message": "Payment method registered" }` |
+| 成功時 (200 OK) | `{ "id": "payment_method_uuid", "message": "[REG-008-SUC-01]" }` |
 | エラー時 (400 / 401) | `{ "error": "payment_gateway_error", "message": "Card declined" }` |

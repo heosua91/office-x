@@ -3,7 +3,7 @@
 ### Item
 | Item | Description |
 | :--- | :--- |
-| API Name | Password Reset Confirmation (Xác nhận đặt lại mật khẩu) |
+| API Name | Password Reset Confirmation |
 | Endpoint | /auth/password-reset/confirm |
 | Method | POST |
 
@@ -25,6 +25,6 @@
 ### Response
 | Case | Content |
 | :--- | :--- |
-| Success (200 OK) | `{ "success": true, "message": "Password updated successfully." }` |
-| Error (400) | `{ "success": false, "message_id": "AUTH-005-ERR-01", "message": "Token expired or invalid" }` |
-| Error (422) | `{ "success": false, "message_id": "AUTH-005-ERR-02", "message": "Password weak" }` |
+| Success (200 OK) | `{ "success": true, "message": "[AUTH-005-SUC-01]" }` |
+| Error (400) | `{ "success": false, "message": "[AUTH-005-ERR-06]" }` |
+| Error (422) | `{ "success": false, "message": "[AUTH-005-ERR-05]" }` |

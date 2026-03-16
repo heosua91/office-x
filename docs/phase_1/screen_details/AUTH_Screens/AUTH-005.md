@@ -49,10 +49,10 @@ Screen Overview: Screen to set a new password after using a reset link or for fi
 
 | No | Item Name | Constraint type | Message ID | Note |
 |---|---|---|---|---|
-| 1 | Current Password | Required | AUTH-005-001 | Field cannot be empty (if applicable). |
-| 2 | New Password | Required | AUTH-005-002 | Field cannot be empty. |
-| 3 | New Password | Format | AUTH-005-003 | Must be 8-32 characters and mix letters/numbers. |
-| 4 | Confirm Password | Correlation | AUTH-005-004 | Must match the New Password. |
+| 1 | Current Password | Required | AUTH-005-ERR-01 | Field cannot be empty (if applicable).|
+| 2 | New Password | Required | AUTH-005-ERR-02 | Field cannot be empty.|
+| 3 | New Password | Format | AUTH-005-ERR-03 | Must be 8-32 characters and mix letters/numbers.|
+| 4 | Confirm Password | Correlation | AUTH-005-ERR-04 | Must match the New Password.|
 
 ## Processing Details
 

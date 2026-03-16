@@ -25,4 +25,4 @@
 | ケース | 内容 |
 | :--- | :--- |
 | 成功時 (200 OK) | `{ "terms_html": "<h1>Terms of Use</h1>...", "privacy_policy_html": "<h1>Privacy Policy</h1>..." }` |
-| エラー時 (400 / 401) | `{ "error": "Unable to fetch content" }` |
+| エラー時 (400 / 401) | `{ "success": false, "message": "[REG-001-ERR-01]" }` |

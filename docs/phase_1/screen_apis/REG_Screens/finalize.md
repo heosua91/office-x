@@ -24,5 +24,5 @@
 ### レスポンス (Response)
 | ケース | 内容 |
 | :--- | :--- |
-| 成功時 (200 OK) | `{ "message": "Onboarding started. Company is now active." }` |
+| 成功時 (200 OK) | `{ "message": "[REG-009-SUC-01]" }` |
 | エラー時 (400 / 401) | `{ "error": "finalization_failed", "message": "Missing billing information" }` |

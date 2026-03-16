@@ -3,7 +3,7 @@
 ### Item
 | Item | Description |
 | :--- | :--- |
-| API Name | Password Reset Request (Yêu cầu đặt lại mật khẩu) |
+| API Name | Password Reset Request |
 | Endpoint | /auth/password-reset/request |
 | Method | POST |
 
@@ -24,5 +24,5 @@
 ### Response
 | Case | Content |
 | :--- | :--- |
-| Success (200 OK) | `{ "success": true, "message": "If the email is registered, a reset link has been sent." }` |
-| Error (400) | `{ "success": false, "message_id": "AUTH-003-ERR-01", "message": "Invalid email format" }` |
+| Success (200 OK) | `{ "success": true, "message": "[AUTH-003-SUC-01]" }` |
+| Error (400) | `{ "success": false, "message": "[AUTH-003-ERR-02]" }` |

@@ -25,4 +25,4 @@
 | ケース | 内容 |
 | :--- | :--- |
 | 成功時 (200 OK) | `{ "plans": [{ "id": "...", "name": "Standard", "price": 10000, "features": { ... } }, ...] }` |
-| エラー時 (400 / 401) | `{ "error": "Unable to fetch plans" }` |
+| エラー時 (400 / 401) | `{ "success": false, "message": "[REG-007-ERR-03]" }` |

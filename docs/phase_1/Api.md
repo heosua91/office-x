@@ -51,23 +51,40 @@ Endpoints for company-level setup and billing management.
 | Method | Endpoint | Screen ID | Description | Key Tables |
 | :--- | :--- | :--- | :--- | :--- |
 | GET | `/admin/dashboard` | ADMX-002 | High-level analytics for the entire organization. | `usage_logs`, `companies` |
-| GET/POST | `/admin/users` | ADMX-003/004 | CRUD for company employees. | `users` |
+| GET/POST | `/admin/users` | ADMX-003/004 | List users or Register new user (Manual). | `users` |
+| GET/PATCH/DELETE | `/admin/users/:id` | ADMX-006 | View, Update, or Delete a specific user. | `users` |
+| POST | `/admin/users/:id/password-reset`| ADMX-006 | Force reset password and send email notification. | `users` |
 | POST | `/admin/users/import` | ADMX-003 | Bulk import users via CSV. | `csv_import_logs`, `users` |
-| GET | `/admin/users/import/history` | ADMX-003 | List CSV import history and errors. | `csv_import_logs` |
-| GET/POST | `/admin/rooms` | ADMX-007/008 | Manage meeting rooms and generate device QRs. | `meeting_rooms` |
-| GET/POST | `/admin/master/:type` | ADMX-010 | CRUD for Departments, Tools, Floors, Contractors. | `departments`, `floors` etc. |
-| GET/PATCH | `/admin/settings/branding` | ADMX-011/012 | Update logos, backgrounds, and signage slides. | `company_media` |
-| GET/POST | `/admin/reception-devices` | ADMX-013/014 | Manage and secure foyer tablets. | `reception_devices` |
-| GET | `/admin/billing/status` | ADMX-017 | View current plan, AI quota, and overage fees. | `companies`, `usage_quotas` |
-| PATCH | `/admin/billing/status` | ADMX-018 | Update AI usage limits and alert thresholds. | `companies` |
+| GET | `/admin/rooms` | ADMX-007 | List all meeting rooms. | `meeting_rooms` |
+| POST | `/admin/rooms` | ADMX-008 | Register new room and generate device QR. | `meeting_rooms` |
+| GET/PATCH/DELETE | `/admin/rooms/:id` | ADMX-009 | View, Update, or Delete meeting room. | `meeting_rooms` |
+| GET/POST | `/admin/master/:type` | ADMX-010 | Fetch or Create master data (Vendors, depts, etc). | `departments`, `floors` etc. |
+| PATCH/DELETE | `/admin/master/:type/:id`| ADMX-010 | Update or Delete specific master data record. | `departments` etc. |
+| PUT | `/admin/master/:type/sort` | ADMX-010 | Update display order (Drag & Drop). | `departments` etc. |
+| GET/PATCH | `/admin/settings/branding` | ADMX-011/012 | Manage logo, background, and signage slides. | `company_media` |
+| GET/POST | `/admin/reception-devices` | ADMX-013/014 | List or Register foyer tablets. | `reception_devices` |
+| GET/PATCH/DELETE | `/admin/reception-devices/:id`| ADMX-015 | View detail, Update or Delete foyer tablet. | `reception_devices` |
+| GET | `/admin/billing/status` | ADMX-017 | View current plan, AI quota, and billing summary. | `companies`, `usage_quotas` |
+| PATCH | `/admin/billing/status` | ADMX-018 | Update company info and AI limit/alert settings. | `companies` |
+| GET | `/admin/billing/plans` | ADMX-022 | Fetch available plans for upgrade/downgrade. | `subscription_plans` |
+| POST | `/admin/billing/plans/change`| ADMX-022 | Submit request to change subscription plan. | `subscription_requests` |
+| POST | `/admin/billing/promo/validate`| ADMX-022 | Validate promotion code for plan change. | `promo_codes` |
 | POST | `/admin/billing/user-slots`| ADMX-004-1 | Purchase additional user slots (pro-rated). | `subscription_requests` |
-| GET/POST| `/admin/settings/payment-methods`| ADMX-019 | Manage company credit cards or billing methods. | `payment_methods` |
-| GET | `/admin/billing/invoices` | ADMX-020 | List monthly PDF invoices. | `invoices` |
-| POST | `/admin/billing/ai-credits` | ADMX-025 | Purchase pre-paid AI minutes. | `ai_credit_purchases`, `companies` |
-| GET | `/admin/visit-logs` | ADMX-023 | Search and export historical visitor logs. | `visit_logs` |
+| GET/POST| `/admin/settings/payment-methods`| ADMX-019 | Manage company credit cards or billing info. | `payment_methods` |
+| GET | `/admin/billing/invoices` | ADMX-020 | List monthly invoices. | `invoices` |
+| GET | `/admin/billing/invoices/:id` | ADMX-021 | Detailed breakdown of a specific invoice. | `invoices` |
+| GET | `/admin/billing/ai-quota` | ADMX-024 | Detailed AI usage status (Free/Pre/Post). | `usage_logs` |
+| GET | `/admin/billing/ai-quota/details`| ADMX-029 | Granular AI usage logs for auditing. | `usage_logs` |
+| GET | `/admin/billing/ai-quota/details/export`| ADMX-029 | Export granular AI usage logs to CSV. | `usage_logs` |
+| GET | `/admin/billing/pricing` | ADMX-025 | Fetch unit prices for AI credit purchase. | N/A |
+| POST | `/admin/billing/ai-credits` | ADMX-025 | Purchase pre-paid AI minutes. | `ai_credit_purchases` |
+| GET | `/admin/visit-history` | ADMX-023 | Search historical visitor logs. | `visit_logs` |
+| GET | `/admin/visit-history/export` | ADMX-023 | Export filtered visit logs to CSV. | `visit_logs` |
+| GET/POST | `/admin/ai-templates` | ADMX-030/031 | List or Create AI prompt templates. | `meeting_ai_templates` |
+| GET/PATCH/DELETE | `/admin/ai-templates/:id` | ADMX-031 | View, Update or Delete specific AI template. | `meeting_ai_templates` |
+| GET | `/admin/users/import/history` | ADMX-003 | List CSV import history and errors. | `csv_import_logs` |
 | PATCH | `/admin/ai/rules` | ADMX-027/028 | Set AI quota thresholds and notify targets. | `monitoring_rules` |
 | POST | `/admin/monitoring/rules` | LOG-003 | Create automated monitoring/alert rules. | `monitoring_rules` |
-| GET/POST | `/admin/ai-templates` | ADMX-030/031 | Manage custom prompts for meeting summaries. | `meeting_ai_templates` |
 
 ## 4. Reception & Visitor (`/guest`, `/reception`)
 Endpoints used by guests and foyer tablets.

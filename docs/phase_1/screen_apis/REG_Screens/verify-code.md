@@ -25,5 +25,5 @@
 ### レスポンス (Response)
 | ケース | 内容 |
 | :--- | :--- |
-| 成功時 (200 OK) | `{ "message": "Code verified", "token": "temp_reg_token_xyz" }` |
-| エラー時 (400 / 401) | `{ "error": "invalid_or_expired_code" }` |
+| 成功時 (200 OK) | `{ "message": "[REG-004-SUC-01]", "token": "temp_reg_token_xyz" }` |
+| エラー時 (400 / 401) | `{ "success": false, "message": "[REG-004-ERR-04]" }` |

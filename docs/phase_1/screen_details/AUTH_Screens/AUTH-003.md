@@ -45,8 +45,8 @@ Screen Overview: Input email address, press the reset button to generate a reset
 
 | No | Item Name | Constraint type | Message ID | Note |
 |---|---|---|---|---|
-| 1 | Email Address | Required | AUTH-003-001 | Field cannot be empty. |
-| 2 | Email Address | Email format | AUTH-003-002 | Must be a valid email format. |
+| 1 | Email Address | Required | AUTH-003-ERR-01 | Field cannot be empty. |
+| 2 | Email Address | Email format | AUTH-003-ERR-03 | Must be a valid email format. |
 
 ## Processing Details
 

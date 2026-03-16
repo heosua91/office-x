@@ -24,5 +24,5 @@
 ### レスポンス (Response)
 | ケース | 内容 |
 | :--- | :--- |
-| 成功時 (200 OK) | `{ "message": "Verification code sent successfully" }` |
-| エラー時 (400 / 401) | `{ "error": "email_already_registered" }` |
+| 成功時 (200 OK) | `{ "message": "[REG-002-SUC-01]" }` |
+| エラー時 (400 / 401) | `{ "success": false, "message": "[REG-002-ERR-03]" }` |

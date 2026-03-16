@@ -66,7 +66,7 @@ Screen Overview: [Summary from Screens.md]
 
 | No | Item Name | Constraint type | Message ID | Note |
 |---|---|---|---|---|
-| [Number] | [Item Name] | [e.g., Required, Format, DB Check] | [Screen ID]-[Sequential Number] | [Validation details from Screens_Detail.md or common sense] |
+| [Number] | [Item Name] | [e.g., Required, Format, Max length] | [Screen ID]-ERR-[Sequential Number] | [Frontend-only validation details. Do NOT include DB Check or BE logic here.] |
 
 ## Processing Details
 

@@ -3,7 +3,7 @@
 ### Item
 | Item | Description |
 | :--- | :--- |
-| API Name | User/Admin Login (Đăng nhập Người dùng/Quản trị viên) |
+| API Name | User/Admin Login |
 | Endpoint | /auth/login |
 | Method | POST |
 
@@ -26,4 +26,4 @@
 | Case | Content |
 | :--- | :--- |
 | Success (200 OK) | `{ "success": true, "token": "...", "user": { "role": "admin",... }, "redirect_to": "/admin/dashboard" }` |
-| Error (401) | `{ "success": false, "message_id": "AUTH-001-ERR-01", "message": "Invalid ID or Password" }` |
+| Error (401) | `{ "success": false, "message": "[AUTH-001-ERR-02]" }` |

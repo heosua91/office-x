@@ -17,8 +17,8 @@ Screen Overview: Input Admin ID & PASS OR User ID & PASS to access the system.
 | ID | 項目名 | 種別 | I/O | 表示条件 | 活性条件 | 入力項目定義<br>超過時表示 | 入力項目定義<br>出力フォーマット | 入力項目定義<br>必須 | 入力項目定義<br>桁数 | 入力項目定義<br>文字種 | 入力項目定義<br>その他の単項目チェック | 入力項目定義<br>相関チェック | 備考 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | 1 | 画面タイトル | ラベル | O | － | － | － | － | － | － | － | － | － | 固定文言「サインイン」 |
-| 2 | ログインID(メールアドレス) | テキストボックス | I | － | － | － | － | 〇 | Max 255 | 半角英数記号 | メールアドレス形式 | － | |
-| 3 | パスワード | テキストボックス | I | － | － | － | ●●● (伏せ字) | 〇 | 8-32 | 半角英数記号 | － | － | |
+| 2 | ログインID(メールアドレス) | テキストボックス | I | － | － | － | － | 〇 | Max 255 | 半角英数記号 | メールアドレス形式 | － |  |
+| 3 | パスワード | テキストボックス | I | － | － | － | ●●● (伏せ字) | 〇 | 8-32 | 半角英数記号 | － | － |  |
 | 4 | パスワードを表示 | チェックボックス | I | － | － | － | － | － | － | － | － | － | ONの場合、ID:3の伏せ字を解除 |
 | 5 | ログイン状態を保持 | チェックボックス | I | － | － | － | － | － | － | － | － | － | ONの場合、セッション有効期限延長 |
 | 6 | ログイン | ボタン | － | － | 必須入力済 | － | － | － | － | － | － | DB認証照合 | 押下時、ローディング表示 |
@@ -30,8 +30,8 @@ Screen Overview: Input Admin ID & PASS OR User ID & PASS to access the system.
 | ID | Item Name | Type | I/O | Display conditions | Active conditions | Over display | Output format | Required | Character length | Character type | Single item check | Correlation check | Note |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | 1 | Screen Title | Label | O | - | - | - | - | - | - | - | - | - | Fixed text "Sign In" |
-| 2 | Login ID (Email) | Text Box | I | - | - | - | - | 〇 | Max 255 | Half-width alphanumeric/symbols | Email format | - | |
-| 3 | Password | Text Box | I | - | - | - | ●●● (Masked) | 〇 | 8-32 | Half-width alphanumeric/symbols | - | - | |
+| 2 | Login ID (Email) | Text Box | I | - | - | - | - | 〇 | Max 255 | Half-width alphanumeric/symbols | Email format | - |  |
+| 3 | Password | Text Box | I | - | - | - | ●●● (Masked) | 〇 | 8-32 | Half-width alphanumeric/symbols | - | - |  |
 | 4 | Show Password | Checkbox | I | - | - | - | - | - | - | - | - | - | If ON, unmask ID:3 |
 | 5 | Remember Me | Checkbox | I | - | - | - | - | - | - | - | - | - | If ON, extend session expiration |
 | 6 | Login | Button | - | - | Required fields filled | - | - | - | - | - | - | DB Auth check | Loading shown on press |
@@ -50,9 +50,9 @@ Screen Overview: Input Admin ID & PASS OR User ID & PASS to access the system.
 
 | No | Item Name | Constraint type | Message ID | Note |
 |---|---|---|---|---|
-| 1 | Login ID (Email) | Required | AUTH-001-001 | Field cannot be empty. |
-| 2 | Login ID (Email) | Email format | AUTH-001-002 | Must be a valid email format. |
-| 3 | Password | Required | AUTH-001-003 | Field cannot be empty. |
+| 1 | Login ID (Email) | Required | AUTH-001-ERR-01 | Field cannot be empty. |
+| 2 | Login ID (Email) | Email format | AUTH-001-ERR-03 | Must be a valid email format. |
+| 3 | Password | Required | AUTH-001-ERR-01 | Field cannot be empty. |
 
 ## Processing Details
 

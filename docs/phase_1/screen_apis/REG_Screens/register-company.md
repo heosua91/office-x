@@ -32,4 +32,4 @@
 | ケース | 内容 |
 | :--- | :--- |
 | 成功時 (200 OK) | `{ "company_id": "uuid-v4-123", "admin_user_id": "uuid-v4-456" }` |
-| エラー時 (400 / 401) | `{ "error": "validation_failed", "details": ["company_name already exists"] }` |
+| エラー時 (400 / 401) | `{ "success": false, "message": "[REG-005-ERR-08]" }` |

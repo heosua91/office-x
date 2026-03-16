@@ -25,5 +25,5 @@
 ### レスポンス (Response)
 | ケース | 内容 |
 | :--- | :--- |
-| 成功時 (200 OK) | `{ "message": "Verification code resent" }` |
-| エラー時 (400 / 500) | `{ "error": "failed_to_resend_code" }` |
+| 成功時 (200 OK) | `{ "message": "[REG-004-SUC-02]" }` |
+| エラー時 (400 / 500) | `{ "success": false, "message": "[REG-004-ERR-03]" }` |

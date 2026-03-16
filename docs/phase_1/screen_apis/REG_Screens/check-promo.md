@@ -24,5 +24,5 @@
 ### レスポンス (Response)
 | ケース | 内容 |
 | :--- | :--- |
-| 成功時 (200 OK) | `{ "valid": true, "discount_type": "percentage", "discount_value": 10, "message": "10% discount applied" }` |
-| エラー時 (400 / 401) | `{ "valid": false, "error": "invalid_or_expired_code" }` |
+| 成功時 (200 OK) | `{ "valid": true, "discount_type": "percentage", "discount_value": 10, "message": "[REG-007-SUC-01]" }` |
+| エラー時 (400 / 401) | `{ "success": false, "message": "[REG-007-ERR-04]" }` |
