@@ -10,7 +10,7 @@
 
 Screen Name: Password Reset Request
 URI: /auth/password-reset
-Screen Overview: Input email address, press the reset button to generate a reset URL sent to the email address.
+Screen Overview: メールアドレス入力し、リセットボタン押下後 メールアドレスにパスワード再設定用URLを発行し、メールで送信する画面。 (Input email address, press the reset button to generate a reset URL sent to the email address.)
 
 ## Item Definition (JP)
 
