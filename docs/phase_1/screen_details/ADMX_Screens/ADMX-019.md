@@ -49,20 +49,20 @@ Screen Overview: Màn hình cho phép đăng ký, cập nhật hoặc kiểm tra
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/settings/payment-methods
-      - Method: GET
-    ○ **If successful**:
-      - Populate currently registered payment type and details.
+      ▪ Endpoint: /admin/settings/payment-methods
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate currently registered payment type and details.
 
-画面更新時 / Interaction
-  • **Toggle Payment Type (ID: 2)**:
+Interaction
+  • Toggle Payment Type (ID: 2):
     ○ Dynamically switch between Credit Card input (ID: 3) and Billing Info input (ID: 4) layouts.
 
-アクション発生時 / Action
-  • **Save Button is pressed**:
+Action
+  • Save Button is pressed:
     ○ For Credit Card:
       ▪ Tokenize card details via Payment Gateway SDK.
       ▪ If tokenization successful:
@@ -75,9 +75,9 @@ Screen Overview: Màn hình cho phép đăng ký, cập nhật hoặc kiểm tra
         - Endpoint: /admin/settings/payment-methods
         - Method: POST
         - Body: { "type": "invoice", "billing_data": { ... } }
-    ○ **If successful**:
-      - Show success toaster.
-      - Transition: Navigate to ADMX-017.
-    ○ **If failed**:
-      - Show error message from gateway or server.
+    ○ If successful:
+      ▪ Show Success Message (ADMX-019-SUC-01).
+      ▪ Transition: Navigate to ADMX-017.
+    ○ If failed:
+      ▪ Show Error Message (SYS-000-ERR-01).
 ```

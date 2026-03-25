@@ -19,7 +19,7 @@
 | **ADMX-013/014** | Tablet Lễ tân | Quản lý tablet foyers | `GET/POST /admin/reception-devices` | ✅ Đúng |
 | **ADMX-015** | Chi tiết Tablet | Edit/Delete device config | `GET/PATCH/DELETE /admin/reception-devices/:id` | ✅ Đúng |
 | **ADMX-016/017** | Billing Menu/Status | Xem plan, quota, overage | `GET /admin/billing/status` | ✅ Đúng |
-| **ADMX-018** | Update Company Info | Cài đặt giới hạn sử dụng AI | `PATCH /admin/billing/status` | ✅ Đúng |
+| **ADMX-018** | Update Company Info | Cài đặt giới hạn sử dụng AI | `PATCH /admin/billing/status`, `GET /admin/billing/status` | ✅ Đúng |
 | **ADMX-019** | Update Payment Info | Credit card / Invoice method | `GET/POST /admin/settings/payment-methods` | ✅ Đúng |
 | **ADMX-020** | Danh sách hóa đơn | Lịch sử Invoices | `GET /admin/billing/invoices` | ✅ Đúng |
 | **ADMX-021** | Chi tiết hóa đơn | Breakdown phí chi tiết | `GET /admin/billing/invoices/:id` | ✅ Đúng |
@@ -32,3 +32,6 @@
 | **ADMX-029** | Chi tiết Usage & Billing | Chi tiết tiêu thụ AI thực tế | `GET /admin/billing/ai-quota/details`, `GET /admin/billing/ai-quota/details/export` | ✅ Đúng |
 | **ADMX-030** | Danh sách AI Template | Quản lý prompt mẫu | `GET/DELETE /admin/ai-templates` | ✅ Đúng |
 | **ADMX-031** | Đăng ký/Sửa Template | Edit prompt & Test | `GET/POST/PATCH /admin/ai-templates/:id` | ✅ Đúng |
+| **ADMX-032** | Quản lý Từ điển Tổ chức | Quản lý thuật ngữ chuyên môn | `GET/POST/PATCH/DELETE /admin/dictionary` | ✅ Đúng |
+| **ADMX-033** | Phê duyệt Từ điển (Bulk) | Phê duyệt từ khuyến nghị | `GET /admin/dictionary/recommendations`, `POST /admin/dictionary/bulk-approve` | ✅ Đúng |
+

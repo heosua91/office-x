@@ -51,27 +51,27 @@ Screen Overview: Màn hình cho phép tải lên và cài đặt Logo doanh nghi
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/settings/branding
-      - Method: GET
-    ○ **If successful**:
-      - Display current Logo (ID: 2) and Background (ID: 4) using URLs provided.
+      ▪ Endpoint: /admin/settings/branding
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Display current Logo (ID: 2) and Background (ID: 4) using URLs provided.
 
-画面更新時 / Interaction
-  • **File Selection**:
+Interaction
+  • File Selection:
     ○ Show "Preview Area" (ID: 6) showing how the new logo/background will look together on a simulated tablet screen.
     ○ Enable "Save Button" (ID: 7).
 
-アクション発生時 / Action
-  • **Save Button is pressed**:
+Action
+  • Save Button is pressed:
     ○ Execute API request:
-      - Endpoint: /admin/settings/branding
-      - Method: PATCH
-      - Content-Type: multipart/form-data
-      - Body: { "logo": [File], "background": [File] }
-    ○ **If successful**:
-      - Show success toaster: "Branding updated successfully".
-      - Refresh displayed images with new versions.
+      ▪ Endpoint: /admin/settings/branding
+      ▪ Method: PATCH
+      ▪ Content-Type: multipart/form-data
+      ▪ Body: { "logo": [File], "background": [File] }
+    ○ If successful:
+      ▪ Show Success Message (ADMX-011-SUC-01).
+      ▪ Refresh displayed images with new versions.
 ```

@@ -81,3 +81,8 @@
 | 77 | Set global AI limit and overage policies | `/tng/settings/policy` | PATCH | ADM-011 |
 | 78 | Search system-wide access and audit logs | `/tng/logs/audit` | GET | LOG-001 |
 | 79 | Finalize and approve AI overage for billing | `/tng/ai/approve-overage` | POST | ADM-012 |
+| 80 | CRUD for organization-wide dictionary terms | `/admin/dictionary` | GET/POST/PATCH/DELETE | ADMX-032 |
+| 81 | Bulk import dictionary terms via CSV | `/admin/dictionary/import` | POST | ADMX-032 |
+| 82 | Fetch AI-suggested dictionary terms | `/admin/dictionary/recommendations` | GET | ADMX-033 |
+| 83 | Approve and register suggested terms | `/admin/dictionary/bulk-approve` | POST | ADMX-033 |
+| 84 | Exclude suggested terms from future lists | `/admin/dictionary/recommendations/exclude` | POST | ADMX-033 |

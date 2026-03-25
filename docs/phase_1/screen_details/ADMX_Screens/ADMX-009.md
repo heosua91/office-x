@@ -68,37 +68,44 @@ Screen Overview: Màn hình hiển thị thông tin chi tiết của phòng họ
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/rooms/:id
-      - Method: GET
-    ○ **If successful**:
-      - Populate form with room data.
-      - Render Guest QR (ID: 8) and Device QR (ID: 10) using URI returned by API.
-    ○ **If failed**:
-      - Redirect to ADMX-007 with error msg.
-    ○ Fetch Master Data (ADMX-010) for Floor and Equipment options.
+      ▪ Endpoint: /admin/rooms/:id
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate form with room data.
+      ▪ Render Guest QR (ID: 8) and Device QR (ID: 10) using URI returned by API.
+    ○ If failed:
+      ▪ Redirect to ADMX-007 with error msg.
+    ○ Execute API request to fetch Master Data (ADMX-010):
+      ▪ Endpoint: /admin/master/FLOOR
+      ▪ Method: GET
+    ○ Execute API request to fetch Master Data (ADMX-010):
+      ▪ Endpoint: /admin/master/EQUIPMENT
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate Floor and Equipment options in the form.
 
-画面更新時 / Interaction
+Interaction
   • Enable "Update Button" (ID: 14) if any attribute of the room has been modified.
 
-アクション発生時 / Action
-  • **Update Confirmation is accepted**:
+Action
+  • Update Confirmation is accepted:
     ○ Execute API request:
-      - Endpoint: /admin/rooms/:id
-      - Method: PATCH
-      - Body: { "name": "...", "floor_id": "...", "capacity": ..., "equipment_ids": [...], "mode": "...", "map_image": "..." }
-    ○ **If successful**:
-      - Transition: Navigate to ADMX-007.
+      ▪ Endpoint: /admin/rooms/:id
+      ▪ Method: PATCH
+      ▪ Body: { "name": "...", "floor_id": "...", "capacity": ..., "equipment_ids": [...], "mode": "...", "map_image": "..." }
+    ○ If successful:
+      ▪ Transition: Navigate to ADMX-007.
 
-  • **Delete Confirmation is accepted**:
+  • Delete Confirmation is accepted:
     ○ Execute API request:
-      - Endpoint: /admin/rooms/:id
-      - Method: DELETE
-    ○ **If successful**:
-      - Transition: Navigate to ADMX-007.
+      ▪ Endpoint: /admin/rooms/:id
+      ▪ Method: DELETE
+    ○ If successful:
+      ▪ Transition: Navigate to ADMX-007.
 
-  • **QR Download buttons are pressed**:
+  • QR Download buttons are pressed:
     ○ Browser triggers download of the image file (blob or direct URL).
 ```

@@ -60,20 +60,35 @@ Screen Overview: Màn hình cho phép cấp tài khoản (ID & PASS) cho thiết
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
-    ○ Fetch all relevant Master Data (Vendor, Department, Purpose, Equipment) via API /admin/master/:type.
-    ○ Populate checkbox groups (ID: 5, 6, 7, 8).
+Initial display
+  • Immediately after screen load:
+    ○ Execute API requests to fetch Master Data (ADMX-010):
+      ▪ Endpoint: /admin/master/VENDOR
+      ▪ Method: GET
+    ○ Execute API requests to fetch Master Data (ADMX-010):
+      ▪ Endpoint: /admin/master/DEPARTMENT
+      ▪ Method: GET
+    ○ Execute API requests to fetch Master Data (ADMX-010):
+      ▪ Endpoint: /admin/master/PURPOSE
+      ▪ Method: GET
+    ○ Execute API requests to fetch Master Data (ADMX-010):
+      ▪ Endpoint: /admin/master/EQUIPMENT
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate checkbox groups (ID: 5, 6, 7, 8).
 
-画面更新時 / Interaction
+Interaction
   • Enable "Complete Button" (ID: 11) when ID and Password are validly entered.
 
-アクション発生時 / Action
-  • **Complete Button is pressed**:
+Action
+  • Complete Button is pressed:
     ○ Execute API request:
-      - Endpoint: /admin/reception-devices
-      - Method: POST
-      - Body: { "device_id": "...", "password": "...", "location": "...", "vendor_ids": [...], "dept_ids": [...], "purpose_ids": [...], "equipment_ids": [...], "notification_url": "..." }
-    ○ **If successful (201 Created)**:
-      - Transition: Navigate to ADMX-013.
+      ▪ Endpoint: /admin/reception-devices
+      ▪ Method: POST
+      ▪ Body: { "device_id": "...", "password": "...", "location": "...", "vendor_ids": [...], "dept_ids": [...], "purpose_ids": [...], "equipment_ids": [...], "notification_url": "..." }
+    ○ If successful (201 Created):
+      ▪ Show Success Message (ADMX-014-SUC-01).
+      ▪ Transition: Navigate to ADMX-013.
+    ○ If failed:
+      ▪ Show Error Message (SYS-000-ERR-05).
 ```

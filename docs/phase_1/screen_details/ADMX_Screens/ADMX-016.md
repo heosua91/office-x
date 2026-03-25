@@ -45,13 +45,13 @@ Screen Overview: Màn hình menu cung cấp các liên kết điều hướng đ
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
+Initial display
   • Render navigation buttons for the billing module.
 
-画面更新時 / Interaction
+Interaction
   • None.
 
-アクション発生時 / Action
-  • **Any button is pressed**:
+Action
+  • Any button is pressed:
     ○ Transition: Navigate to the respective screen URI.
 ```

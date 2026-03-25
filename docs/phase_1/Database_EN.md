@@ -1,6 +1,5 @@
-# Database Design - Office X (Phase 1)
-Version: 1.3
-Release Date: 2026-03-04
+Version: 1.4
+Release Date: 2026-03-18
 
 ## 1. Overview
 This document outlines the database schema for the Office X system. The design prioritizes scalability, data integrity, and support for future AI-driven features.
@@ -16,6 +15,7 @@ ERD Link: https://drive.google.com/file/d/1-e07taT2NPCk_pN7I7RqbzdGOvkswyIN/view
 │                        ORGANIZATION & USERS                             │
 │                                                                         │
 │  companies ──┬── departments (tree: parent_id)                          │
+│              ├── dictionary_entries (Org/Personal)                      │
 │              ├── company_master_data (vendors, floors, etc.)            │
 │              ├── company_media (logos, signage ads)                     │
 │              ├── users ──┬── verification_codes (OTP)                   │
@@ -33,7 +33,9 @@ ERD Link: https://drive.google.com/file/d/1-e07taT2NPCk_pN7I7RqbzdGOvkswyIN/view
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                        MEETINGS & VISITS                                │
 │                                                                         │
+│  meeting_folders (tree: parent_id)                                      │
 │  meetings (QR/PIN/Invite Token)                                         │
+│     ├── meeting_agendas                                                 │
 │     ├── meeting_participants ──┬── users                                │
 │     │                          └── guests ── client_companies           │
 │     ├── visit_logs (check-in/out logs)                                  │
@@ -146,6 +148,21 @@ Manages digital assets (Logos, Videos, Backgrounds) displayed on Reception Table
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 
+#### `dictionary_entries`
+Stores technical terms, internal slang, and proper nouns for STT accuracy improvement (Supports ADMX-032, OFX-025).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `company_id` | UUID | FK -> companies.id | |
+| `user_id` | UUID | FK -> users.id | Nullable (if Org-wide scope) |
+| `scope` | VARCHAR(20) | NOT NULL | 'organization', 'personal' |
+| `phrase` | VARCHAR(255) | NOT NULL | Term to recognize |
+| `reading` | VARCHAR(255) | | How to pronounce (Katakana/Phonetic) |
+| `is_approved` | BOOLEAN | DEFAULT TRUE | Workflow for ADMX-033 |
+| `frequency_count` | INT | DEFAULT 0 | Tracking for suggestions |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+
 #### `users`
 Information about company user accounts (Employees, Admins), including permission data and Calendar/Drive integration links.
 | Column | Type | Constraints | Description |
@@ -192,8 +209,21 @@ List of physical meeting rooms with capacity configurations, equipment, and oper
 | `location` | VARCHAR(255) | | Floor, Building |
 | `equipment` | JSONB | | Arrays of tags ['projector', 'whiteboard'] |
 | `calendar_resource_id` | VARCHAR(255)| | ID for External Calendar sync |
+| `map_image_url` | TEXT | | Guidance map for visitors (UKET-010) |
 | `is_multi_device` | BOOLEAN | DEFAULT FALSE | Supports ENTR-004 flow |
 | `is_active` | BOOLEAN | DEFAULT TRUE | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
+| `updated_at` | TIMESTAMP | DEFAULT NOW() | |
+| `deleted_at` | TIMESTAMP | | Soft delete |
+
+#### `meeting_folders`
+Supports hierarchical categorization for internal meetings (Supports OFX-007).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `company_id` | UUID | FK -> companies.id | |
+| `name` | VARCHAR(255) | NOT NULL | |
+| `parent_id` | UUID | FK -> meeting_folders.id| Nested hierarchy |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
@@ -267,12 +297,24 @@ Detailed information for scheduled meetings, including time, location, status, a
 | `meeting_url` | TEXT | | Online meeting link |
 | `qr_code_hash` | VARCHAR(255) | | For reception check-in (UKET-004) |
 | `booking_code` | VARCHAR(20) | | PIN Code for manual reception entry (UKET-005) |
+| `folder_id` | UUID | FK -> meeting_folders.id| For internal categorization |
 | `booking_timezone` | VARCHAR(50) | | Timezone selected by visitor (GRES-001) |
 | `ai_template_id` | UUID | FK -> meeting_ai_templates.id | AI prompt/format preference |
 | `thank_you_email_sent_at`| TIMESTAMP | | Track for OFX-015 |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 | `updated_at` | TIMESTAMP | DEFAULT NOW() | |
 | `deleted_at` | TIMESTAMP | | Soft delete |
+
+#### `meeting_agendas`
+Stores the structure of the meeting for time-synced summaries (Supports ENTR-009).
+| Column | Type | Constraints | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | |
+| `meeting_id` | UUID | FK -> meetings.id | |
+| `title` | VARCHAR(255) | NOT NULL | |
+| `description` | TEXT | | |
+| `display_order` | INT | DEFAULT 0 | |
+| `created_at` | TIMESTAMP | DEFAULT NOW() | |
 
 #### `guests`
 Information about external visitors or partners participating in meetings or visiting the company.
@@ -316,6 +358,7 @@ Detailed logs of guest visits, including Check-in/Check-out times and authentica
 | `department_id` | UUID | FK -> departments.id | For no-app visit |
 | `vendor_id` | UUID | FK -> company_master_data.id | Linked vendor (UKET-007) |
 | `host_user_id` | UUID | FK -> users.id | Staff being visited |
+| `status` | VARCHAR(20) | DEFAULT 'notifying' | 'notifying', 'accepted', 'rejected', 'completed' |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | |
 
 #### `meeting_documents`

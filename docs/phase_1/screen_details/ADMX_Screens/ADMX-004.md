@@ -59,22 +59,22 @@ Screen Overview: Màn hình cho phép quản trị viên nhập thông tin cơ b
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/master/DEPARTMENT
-      - Method: GET
-    ○ **If successful**:
-      - Populate "Department" (ID: 6) dropdown options.
-    ○ **If failed**:
-      - Show master data fetch error message.
+      ▪ Endpoint: /admin/master/DEPARTMENT
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate "Department" (ID: 6) dropdown options.
+    ○ If failed:
+      ▪ Show master data fetch error message.
 
-画面更新時 / Interaction
+Interaction
   • Enable "To Confirmation Button" (ID: 9) only when all required fields (Name, ID, Password, Email) are filled and satisfy format constraints.
 
-アクション発生時 / Action
-  • **To Confirmation Button is pressed**:
+Action
+  • To Confirmation Button is pressed:
     ○ Validation: Check all mandatory fields and format rules according to the "Validations" section.
     ○ If validation passes:
-      - Transition: Navigate to ADMX-005, passing the input data as state or temporary record.
+      ▪ Transition: Navigate to ADMX-005, passing the input data as state or temporary record.
 ```

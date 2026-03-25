@@ -50,24 +50,24 @@ Screen Overview: Màn hình cho phép thiết lập hành vi của hệ thống 
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/billing/ai-quota/settings
-      - Method: GET
-    ○ **If successful**:
-      - Populate form with corporate AI settings.
+      ▪ Endpoint: /admin/billing/ai-quota/settings
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate form with corporate AI settings.
 
-画面更新時 / Interaction
-  • **Threshold/Email fields (ID: 4, 5)** are enabled only if "Over-usage Notice" (ID: 3) is checked.
+Interaction
+  • Threshold/Email fields (ID: 4, 5) are enabled only if "Over-usage Notice" (ID: 3) is checked.
 
-アクション発生時 / Action
-  • **Save Button is pressed**:
+Action
+  • Save Button is pressed:
     ○ Execute API request:
-      - Endpoint: /admin/billing/ai-quota/settings
-      - Method: PATCH
-      - Body: { "limiter_mode": "...", "notify_low_credits": ..., "threshold": "...", "target_emails": "..." }
-    ○ **If successful**:
-      - Show success toaster.
-      - Transition: Navigate to ADMX-024.
+      ▪ Endpoint: /admin/billing/ai-quota/settings
+      ▪ Method: PATCH
+      ▪ Body: { "limiter_mode": "...", "notify_low_credits": ..., "threshold": "...", "target_emails": "..." }
+    ○ If successful:
+      ▪ Show Success Message (ADMX-027-SUC-01).
+      ▪ Transition: Navigate to ADMX-024.
 ```

@@ -52,16 +52,16 @@ Screen Overview: Màn hình cho phép doanh nghiệp mua thêm thời gian tóm 
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Fetch current AI credit unit price via API (e.g. /admin/billing/pricing).
     ○ Default "Start Applicalty" to "Immediate".
 
-画面更新時 / Interaction
-  • **Hours to Buy (ID: 2)**:
+Interaction
+  • Hours to Buy (ID: 2):
     ○ Logic: `Purchase Price = Input Hours * Unit Price`. Update "Calculated Price" (ID: 3) label.
 
-アクション発生時 / Action
-  • **Proceed Button is pressed**:
+Action
+  • Proceed Button is pressed:
     ○ Transition: Navigate to ADMX-026, passing the selected parameters (hours, timing, start date).
 ```

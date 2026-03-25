@@ -27,6 +27,9 @@ Screen Overview: Chỉ hiển thị cho những User login bằng tài khoản A
 | 9 | 来訪履歴管理リンク | リンク | O | 同上 | － | － | － | － | － | － | － | － | ADMX-023へ遷移 |
 | 10 | AI利用管理リンク | リンク | O | 同上 | － | － | － | － | － | － | － | － | ADMX-024へ遷移 |
 | 11 | AIテンプレート管理リンク | リンク | O | 同上 | － | － | － | － | － | － | － | － | ADMX-030へ遷移 |
+| 12 | 単語辞書管理リンク | リンク | O | 同上 | － | － | － | － | － | － | － | － | ADMX-032へ遷移 |
+| 13 | 辞書登録一括承認リンク | リンク | O | 同上 | － | － | － | － | － | － | － | － | ADMX-033へ遷移 |
+
 
 ## Item Definition (EN)
 
@@ -43,6 +46,9 @@ Screen Overview: Chỉ hiển thị cho những User login bằng tài khoản A
 | 9 | Visit History Management Link | Link | O | Same as above | - | - | - | - | - | - | - | - | Transition to ADMX-023 |
 | 10 | AI Usage Management Link | Link | O | Same as above | - | - | - | - | - | - | - | - | Transition to ADMX-024 |
 | 11 | AI Template Management Link | Link | O | Same as above | - | - | - | - | - | - | - | - | Transition to ADMX-030 |
+| 12 | Organization Dictionary Link | Link | O | Same as above | - | - | - | - | - | - | - | - | Transition to ADMX-032 |
+| 13 | Dictionary Bulk Approval Link | Link | O | Same as above | - | - | - | - | - | - | - | - | Transition to ADMX-033 |
+
 
 ## Actions
 
@@ -58,6 +64,9 @@ Screen Overview: Chỉ hiển thị cho những User login bằng tài khoản A
 | 8 | Visit History Management Link | Press | Navigate to Visit History (ADMX-023). |
 | 9 | AI Usage Management Link | Press | Navigate to AI Usage Management (ADMX-024). |
 | 10 | AI Template Management Link | Press | Navigate to AI Template List (ADMX-030). |
+| 11 | Organization Dictionary Link | Press | Navigate to Organization Dictionary (ADMX-032). |
+| 12 | Dictionary Bulk Approval Link | Press | Navigate to Dictionary Bulk Approval (ADMX-033). |
+
 
 ## Validations
 | No | Item Name | Constraint type | Message ID | Note |
@@ -66,15 +75,15 @@ Screen Overview: Chỉ hiển thị cho những User login bằng tài khoản A
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
+Initial display
   • Verify user role from session/token.
   • Render the list of functional links if the role is 'admin' or 'tng_admin'.
   • If access is unauthorized, redirect to standard dashboard (OFX-001) or 403 Forbidden.
 
-画面更新時 / Interaction
+Interaction
   • None.
 
-アクション発生時 / Action
-  • **Any menu link is pressed**:
+Action
+  • Any menu link is pressed:
     ○ Transition: Navigate to the corresponding Screen URI.
 ```

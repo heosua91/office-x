@@ -60,29 +60,35 @@ Screen Overview: Màn hình cho phép quản trị viên đăng ký một phòng
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
-    ○ Fetch Floor and Equipment master data (ADMX-010).
-    ○ Populate dropdown (ID: 3) and checkbox group (ID: 5).
+Initial display
+  • Immediately after screen load:
+    ○ Execute API request to fetch Master Data (ADMX-010):
+      ▪ Endpoint: /admin/master/FLOOR
+      ▪ Method: GET
+    ○ Execute API request to fetch Master Data (ADMX-010):
+      ▪ Endpoint: /admin/master/EQUIPMENT
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate Floor dropdown (ID: 3) and Equipment checkbox group (ID: 5).
   • Default "System Mode" (ID: 6) to "Single-mode".
 
-画面更新時 / Interaction
+Interaction
   • Logic: Image preview updates when a file is selected (ID: 7).
   • Activation: "Complete Registration" (ID: 9) button is enabled when all required fields are valid.
 
-アクション発生時 / Action
-  • **Complete Registration button is pressed**:
+Action
+  • Complete Registration button is pressed:
     ○ Execute API request:
-      - Endpoint: /admin/rooms
-      - Method: POST
-      - Body: { "name": "...", "floor_id": "...", "capacity": ..., "equipment_ids": [...], "mode": "...", "map_image": "..." }
-    ○ **If successful (201 Created)**:
-      - API returns the system-generated QR code link/data.
-      - Show "Success Modal" (ID: 10).
-      - Modal allows download of the Device Bind QR code.
-    ○ **If failed (400/409/500)**:
-      - Show error message (e.g., "Room name already exists").
+      ▪ Endpoint: /admin/rooms
+      ▪ Method: POST
+      ▪ Body: { "name": "...", "floor_id": "...", "capacity": ..., "equipment_ids": [...], "mode": "...", "map_image": "..." }
+    ○ If successful (201 Created):
+      ▪ API returns the system-generated QR code link/data.
+      ▪ Show Success Message (ADMX-008-SUC-01).
+      ▪ Modal allows download of the Device Bind QR code.
+    ○ If failed (400/409/500):
+      ▪ Show Error Message (ADMX-007-ERR-03).
 
-  • **OK/Close is pressed in Success Modal**:
+  • OK/Close is pressed in Success Modal:
     ○ Transition: Navigate to ADMX-007.
 ```

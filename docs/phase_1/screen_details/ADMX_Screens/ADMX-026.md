@@ -52,19 +52,19 @@ Screen Overview: Màn hình xác nhận cuối cùng cho việc mua thêm thời
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
+Initial display
   • Render the summary of the purchase choices made on the previous screen (ADMX-025).
 
-画面更新時 / Interaction
+Interaction
   • None.
 
-アクション発生時 / Action
-  • **Confirm Button is pressed**:
+Action
+  • Confirm Button is pressed:
     ○ Execute API request:
-      - Endpoint: /admin/billing/ai-quota/purchase
-      - Method: POST
-      - Body: { "hours": ..., "apply_at": "...", "billing_timing": "..." }
-    ○ **If successful**:
-      - Show success toaster: "AI Credits purchased successfully".
-      - Transition: Navigate to ADMX-024.
+      ▪ Endpoint: /admin/billing/ai-quota/purchase
+      ▪ Method: POST
+      ▪ Body: { "hours": ..., "apply_at": "...", "billing_timing": "..." }
+    ○ If successful:
+      ▪ Show Success Message (ADMX-026-SUC-01).
+      ▪ Transition: Navigate to ADMX-024.
 ```

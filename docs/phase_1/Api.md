@@ -42,8 +42,10 @@ Endpoints for daily operations by company employees.
 | POST | `/office/meetings/:id/email` | OFX-015 | Generate AI draft for thank-you email. | `meeting_summaries`, `users` (signatures) |
 | GET | `/office/google-drive/files` | OFX-022 | Proxy to fetch Google Drive files (Read-only). | `users` (tokens) |
 | PATCH | `/office/settings/privacy` | OFX-019 | Set summary visibility (Internal vs Client). | `users` |
-| GET/POST | `/office/settings/integrations` | OFX-021 | Management of Slack/Teams/Email integrations. | `notification_integrations` |
-| GET/POST | `/office/settings/availability` | OFX-020 | Personal availability schedule & blackout dates. | `user_availability` |
+| GET | `/office/settings/integrations` | OFX-021 | Get Slack/Teams/Email integrations. | `notification_integrations` |
+| POST | `/office/settings/integrations` | OFX-021 | Link/Update Slack/Teams/Email integration. | `notification_integrations` |
+| GET | `/office/settings/availability` | OFX-020 | Get personal availability schedule. | `user_availability` |
+| POST | `/office/settings/availability` | OFX-020 | Update personal availability schedule. | `user_availability` |
 
 ## 3. Company Administration (`/admin`)
 Endpoints for company-level setup and billing management.
@@ -51,26 +53,38 @@ Endpoints for company-level setup and billing management.
 | Method | Endpoint | Screen ID | Description | Key Tables |
 | :--- | :--- | :--- | :--- | :--- |
 | GET | `/admin/dashboard` | ADMX-002 | High-level analytics for the entire organization. | `usage_logs`, `companies` |
-| GET/POST | `/admin/users` | ADMX-003/004 | List users or Register new user (Manual). | `users` |
-| GET/PATCH/DELETE | `/admin/users/:id` | ADMX-006 | View, Update, or Delete a specific user. | `users` |
+| GET | `/admin/users` | ADMX-003/004 | List users in the company. | `users` |
+| POST | `/admin/users` | ADMX-003/004 | Register new user (Manual). | `users` |
+| GET | `/admin/users/:id` | ADMX-006 | View details of a specific user. | `users` |
+| PATCH | `/admin/users/:id` | ADMX-006 | Update details of a specific user. | `users` |
+| DELETE | `/admin/users/:id` | ADMX-006 | Deactivate or delete a specific user. | `users` |
 | POST | `/admin/users/:id/password-reset`| ADMX-006 | Force reset password and send email notification. | `users` |
 | POST | `/admin/users/import` | ADMX-003 | Bulk import users via CSV. | `csv_import_logs`, `users` |
 | GET | `/admin/rooms` | ADMX-007 | List all meeting rooms. | `meeting_rooms` |
 | POST | `/admin/rooms` | ADMX-008 | Register new room and generate device QR. | `meeting_rooms` |
-| GET/PATCH/DELETE | `/admin/rooms/:id` | ADMX-009 | View, Update, or Delete meeting room. | `meeting_rooms` |
-| GET/POST | `/admin/master/:type` | ADMX-010 | Fetch or Create master data (Vendors, depts, etc). | `departments`, `floors` etc. |
-| PATCH/DELETE | `/admin/master/:type/:id`| ADMX-010 | Update or Delete specific master data record. | `departments` etc. |
+| GET | `/admin/rooms/:id` | ADMX-009 | View, Update, or Delete meeting room. | `meeting_rooms` |
+| PATCH | `/admin/rooms/:id` | ADMX-009 | View, Update, or Delete meeting room. | `meeting_rooms` |
+| DELETE | `/admin/rooms/:id` | ADMX-009 | View, Update, or Delete meeting room. | `meeting_rooms` |
+| GET | `/admin/master/:type` | ADMX-010 | Fetch or Create master data (Vendors, depts, etc). | `departments`, `floors` etc. |
+| POST | `/admin/master/:type` | ADMX-010 | Fetch or Create master data (Vendors, depts, etc). | `departments`, `floors` etc. |
+| PATCH | `/admin/master/:type/:id`| ADMX-010 | Update or Delete specific master data record. | `departments` etc. |
+| DELETE | `/admin/master/:type/:id`| ADMX-010 | Update or Delete specific master data record. | `departments` etc. |
 | PUT | `/admin/master/:type/sort` | ADMX-010 | Update display order (Drag & Drop). | `departments` etc. |
-| GET/PATCH | `/admin/settings/branding` | ADMX-011/012 | Manage logo, background, and signage slides. | `company_media` |
-| GET/POST | `/admin/reception-devices` | ADMX-013/014 | List or Register foyer tablets. | `reception_devices` |
-| GET/PATCH/DELETE | `/admin/reception-devices/:id`| ADMX-015 | View detail, Update or Delete foyer tablet. | `reception_devices` |
+| GET | `/admin/settings/branding` | ADMX-011/012 | Manage logo, background, and signage slides. | `company_media` |
+| PATCH | `/admin/settings/branding` | ADMX-011/012 | Manage logo, background, and signage slides. | `company_media` |
+| GET | `/admin/reception-devices` | ADMX-013/014 | List or Register foyer tablets. | `reception_devices` |
+| POST | `/admin/reception-devices` | ADMX-013/014 | List or Register foyer tablets. | `reception_devices` |
+| GET | `/admin/reception-devices/:id`| ADMX-015 | View detail, Update or Delete foyer tablet. | `reception_devices` |
+| PATCH | `/admin/reception-devices/:id`| ADMX-015 | View detail, Update or Delete foyer tablet. | `reception_devices` |
+| DELETE | `/admin/reception-devices/:id`| ADMX-015 | View detail, Update or Delete foyer tablet. | `reception_devices` |
 | GET | `/admin/billing/status` | ADMX-017 | View current plan, AI quota, and billing summary. | `companies`, `usage_quotas` |
 | PATCH | `/admin/billing/status` | ADMX-018 | Update company info and AI limit/alert settings. | `companies` |
 | GET | `/admin/billing/plans` | ADMX-022 | Fetch available plans for upgrade/downgrade. | `subscription_plans` |
 | POST | `/admin/billing/plans/change`| ADMX-022 | Submit request to change subscription plan. | `subscription_requests` |
 | POST | `/admin/billing/promo/validate`| ADMX-022 | Validate promotion code for plan change. | `promo_codes` |
 | POST | `/admin/billing/user-slots`| ADMX-004-1 | Purchase additional user slots (pro-rated). | `subscription_requests` |
-| GET/POST| `/admin/settings/payment-methods`| ADMX-019 | Manage company credit cards or billing info. | `payment_methods` |
+| GET | `/admin/settings/payment-methods`| ADMX-019 | Manage company credit cards or billing info. | `payment_methods` |
+| POST | `/admin/settings/payment-methods`| ADMX-019 | Manage company credit cards or billing info. | `payment_methods` |
 | GET | `/admin/billing/invoices` | ADMX-020 | List monthly invoices. | `invoices` |
 | GET | `/admin/billing/invoices/:id` | ADMX-021 | Detailed breakdown of a specific invoice. | `invoices` |
 | GET | `/admin/billing/ai-quota` | ADMX-024 | Detailed AI usage status (Free/Pre/Post). | `usage_logs` |
@@ -80,9 +94,20 @@ Endpoints for company-level setup and billing management.
 | POST | `/admin/billing/ai-credits` | ADMX-025 | Purchase pre-paid AI minutes. | `ai_credit_purchases` |
 | GET | `/admin/visit-history` | ADMX-023 | Search historical visitor logs. | `visit_logs` |
 | GET | `/admin/visit-history/export` | ADMX-023 | Export filtered visit logs to CSV. | `visit_logs` |
-| GET/POST | `/admin/ai-templates` | ADMX-030/031 | List or Create AI prompt templates. | `meeting_ai_templates` |
-| GET/PATCH/DELETE | `/admin/ai-templates/:id` | ADMX-031 | View, Update or Delete specific AI template. | `meeting_ai_templates` |
+| GET | `/admin/ai-templates` | ADMX-030/031 | List or Create AI prompt templates. | `meeting_ai_templates` |
+| POST | `/admin/ai-templates` | ADMX-030/031 | List or Create AI prompt templates. | `meeting_ai_templates` |
+| GET | `/admin/ai-templates/:id` | ADMX-031 | View, Update or Delete specific AI template. | `meeting_ai_templates` |
+| PATCH | `/admin/ai-templates/:id` | ADMX-031 | View, Update or Delete specific AI template. | `meeting_ai_templates` |
+| DELETE | `/admin/ai-templates/:id` | ADMX-031 | View, Update or Delete specific AI template. | `meeting_ai_templates` |
 | GET | `/admin/users/import/history` | ADMX-003 | List CSV import history and errors. | `csv_import_logs` |
+| GET | `/admin/dictionary` | ADMX-032 | CRUD organization-wide dictionary terms. | `organization_dictionary` |
+| POST | `/admin/dictionary` | ADMX-032 | CRUD organization-wide dictionary terms. | `organization_dictionary` |
+| PATCH | `/admin/dictionary` | ADMX-032 | CRUD organization-wide dictionary terms. | `organization_dictionary` |
+| DELETE | `/admin/dictionary` | ADMX-032 | CRUD organization-wide dictionary terms. | `organization_dictionary` |
+| POST | `/admin/dictionary/import` | ADMX-032 | Bulk import dictionary terms via CSV. | `organization_dictionary` |
+| GET | `/admin/dictionary/recommendations` | ADMX-033 | Fetch AI-suggested dictionary terms. | `usage_logs` |
+| POST | `/admin/dictionary/bulk-approve` | ADMX-033 | Approve and register suggested terms. | `organization_dictionary` |
+| POST | `/admin/dictionary/recommendations/exclude` | ADMX-033 | Exclude suggested terms from future lists. | `usage_logs` |
 | PATCH | `/admin/ai/rules` | ADMX-027/028 | Set AI quota thresholds and notify targets. | `monitoring_rules` |
 | POST | `/admin/monitoring/rules` | LOG-003 | Create automated monitoring/alert rules. | `monitoring_rules` |
 
@@ -126,9 +151,12 @@ Endpoints for platform owners to manage multi-tenancy.
 | GET | `/tng/companies` | ADM-001 | Dashboard of all active tenants and health. | `companies` |
 | PATCH | `/tng/companies/:id/quota` | ADM-002 | Override limits (users, AI minutes) per company. | `companies` |
 | GET | `/tng/billing/invoices` | ADM-004/005 | List system-wide invoices for all tenants. | `invoices` |
-| GET/POST | `/tng/plans` | ADM-006 | Manage global subscription tiers and pricing. | `subscription_plans` |
-| GET/POST | `/tng/promo-codes` | ADM-007 | Manage system-wide discount codes. | `promo_codes` |
-| GET/POST | `/tng/catalog/devices` | ADM-009 | Manage global equipment rental/purchase prices. | `device_catalog` |
+| GET | `/tng/plans` | ADM-006 | Manage global subscription tiers and pricing. | `subscription_plans` |
+| POST | `/tng/plans` | ADM-006 | Manage global subscription tiers and pricing. | `subscription_plans` |
+| GET | `/tng/promo-codes` | ADM-007 | Manage system-wide discount codes. | `promo_codes` |
+| POST | `/tng/promo-codes` | ADM-007 | Manage system-wide discount codes. | `promo_codes` |
+| GET | `/tng/catalog/devices` | ADM-009 | Manage global equipment rental/purchase prices. | `device_catalog` |
+| POST | `/tng/catalog/devices` | ADM-009 | Manage global equipment rental/purchase prices. | `device_catalog` |
 | GET | `/tng/analytics/usage` | ADM-010 | Fetch multi-tenant AI usage analytics. | `usage_logs` |
 | PATCH | `/tng/settings/policy` | ADM-011 | Set global AI limit and overage policies. | `companies` |
 | GET | `/tng/logs/audit` | LOG-001 | Search system-wide access and audit logs. | `audit_logs`, `access_logs` |

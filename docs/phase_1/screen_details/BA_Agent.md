@@ -66,26 +66,26 @@ Screen Overview: [Summary from Screens.md]
 
 | No | Item Name | Constraint type | Message ID | Note |
 |---|---|---|---|---|
-| [Number] | [Item Name] | [e.g., Required, Format, Max length] | [Screen ID]-ERR-[Sequential Number] | [Frontend-only validation details. Do NOT include DB Check or BE logic here.] |
+| [Number] | [Item Name] | [e.g., Required, Format, Max length] | [Message ID from `docs/phase_1/Error_Messages.md`] | [Frontend-only validation details. Do NOT include DB Check or BE logic here.] |
 
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
+Initial display
   • [List items shown or initialized on screen load, UI default states like disabling buttons.]
 
-画面更新時 / Interaction
+Interaction
   • [List logic triggered by local UI interactions such as entering text, toggling checkboxes, or dynamically changing field visibility/availability.]
 
-アクション発生時 / Action
-  • **Màn hình vừa load / Immediately after screen load** (if any):
+Action
+  • Immediately after screen load (if any):
     ○ [List API calls or initial data fetching.]
-    ○ **If successful**: [Next steps]
-    ○ **If failed**: [Error handling]
-  • **[Button/Item Name] button is pressed**:
+    ○ If successful: [Next steps, show Success Message ID from Success_Messages.md]
+    ○ If failed: [Show Error Message ID from Error_Messages.md]
+  • [Button/Item Name] button is pressed:
     ○ [List validation and API processing.]
-    ○ **If successful**: [Transitions or state updates]
-    ○ **If failed**: [Error messages or retry logic]
+    ○ If successful: [Transitions or state updates, show Success Message ID from Success_Messages.md]
+    ○ If failed: [Show Error Message ID from Error_Messages.md]
 ```
 
 ---
@@ -96,9 +96,9 @@ Screen Overview: [Summary from Screens.md]
 3. **Actions**: Derive actions from input items that are "Buttons" or interactive (I/O). Refer to `Screens_Detail.md` for specific functional behavior.
 4. **Validations**: Look at the "Single item check" and "Correlation check" columns in the Item Definition, and cross-reference common validation logic in `Screens_Detail.md`.
 5. **Processing Details**: Synthesize the logic into the three specific categories inside a `plain` code block:
-    - **初期表示 / Initial display**: Describe the default UI state, which items are visible/hidden, and initial property settings (e.g., button disabled).
-    - **画面更新時 / Interaction**: Describe real-time UI changes based on user input (e.g., "Enable button when mandatory fields are filled", "Show/Hide sections based on radio selection").
-    - **アクション発生時 / Action**: Describe significant events including **Screen Load** and **Button Clicks**.
+    - **Initial display**: Describe the default UI state, which items are visible/hidden, and initial property settings (e.g., button disabled).
+    - **Interaction**: Describe real-time UI changes based on user input (e.g., "Enable button when mandatory fields are filled", "Show/Hide sections based on radio selection").
+    - **Action**: Describe significant events including **Screen Load** and **Button Clicks**.
         - For every API call, you **MUST** specify technical details from `Api.md` (Endpoint, Method) and clarify the behavior for both **If successful** and **If failed** scenarios.
 
 6. **Language**: 

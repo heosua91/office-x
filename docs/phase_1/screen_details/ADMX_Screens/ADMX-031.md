@@ -57,30 +57,33 @@ Screen Overview: Màn hình cho phép đăng ký mới hoặc chỉnh sửa các
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ If editing (ID exists):
-      - Execute API request:
+      ▪ Execute API request:
         - Endpoint: /admin/ai-templates/:id
         - Method: GET
-      - Populate fields with template data.
+      ▪ Populate fields with template data.
     ○ Else:
-      - Leave fields empty.
+      ▪ Leave fields empty.
 
-画面更新時 / Interaction
+Interaction
   • Interaction: Validation icons appear next to required fields as user types.
 
-アクション発生時 / Action
-  • **Save Button is pressed**:
+Action
+  • Save Button is pressed:
     ○ Logic: If "Default Toggle" (ID: 6) is ON, the server will automatically sunset any other default for the same "Category" (ID: 3).
     ○ Execute API request:
-      - Endpoint: /admin/ai-templates[/ :id]
-      - Method: POST or PATCH
-      - Body: { "name": "...", "category": "...", "description": "...", "prompt": "...", "is_default": ... }
-    ○ **If successful**:
-      - Transition: Navigate to ADMX-030.
+      ▪ Endpoint: /admin/ai-templates[/ :id]
+      ▪ Method: POST or PATCH
+      ▪ Body: { "name": "...", "category": "...", "description": "...", "prompt": "...", "is_default": ... }
+    ○ If successful:
+      ▪ Show Success Message (ADMX-031-SUC-01).
+      ▪ Transition: Navigate to ADMX-030.
+    ○ If failed:
+      ▪ Show Error Message (SYS-000-ERR-05).
 
-  • **Test Button is pressed**:
+  • Test Button is pressed:
     ○ Execute mock AI API request.
     ○ Display output in a preview modal for the user to review.
 ```

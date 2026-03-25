@@ -64,3 +64,6 @@
 | **AI Intelligence (Templates)** | | | |
 | ADMX-030 | Danh sách Template AI | AI Template List | Completed |
 | ADMX-031 | Thêm/Sửa Template AI | New/Edit AI Template | Completed |
+| ADMX-032 | Quản lý Từ điển Tổ chức | Organization Dictionary Management | Completed |
+| ADMX-033 | Phê duyệt đăng ký từ điển (Bulk) | Dictionary Registration Bulk Approval | Completed |
+

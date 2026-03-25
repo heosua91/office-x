@@ -57,39 +57,38 @@ Screen Overview: Màn hình hiển thị và quản lý danh sách người dùn
 ## Validations
 | No | Item Name | Constraint type | Message ID | Note |
 |---|---|---|---|---|
-| 1 |CSV Import|File format|ADMX-003-001|Check if the uploaded file is a valid .csv.|
+| 1 |CSV Import|File format|ADMX-003-ERR-02|Check if the uploaded file is a valid .csv.|
 | 2 |CSV Import|Content validation|ADMX-003-ERR-01|Verify required columns and data types within the CSV.|
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/users
-      - Method: GET
-    ○ **If successful**:
-      - Populate the "User List Table" with user data.
-      - Check if the total user count has reached the subscription quota.
-      - If reached, display the "Request User Slot Addition Button" (ID: 5).
-    ○ **If failed**:
-      - Show list load error message.
+      ▪ Endpoint: /admin/users
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate the "User List Table" with user data.
+      ▪ Check if the total user count has reached the subscription quota.
+      ▪ If reached, display the "Request User Slot Addition Button" (ID: 5).
+    ○ If failed:
+      ▪ Show Error Message (SYS-000-ERR-01).
 
-画面更新時 / Interaction
+Interaction
   • None. (Consider search/filter logic if added in later updates).
 
-アクション発生時 / Action
-  • **CSV Bulk Import Button is pressed**:
+Action
+  • CSV Bulk Import Button is pressed:
     ○ Open file browser.
     ○ Upon selecting a file:
       ▪ Execute API request:
         - Endpoint: /admin/users/import
         - Method: POST (Multipart/form-data)
-      ▪ **If successful (200 OK)**:
-        - Show success message with the number of imported users.
+      ▪ If successful (200 OK):
+        - Show Success Message (ADMX-003-SUC-01).
         - Refresh user list data.
-      ▪ **If failed (400/500)**:
-        - Show error message detailing failed lines or general server error.
-
-  • **Template Download Button is pressed**:
+      ▪ If failed (400/500):
+        - Show Error Message (ADMX-003-ERR-01).
+  • Template Download Button is pressed:
     ○ Browser download: static/templates/user_import_template.csv.
 ```

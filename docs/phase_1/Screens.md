@@ -3,161 +3,168 @@
 ---
 
 ### 📂 Đăng ký mới
-| Phân loại | Screen ID | Tên màn hình | Role thao tác | Tổng quan màn hình |
+| Phân loại | ID Màn hình | Tên màn hình | Vai trò thao tác | Mô tả màn hình |
 | :--- | :--- | :--- | :--- | :--- |
-| Điều khoản | REG-001 | Xác nhận điều khoản sử dụng | New User | Click đồng ý để tiếp tục đăng ký |
-| Xác thực Email | REG-002 | Xác thực Email | New User | Nhập địa chỉ email và gửi mã xác nhận. |
-| Xác thực Email | REG-003 | Hoàn tất gửi Email | New User | Màn hình hoàn tất gửi email. Chuyển hướng đến mã xác nhận bằng cách click vào link URL |
-| Xác thực Email | REG-004 | Nhập mã xác nhận | New User | Nhập mã xác nhận từ email nhận được để thực hiện xác thực danh tính. |
-| Thông tin doanh nghiệp | REG-005 | Nhập thông tin doanh nghiệp | New User | Nhập tên công ty, địa chỉ, tên người phụ trách, số điện thoại, địa chỉ email, số lượng người tham gia, đăng ký người tham gia, v.v. |
-| Thông tin doanh nghiệp | REG-006 | Xác nhận nội dung thông tin doanh nghiệp | New User | Màn hình xác nhận thông tin doanh nghiệp đã nhập, nếu không có vấn đề gì thì tiếp tục. |
-| Plan | REG-007 | Chọn gói cước (Plan) | New User | Chọn từ các gói cung cấp. Có so sánh chức năng. Nhập mã Promotion Code. |
-| Thanh toán | REG-008 | Liên kết hệ thống thanh toán | New User | Liên kết thông tin với hệ thống thanh toán (như Paid, v.v.) cho thanh toán hóa đơn và nhập các thông tin cần thiết. |
-| Quản lý User | REG-009 | Hoàn tất đăng ký | New User | Hiển thị thông báo hoàn tất (Bao gồm trạng thái "đang thẩm định tín dụng" của hệ thống thanh toán). Tự động gửi email đính kèm file PDF hướng dẫn thao tác và URL Login. |
+| Điều khoản | REG-001 | Xác nhận điều khoản sử dụng | Người dùng mới | Click đồng ý để tiến hành đăng ký |
+| Xác thực email | REG-002 | Xác thực email | Người dùng mới | Nhập địa chỉ email và gửi mã xác nhận. |
+| Xác thực email | REG-003 | Hoàn tất gửi email | Người dùng mới | Màn hình hoàn tất gửi email. Chuyển đến nhập mã xác nhận bằng cách click vào link trong email. |
+| Xác thực email | REG-004 | Nhập mã xác nhận | Người dùng mới | Nhập mã xác nhận nhận được từ email để thực hiện xác thực chính chủ. |
+| Thông tin doanh nghiệp | REG-005 | Nhập thông tin doanh nghiệp | Người dùng mới | Nhập tên công ty, địa chỉ, tên người phụ trách, số điện thoại, email, số lượng người tham gia, đăng ký người tham gia, v.v. |
+| Thông tin doanh nghiệp | REG-006 | Xác nhận nội dung thông tin doanh nghiệp | Người dùng mới | Xác nhận thông tin doanh nghiệp đã nhập, nếu không có vấn đề gì thì tiến hành bước tiếp theo. |
+| Gói cước | REG-007 | Chọn gói cước | Người dùng mới | Chọn từ các gói cước cung cấp. Có bảng so sánh chức năng. Nhập mã khuyến mãi. |
+| Thanh toán | REG-008 | Liên kết hệ thống đại lý thanh toán | Người dùng mới | Liên kết với hệ thống đại lý thanh toán cho thanh toán bằng hóa đơn (Paid, v.v.) và nhập các thông tin cần thiết. |
+| Đăng ký quản lý người dùng | REG-009 | Hoàn tất đăng ký | Người dùng mới | Hiển thị thông báo hoàn tất (bao gồm các trạng thái như "Đang thẩm định tín dụng" của đại lý thanh toán). Tự động gửi email hướng dẫn thao tác (PDF) và URL đăng nhập. |
 
-### 📂 Xác thực (Authentication)
+### 📂 Xác thực
 
-| Phân loại | Screen ID | Tên màn hình | Role thao tác | Tổng quan màn hình |
+| Phân loại | ID Màn hình | Tên màn hình | Vai trò thao tác | Mô tả màn hình |
 | :--- | :--- | :--- | :--- | :--- |
-| Sign In | AUTH-001 | Sign In | User, Admin | Nhập Admin ID & PASS HOẶC User ID & PASS |
-| Sign In cho TNG | AUTH-002 | Sign In cho TNG | TNG Admin | Tài khoản dành cho TNG Admin |
-| Reset Password | AUTH-003 | Reset Password | User, Admin | Nhập địa chỉ email, sau khi nhấn nút reset thì khởi tạo PASS và gửi vào địa chỉ email |
-| Reset Password | AUTH-004 | Hoàn tất gửi reset | User, Admin | Hiển thị đã khởi tạo thành công |
-| Reset Password | AUTH-005 | Màn hình thiết lập lại Password | User, Admin | Nhập thiết lập Password mới |
-| Reset Password | AUTH-006 | Hoàn tất thiết lập lại Password | User, Admin | Hiển thị thông báo đã thiết lập Password mới thành công |
+| Sign-in | AUTH-001 | Sign-in | User, Admin | Nhập ID & PASS quản lý HOẶC ID & PASS người dùng |
+| Sign-in dành riêng cho TNG | AUTH-002 | Sign-in dành riêng cho TNG | Quản trị viên TNG | Tài khoản dành cho quản lý TNG |
+| Reset mật khẩu | AUTH-003 | Reset mật khẩu | User, Admin | Nhập địa chỉ email, sau khi nhấn nút reset sẽ cấp PASS đã khởi tạo về địa chỉ email |
+| Reset mật khẩu | AUTH-004 | Hoàn tất gửi reset | User, Admin | Hiển thị thông báo khởi tạo thành công |
+| Reset mật khẩu | AUTH-005 | Màn hình thiết lập lại mật khẩu | User, Admin | Nhập thiết lập mật khẩu mới |
+| Reset mật khẩu | AUTH-006 | Hoàn tất đăng ký thiết lập lại mật khẩu | User, Admin | Hiển thị thông báo mật khẩu mới đã được thiết lập |
 
-### 📂 Chức năng OfficeX cho User thông thường
+### 📂 Chức năng người dùng thông thường OfficeX
 
-| Phân loại | Screen ID | Tên màn hình | Role thao tác | Tổng quan màn hình |
+| Phân loại | ID Màn hình | Tên màn hình | Vai trò thao tác | Mô tả màn hình |
 | :--- | :--- | :--- | :--- | :--- |
 | Dashboard | OFX-001 | Dashboard cá nhân | User | Lịch trình trong ngày<br>Tình trạng sử dụng phòng họp<br>Thời gian tóm tắt AI đã sử dụng (cá nhân) |
-| Quản lý Meeting khách hàng | OFX-002 | Danh sách URL điều chỉnh lịch đã đăng ký | User | Hiển thị danh sách các URL điều chỉnh lịch trình đã đăng ký trước đó 【Tên】【Tên User đăng ký】 |
-| Quản lý Meeting khách hàng | OFX-003 | Đăng ký điều chỉnh lịch trình Meeting | User | Thiết lập liên kết tài nguyên (Resource), chọn thành viên tham gia, tự động hóa đảm bảo phòng họp.<br>Nếu hình thức Online: Bật/tắt tự động tạo URL meeting (chỉ bật được khi đã liên kết Calendar (OFX-018), nếu chưa liên kết thì mặc định OFF và không thể bật). Nếu tắt, thiết lập tin nhắn hướng dẫn (có thể chỉnh sửa nội dung).<br>Chọn AI Template Biên bản (Meeting Minutes).<br>Đối với phòng họp Multi-device mode, tự động phân bổ chỗ ngồi trước.<br>Upload tài liệu (PDF/Image) chia sẻ trong meeting, hoặc chọn từ Google Drive cá nhân. |
-| Quản lý Meeting khách hàng | OFX-004 | Chi tiết/Chỉnh sửa điều chỉnh lịch trình Meeting, Hiển thị URL | User | Hiển thị status (trạng thái điều chỉnh lịch trình khách hàng), thông tin chi tiết, URL đã tạo.<br>Trong màn hình có thể thay đổi các thông tin: Thiết lập liên kết tài nguyên, chọn thành viên tham gia, thiết lập tự động đảm bảo phòng họp, AI Template định dạng Biên bản, Bật/tắt tự động tạo URL meeting online và tin nhắn hướng dẫn. Đối với Multi-device mode có thể điều chỉnh chỗ ngồi.<br>Xóa, upload thêm tài liệu (PDF/Image) chia sẻ trong meeting, hoặc chọn từ Google Drive cá nhân. |
-| Quản lý Meeting khách hàng | OFX-005 | Danh sách tình trạng sử dụng phòng họp | User | Hiển thị danh sách tình trạng sử dụng các phòng họp. |
-| Quản lý Meeting khách hàng | OFX-006 | Danh sách lịch Meeting dự kiến | User | Hiển thị danh sách lịch meeting đã được đặt trước. (Bao gồm cả meeting được chia sẻ) |
-| Quản lý Meeting nội bộ | OFX-007 | Danh sách lịch Meeting nội bộ dự kiến | User | Hiển thị danh sách các meeting nội bộ đã đặt trước hoặc được chia sẻ |
-| Quản lý Meeting nội bộ | OFX-008 | Đặt phòng họp mới (Dành cho nội bộ) | User | Màn hình đặt phòng họp mới: Liên kết Calendar của bản thân với Calendar của phòng họp, kiểm tra và chọn khung giờ mà cả thành viên và phòng họp đều trống.<br>Chọn AI Template cho Biên bản.<br>Đối với phòng họp Multi-device mode, tự động phân chỗ ngồi trước.<br>Xóa, upload thêm tài liệu, hoặc chọn từ Google Drive cá nhân. |
-| Quản lý Meeting nội bộ | OFX-009 | Chi tiết đặt phòng họp | User | Màn hình chi tiết thông tin đặt phòng họp. Có thể chỉnh sửa/xóa.<br>Cài đặt Public thông tin meeting (Cấp quyền xem/sửa cho toàn bộ phòng ban hoặc User chỉ định).<br>Trong Multi-device mode có thể chỉnh sửa chỗ ngồi.<br>Thay đổi AI Template Biên bản. Thêm/xóa tài liệu hoặc chọn từ Google Drive.<br>Nếu nhấn chỉnh sửa/xóa sẽ hiện Modal Confirm, chọn tiếp tục hoặc Cancel.<br>Nếu xóa thành công, trở về màn hình danh sách. |
-| Quản lý doanh nghiệp khách hàng | OFX-010 | Danh sách doanh nghiệp khách hàng | User | Danh sách khách hàng hiện đang được đăng ký.<br>Hiển thị danh sách tên doanh nghiệp, địa chỉ, số điện thoại, người phụ trách, số lượng lịch sử đến thăm.<br>Có thể tìm kiếm, filter. |
-| Quản lý doanh nghiệp khách hàng | OFX-011 | Chi tiết thông tin doanh nghiệp khách hàng | User | Hiển thị Tên doanh nghiệp, địa chỉ, số điện thoại, người phụ trách, số lần đến thăm.<br>Hiển thị timeline lịch sử đến thăm, log ra vào phòng, biên bản.<br>Cũng sẽ hiển thị các Todo List, Transcription, Biên bản meeting và Phân tích Meeting (商談) bằng AI gần nhất. |
-| Quản lý doanh nghiệp khách hàng | OFX-012 | Chỉnh sửa thông tin chi tiết doanh nghiệp | User | Màn hình cho phép chỉnh sửa thông tin Tên doanh nghiệp, địa chỉ, số điện thoại, người phụ trách, số lần đến thăm. |
-| Quản lý doanh nghiệp khách hàng | OFX-013 | Chi tiết lần đến thăm của doanh nghiệp | User | Hiển thị thông tin chi tiết của đợt đến thăm được chọn (Transcription, Biên bản, Todo List, Phân tích meeting AI, v.v.).<br>Có thể phát lại file Audio, phát audio đồng bộ cùng văn bản Transcription (có thể click đoạn text để phát đoạn audio tương ứng v.v.). |
-| Quản lý doanh nghiệp khách hàng | OFX-014 | Chỉnh sửa chi tiết lần đến thăm | User | Màn hình cho phép thêm, chỉnh sửa Memo.<br>Có thể vừa nghe Audio bằng chế độ Play Audio hoặc Audio đồng bộ Text để xác nhận và chỉnh sửa nội dung.<br>Màn hình cho phép Edit manual lại các Biên bản đánh giá AI, Todo List, Phân tích meeting bằng AI.<br>Có thể đổi Template AI và bắt AI Generate lại Biên bản.<br>Cài đặt cấp quyền Share tài liệu cho nhóm/user được chỉ định. |
-| Quản lý doanh nghiệp khách hàng | OFX-015 | Auto-Generate Email cảm ơn sau meeting | User | Màn hình tự động generate draft Email cảm ơn sau meeting (AI Email Template tự động áp dụng định dạng và chữ ký cá nhân) / Màn hình Confirm |
-| Thiết lập cá nhân User | OFX-016 | Màn hình TOP thiết lập cá nhân | User | 【Đổi ID/Password】【Liên kết Calendar】【Thiết lập bảo mật và quyền riêng tư (Privacy & Security)】【Thiết lập liên kết Tool bên ngoài】【Thiết lập Chữ ký (Signature)】 |
-| Thiết lập cá nhân User | OFX-017 | Đổi User ID/Password | User | Có thể thay đổi User ID / Password |
-| Thiết lập cá nhân User | OFX-018 | Thiết lập liên kết Calendar | User | Google Calendar hoặc Outlook Calendar |
-| Thiết lập cá nhân User | OFX-019 | Thiết lập Privacy & Security | User | Các mục có thể thiết lập:<br>- Phạm vi Public Default của Biên bản meeting (Chỉ mình tôi / Chỉ những người tham gia)<br>- Cài đặt chia tách hiển thị "Memo nội bộ" và "Share cho khách hàng" |
-| Thiết lập cá nhân User | OFX-020 | Thiết lập chi tiết Đặt lịch (Booking) | User | Các ngày trong tuần có thể Booking, Khung giờ, Ngày có thể dùng, Thiết lập Khung thời gian khóa (không cấp quyền booking) |
-| Thiết lập cá nhân User | OFX-021 | Thiết lập liên kết Tool bên ngoài | User | Màn hình thiết lập link Webhook với Slack/Teams... |
-| Thiết lập cá nhân User | OFX-022 | Liên kết Google Drive | User | Dùng OAuth 2.0 (Read-only) để nhận Access Token và lưu lại |
+| Quản lý họp khách hàng | OFX-002 | Danh sách URL điều chỉnh lịch hẹn đã đăng ký | User | Hiển thị danh sách các URL điều chỉnh lịch đã đăng ký trước đó [Tên] [Người dùng đăng ký] [Hình thức] |
+| Quản lý họp khách hàng | OFX-003 | Đăng ký điều chỉnh lịch hẹn | User | Thiết lập liên kết tài nguyên, chọn thành viên tham gia, thiết lập tự động hóa giữ phòng họp.<br>Trường hợp hình thức online: Bật/Tắt tự động tạo URL cuộc họp (Chỉ có thể BẬT khi đã liên kết lịch (OFX-018), khi chưa liên kết thì cố định TẮT/không khả dụng). Khi TẮT, thiết lập lời nhắn hướng dẫn (có thể chỉnh sửa).<br>Chọn template biên bản cuộc họp AI sẽ sử dụng.<br>Trường hợp phòng họp chế độ đa thiết bị, chỗ ngồi sẽ được tự động phân bổ trước.<br>Upload tài liệu chia sẻ trong cuộc họp (PDF / hình ảnh) hoặc chọn từ Google Drive cá nhân. |
+| Quản lý họp khách hàng | OFX-004 | Chi tiết/Chỉnh sửa điều chỉnh lịch hẹn, hiển thị URL | User | Hiển thị trạng thái (trạng thái điều chỉnh lịch của khách hàng), thông tin chi tiết và URL đã tạo.<br>Tại màn hình này, có thể thay đổi các thông tin sau: Thiết lập liên kết tài nguyên, chọn thành viên tham gia, thiết lập tự động hóa giữ phòng họp, template biên bản AI, Bật/Tắt tự động tạo URL họp online/lời nhắn hướng dẫn. Trường hợp phòng họp chế độ đa thiết bị, có thể điều chỉnh sơ đồ chỗ ngồi.<br>Upload bổ sung tài liệu chia sẻ trong cuộc họp (PDF / hình ảnh) hoặc chọn từ Google Drive. Chức năng cho phép kiểm tra vĩnh viễn tài liệu do khách upload, và Host có thể xóa hoàn toàn một cách thủ công/riêng lẻ tại thời điểm bất kỳ. |
+| Quản lý họp khách hàng | OFX-005 | Danh sách tình trạng sử dụng phòng họp | User | Hiển thị danh sách tình trạng sử dụng của các phòng họp. |
+| Quản lý họp khách hàng | OFX-006 | Danh sách lịch trình họp dự kiến | User | Hiển thị danh sách lịch trình các cuộc họp đã được đặt chỗ. (Bao gồm cả các cuộc họp được chia sẻ) |
+| Quản lý họp nội bộ | OFX-007 | Danh sách lịch trình họp nội bộ dự kiến | User | Có thể quản lý và lọc cuộc họp nội bộ theo đơn vị thư mục bằng cây thư mục (cấu trúc phân cấp) ở thanh bên trái.<br>Các biên bản log quá khứ và lịch trình sắp tới trong thư mục đã chọn sẽ được hiển thị dưới dạng "Timeline view (tích lũy log)" sắp xếp nối tiếp theo thời gian. |
+| Quản lý họp nội bộ | OFX-008 | Đặt phòng họp mới (Dùng cho nội bộ) | User | Màn hình dùng để liên kết lịch cá nhân với lịch dự kiến của phòng họp, kiểm tra/chọn khung giờ trống của cả thành viên tham gia và phòng họp để thực hiện đặt phòng họp mới.<br>Chọn thư mục họp nội bộ làm nơi lưu trữ từ danh sách thả xuống.<br>Chọn template biên bản AI sẽ sử dụng.<br>Trường hợp phòng họp chế độ đa thiết bị, chỗ ngồi sẽ được tự động phân bổ trước.<br>Xóa/Upload bổ sung tài liệu chia sẻ trong cuộc họp (PDF / hình ảnh) hoặc chọn từ Google Drive cá nhân. |
+| Quản lý họp nội bộ | OFX-009 | Chi tiết đặt phòng họp | User | Màn hình thông tin chi tiết đặt phòng họp. Có thể chỉnh sửa/xóa thông tin.<br>Có thể thay đổi thư mục lưu trữ (di chuyển sang thư mục định kỳ khác).<br>Thiết lập công khai thông tin cuộc họp (cấp quyền xem/chỉnh sửa cho toàn bộ bộ phận hoặc người dùng chỉ định).<br>Trường hợp phòng họp chế độ đa thiết bị, có thể điều chỉnh sơ đồ chỗ ngồi.<br>Thay đổi template biên bản AI. Xóa/Upload bổ sung tài liệu chia sẻ trong cuộc họp (PDF / hình ảnh) hoặc chọn từ Google Drive cá nhân. Khi thực hiện chỉnh sửa/xóa, hiển thị modal xác nhận chỉnh sửa/xóa để tiếp tục hoặc hủy.<br>Trường hợp xóa thành công, quay lại màn hình danh sách. |
+| Quản lý họp nội bộ | OFX-023 | Thông tin chi tiết cuộc họp nội bộ | User | Màn hình hiển thị thông tin chi tiết của cuộc họp nội bộ đã kết thúc (Text chuyển từ giọng nói, biên bản AI, danh sách Todo).<br>Có thể phát dữ liệu ghi âm và phát âm thanh liên kết với text chuyển từ giọng nói (phát từ vị trí text được chọn, v.v.).<br>Có thể gọi chức năng "AI đối thoại" (cửa sổ riêng), sử dụng phản hồi tham chiếu từ các biên bản quá khứ/ToDo chưa hoàn thành trong cùng thư mục bằng công nghệ RAG. |
+| Quản lý họp nội bộ | OFX-024 | Chỉnh sửa chi tiết cuộc họp nội bộ | User | Màn hình có thể chỉnh sửa thủ công biên bản/danh sách Todo của cuộc họp nội bộ.<br>Có thể thay đổi thư mục cha trực thuộc (di chuyển/gộp vào thư mục khác).<br>Sử dụng chức năng phát dữ liệu ghi âm hoặc phát liên kết với text chuyển từ giọng nói để vừa nghe âm thanh vừa xác nhận/chỉnh sửa nội dung.<br>Có thể thay đổi template và tạo lại biên bản AI.<br>Thiết lập chia sẻ thông tin cuộc họp (cấp quyền xem/chỉnh sửa cho toàn bộ bộ phận hoặc người dùng chỉ định). |
+| Quản lý doanh nghiệp khách hàng | OFX-010 | Danh sách doanh nghiệp khách hàng | User | Danh sách các khách hàng hiện đang được đăng ký.<br>Hiển thị tên doanh nghiệp, địa chỉ, số điện thoại, người phụ trách, số lần đến thăm, v.v.<br>Có thể tìm kiếm/lọc. |
+| Quản lý doanh nghiệp khách hàng | OFX-011 | Thông tin chi tiết doanh nghiệp khách hàng | User | Hiển thị tên doanh nghiệp, địa chỉ, số điện thoại, người phụ trách, số lần đến thăm.<br>Hiển thị theo trình tự thời gian lịch sử đến thăm, log ra vào, biên bản cuộc họp.<br>Đồng thời hiển thị danh sách Todo gần nhất, text chuyển từ giọng nói, biên bản cuộc họp, dữ liệu phân tích thương thảo AI. |
+| Quản lý doanh nghiệp khách hàng | OFX-012 | Chỉnh sửa thông tin chi tiết doanh nghiệp khách hàng | User | Màn hình cho phép chỉnh sửa thông tin tên doanh nghiệp, địa chỉ, số điện thoại, người phụ trách, số lần đến thăm |
+| Quản lý doanh nghiệp khách hàng | OFX-013 | Thông tin chi tiết lượt đến thăm của doanh nghiệp khách hàng | User | Hiển thị thông tin chi tiết của lượt đến thăm được chọn (Text chuyển từ giọng nói, biên bản cuộc họp, danh sách Todo, phân tích thương thảo AI, v.v.).<br>Có thể phát dữ liệu ghi âm và phát âm thanh liên kết với text chuyển từ giọng nói (phát từ vị trí text được chọn, v.v.).<br>Có thể gọi chức năng "AI đối thoại" (cửa sổ riêng), sử dụng phản hồi tham chiếu từ các biên bản quá khứ/ToDo chưa hoàn thành của doanh nghiệp đối tượng bằng công nghệ RAG. |
+| Quản lý doanh nghiệp khách hàng | OFX-014 | Chỉnh sửa chi tiết lượt đến thăm của doanh nghiệp khách hàng | User | Màn hình có thể thêm/chỉnh sửa ghi chú.<br>Sử dụng chức năng phát dữ liệu ghi âm hoặc phát liên kết với text chuyển từ giọng nói để vừa nghe âm thanh vừa xác nhận/chỉnh sửa nội dung.<br>Màn hình cho phép chỉnh sửa thủ công biên bản, danh sách Todo, phân tích thương thảo AI được tạo bởi AI.<br>Có thể thay đổi template và tạo lại biên bản AI.<br>Thiết lập chia sẻ thông tin cuộc họp (cấp quyền xem/chỉnh sửa cho toàn bộ bộ phận hoặc người dùng chỉ định). |
+| Quản lý doanh nghiệp khách hàng | OFX-015 | Tự động tạo/Xác nhận email cảm ơn thương thảo | User | Màn hình tự động tạo bản thảo email cảm ơn sau thương thảo (tự động phản ánh template email AI và chữ ký cá nhân)/Xác nhận |
+| Thiết lập cá nhân người dùng | OFX-016 | Màn hình TOP thiết lập cá nhân | User | [Thay đổi ID/Mật khẩu] [Liên kết lịch] [Thiết lập bảo mật quyền riêng tư] [Thiết lập liên kết công cụ bên ngoài] [Thiết lập chữ ký] [Thiết lập từ điển cá nhân] |
+| Thiết lập cá nhân người dùng | OFX-017 | Thiết lập thay đổi ID/Mật khẩu người dùng | User | Có thể thay đổi ID/Mật khẩu của người dùng |
+| Thiết lập cá nhân người dùng | OFX-018 | Thiết lập liên kết lịch | User | Google Calendar hoặc Outlook Calendar |
+| Thiết lập cá nhân người dùng | OFX-019 | Thiết lập bảo mật quyền riêng tư | User | Các mục có thể thiết lập:<br>・Phạm vi công khai mặc định của biên bản cuộc họp (Chỉ mình tôi/Chỉ người tham gia)<br>・Thiết lập phân tách phạm vi xem đối với "Ghi chú nội bộ" và "Dùng để chia sẻ với khách hàng" |
+| Thiết lập cá nhân người dùng | OFX-020 | Thiết lập chi tiết đặt chỗ | User | Thiết lập thứ trong tuần có thể đặt chỗ, thời gian có thể đặt chỗ, ngày có thể sử dụng đặt chỗ, thiết lập ngày giờ tạm thời không thể đặt chỗ |
+| Thiết lập cá nhân người dùng | OFX-021 | Thiết lập công cụ bên ngoài/thông báo | User | Màn hình thực hiện liên kết Webhook URL của Slack/Teams, thiết lập thông báo đẩy của trình duyệt web, thiết lập nơi nhận thông báo ủy quyền |
+| Thiết lập cá nhân người dùng | OFX-022 | Liên kết Google Drive | User | Sử dụng OAuth 2.0 để lấy và lưu Access Token (Read-only) |
+| Thiết lập cá nhân người dùng | OFX-025 | Thiết lập từ điển cá nhân | User | Màn hình cho phép đăng ký/chỉnh sửa/xóa từ điển từ ngữ cá nhân nhằm nâng cao độ chính xác nhận diện giọng nói/chuyển đổi text cho biên bản AI. |
 
-### 📂 Enterprise Admin (Quản trị doanh nghiệp)
+### 📂 Quản trị viên doanh nghiệp
 
-| Phân loại | Screen ID | Tên màn hình | Role thao tác | Tổng quan màn hình |
+| Phân loại | ID Màn hình | Tên màn hình | Vai trò thao tác | Mô tả màn hình |
 | :--- | :--- | :--- | :--- | :--- |
-| Thiết lập riêng Admin | ADMX-001 | Danh sách Admin Menu | Admin | Chỉ hiển thị cho những User login bằng tài khoản Admin |
-| Dashboard | ADMX-002 | Admin Dashboard | Admin | Lịch trình trong ngày<br>Trạng thái sử dụng phòng họp<br>Thời lượng dùng AI summarize (Cá nhân)<br>Thời lượng AI summarize còn lại (Toàn tổ chức)<br>Hiển thị Admin Menu |
-| Quản lý User | ADMX-003 | Danh sách User | Admin | Danh sách User đang được đăng ký. Tên, ID, Email, Department.<br>Button list: 「Đăng ký mới」, 「Import CSV Hàng loạt」, 「Tải Template CSV」. ※ Khi chạm limit user đăng ký, thì hiển thị nút 「Yêu cầu thêm số lượng giới hạn User」. |
-| Quản lý User | ADMX-004 | Đăng ký mới User | Admin | Nhập 【Name】【ID】【PASS】【Email】【Department (ADMX-010)】 |
-| Quản lý User | ADMX-004-1 | Yêu cầu thêm Slot giới hạn User | Admin | Màn hình request mua thêm User khi vượt quá giới hạn User cơ bản. Nhập số lượng add thêm, check số tiền tính theo pro-rate (tỷ lệ ngày) tháng hiện tại và số tiền subscription từ tháng sau trước khi submit. |
-| Quản lý User | ADMX-004-2 | Hoàn tất yêu cầu add User Slot | Admin | Màn hình hoàn tất request cấp thêm slot. Hiển thị nội dung cho thấy admin đã có thể mời và tạo account lập tức mà ko cần chờ verify payment. |
-| Quản lý User | ADMX-005 | Confirm đăng ký mới | Admin | Màn hình Confirm trước khi Save, Sau khi Save hệ thống sẽ send Email + ID Pass |
-| Quản lý User | ADMX-006 | User Chi tiết/Chỉnh sửa/Xóa | Admin | Xác nhận và chỉnh sửa thông tin 【Tên】【ID】【PASS】【Email】【Department (ADMX-010)】.<br>Khi nhấn Update/Delete sẽ hiện Modal confirm, có thể Continue hoặc Cancel. |
-| Thiết lập phòng họp | ADMX-007 | Danh sách phòng họp | Admin | Nhấn các nút như: Thiết lập doanh nghiệp, Đăng ký phòng họp mới, Chi tiết phòng họp, Cài đặt Tablet Lễ tân (Reception Tablet)<br>Hiển thị các Tên phòng họp, Tầng, Thiết bị trong phòng họp... |
-| Thiết lập phòng họp | ADMX-008 | Đăng ký phòng họp mới | Admin | ・Chọn Dropdown 【Tầng】 từ ADMX-010, Chọn nhiều Dropdown cho 【Thiết bị】, nhập Tên phòng, Số lượng người tối đa, Upload hình ảnh bản đồ chỉ dẫn.<br>・Chọn Single-mode hoặc Multi-device mode.<br>・Hệ thống sẽ Auto-generate ra "QR code thiết bị dành riêng cho phòng" để Bind (liên kết) tablet với phòng học.<br>・Sau khi Submit đăng ký hoàn tất, sẽ xuất QR Code (có nút download). |
-| Thiết lập phòng họp | ADMX-009 | Chi tiết phòng họp (Edit, Xóa) | Admin | ・Màn hình cho phép đổi Dropdown【Tầng】, thay đổi/xóa 【Thiết bị】, Tên phòng, Số người tối đâ, hình ảnh hướng dẫn.<br>・Có thể thay đổi Single-mode / Multi-device mode.<br>・URL Map hướng dẫn đến Meeting Room được show dưới dạng QR Code (Có thể download).<br>・Hiển thị "QR Code liên kết thiết bị với meeting room" (Có thể download). |
-| Cài đặt Master | ADMX-010 | Danh sách Master Data: Tên đối tác (Vendor), Tên Phòng Ban (Department), Mục đích, Tầng, Thiết bị phòng họp | Admin | Màn hình Master Data. List các danh sách Vendor, Department, Mục đích, Tầng, Thiết bị để cài đặt vào Tablet Lễ tân.<br>Có thể thêm, sửa, xóa trực tiếp trên data grid (dạng Table).<br>Đối với Vendor và Mục đích, có thể cài đặt cờ từ chối tiếp nhận và thông báo từ chối. |
-| Cài đặt Reception Màn Hình chờ | ADMX-011 | Logo Corporate & Hình Background | Admin | Upload/Sửa Logo và Ảnh Background màn hình chờ |
-| Cài đặt Reception Màn Hình chờ | ADMX-012 | Cài đặt Screensaver | Admin | Upload Image Slide/ Video file và cài đặt timer lặp. |
-| Setup Tablet Lễ Tân | ADMX-013 | Danh sách Tablet Lễ Tân (Reception Tablet) | Admin | Hiển thị list Reception Tablet đã đăng ký |
-| Setup Tablet Lễ Tân | ADMX-014 | Đăng ký mới Tablet Lễ Tân | Admin | Đặt ID & PASS cho tablet, có thể chọn list vendor, department, mục đích, thiết bị và các setup Noti. |
-| Setup Tablet Lễ Tân | ADMX-015 | Chi tiết Tablet Lễ Tân | Admin | Màn hình Info Tablet Lễ Tân: ID&PASS, Vendor, Department, Mục đích, thiết bị, Notification.<br>Cung cấp nút Update/Delete đi kèm Confirm Modal Dialog. |
-| Hóa đơn Payment | ADMX-016 | Payment Menu | Admin | Lựa chọn giữa Thông tin Doanh nghiệp/Thanh toán hoặc Danh sách Invoice (Hóa đơn). |
-| Hóa đơn Payment | ADMX-017 | Thông tin Doanh nghiệp / Thanh toán | Admin | Hiển thị thông tin đăng ký payment, company info.<br>Hiển thị Plan hiện tại, Quota hiện tại (vd như Số giờ Transcription), và Discount đã được Apply. |
-| Hóa đơn Payment | ADMX-018 | Đăng ký / Update Company Info | Admin | Bên cạnh Tên, địa chỉ.. Admin có thể setup Giới hạn sử dụng AI (Chế độ Unlimited / Limit Setup Quota) và cài đặt gửi Alert Notification khi quota bị chạm tới giới hạn. |
-| Hóa đơn Payment | ADMX-019 | Đăng ký / Update Thông tin payment | Admin | Đăng ký, Update, Check phương thức payment (Credit card, Trả sau..). |
-| Hóa đơn Payment | ADMX-020 | Danh sách hóa đơn (Invoice) | Admin | Show list Invoice từ quá khứ đến tháng hiện tại |
-| Hóa đơn Payment | ADMX-021 | Chi tiết Hóa đơn (Invoice) | Admin | Click vào từng Invoice month để xem Line Item |
-| Hóa đơn Payment | ADMX-022 | Màn hình thay đổi Plan / Thanh toán | Admin | Check lựa chọn Plan target, Nhập mã Promotion Code và route đến Service Payment Gateway |
-| Quản lý Log Truy cập Khách | ADMX-023 | Lịch sử đến thăm | Admin | Search/Filter: theo Ngày, Tháng, Năm.<br>Click List result sẽ bung Modal Info details.<br>Data Export: có thể xuất CSV theo query. |
-| Quản lý dùng AI | ADMX-024 | Quản lý hạn mức thời gian tóm tắt AI | Admin | Màn hình Hiển thị: Tổng hợp Quota usage, Remaining quota, Prepaid Quota, và Bill postpaid (trả sau) của AI summarize của toàn tập đoàn. |
-| Quản lý dùng AI | ADMX-025 | Mua thêm Data Thời gian AI | Admin | Bảng Input mua thêm (Prepaid style). Confirm Giờ cần mua, Total value, và Select date activation trước khi submit Request. |
-| Quản lý dùng AI | ADMX-026 | Confirm Mua thêm Data AI | Admin | Recap bảng confirm. Sau khi chọn Submit -> routing đến Service Payment. |
-| Quản lý dùng AI | ADMX-027 | Cài đặt giới hạn sử dụng AI | Admin | Logic khi quota vươt: "Chuyển thành Postpaid Tự động", Hoặc "Force Stop Service". |
-| Quản lý dùng AI | ADMX-028 | Cài đặt Alert Usage AI | Admin | Cài đặt Rule Alert (Trigger gửi ở mốc nào, Channel nhận: slack/mail, Target audience, Timing...). |
-| Hóa đơn Payment | ADMX-029 | Recap Chi tiết sử dụng AI/ Hóa đơn AI | Admin | Hiển thị: (Giờ sử dụng free trong Plan / Giờ xài Prepaid / Giờ xài Postpaid), kết hợp Forecasting Billing cuối tháng. |
-| Template AI | ADMX-030 | Danh sách Template AI | Admin | Hiển thị danh sách các Template AI (dành riêng cho Biên bản/ hoặc Email...) |
-| Template AI | ADMX-031 | Thêm/Sửa Template AI | Admin | Update AI Prompts, Format, và các Condition Default Apply. |
+| Thiết lập dành riêng cho quản trị viên | ADMX-001 | Danh sách menu quản trị viên | Admin | Chỉ hiển thị với người dùng đăng nhập bằng tài khoản quản trị viên. Liên kết đến các chức năng quản lý (bao gồm quản lý từ điển từ ngữ). |
+| Dashboard | ADMX-002 | Dashboard quản trị viên | Admin | Lịch trình trong ngày<br>Tình trạng sử dụng phòng họp<br>Thời gian tóm tắt AI đã sử dụng (cá nhân)<br>Thời gian tóm tắt AI còn lại có thể sử dụng (toàn bộ)<br>Hiển thị menu quản trị viên |
+| Quản lý người dùng | ADMX-003 | Danh sách người dùng | Admin | Danh sách người dùng hiện đang được đăng ký. Tên, ID, Email, Bộ phận. Danh sách nút: "Đăng ký mới" "Import CSV hàng loạt" "Template chuyên dụng". ※Trường hợp đã đạt giới hạn slot đăng ký, hiển thị nút "Đăng ký thêm slot người dùng". |
+| Quản lý người dùng | ADMX-004 | Đăng ký người dùng mới | Admin | Nhập [Tên] [ID] [PASS] [Email] [Bộ phận (ADMX-010)] [Webhook URL (Slack/Teams, v.v.)] |
+| Quản lý người dùng | ADMX-004-1 | Đăng ký thêm slot người dùng | Admin | Màn hình để thêm slot người dùng vượt quá số lượng người dùng bao gồm trong phí cơ bản. Nhập số lượng người dùng muốn thêm, xác nhận phí theo ngày của tháng hiện tại và phí thanh toán định kỳ từ tháng sau trở đi để thực hiện đăng ký. |
+| Quản lý người dùng | ADMX-004-2 | Hoàn tất đăng ký thêm slot người dùng | Admin | Màn hình hoàn tất đăng ký thêm slot người dùng. Hiển thị thông báo rằng sau khi đăng ký, có thể mời/đăng ký người dùng ngay lập tức mà không cần chờ thanh toán. |
+| Quản lý người dùng | ADMX-005 | Xác nhận đăng ký mới | Admin | Xác nhận đăng ký người dùng mới. Sau khi đăng ký, gửi ID & pass về địa chỉ email |
+| Quản lý người dùng | ADMX-006 | Chi tiết/Chỉnh sửa/Xóa người dùng | Admin | Có thể xác nhận/chỉnh sửa thông tin [Tên] [ID] [PASS] [Email] [Bộ phận (ADMX-010)] [Webhook URL (Slack/Teams, v.v.)].<br>Khi thực hiện cập nhật/xóa, hiển thị modal xác nhận cập nhật/xóa để tiếp tục hoặc hủy. |
+| Thiết lập phòng họp | ADMX-007 | Danh sách phòng họp | Admin | Nhấn nút để vào Thiết lập doanh nghiệp, Đăng ký phòng họp mới, Chi tiết phòng họp, Thiết lập tablet lễ tân.<br>Hiển thị tên phòng họp, tầng, thiết bị, v.v. đã được thiết lập doanh nghiệp. |
+| Thiết lập phòng họp | ADMX-008 | Đăng ký phòng họp mới | Admin | ・Chọn [Tên tầng] từ danh sách thả xuống trong ADMX-010, chọn nhiều [Thiết bị phòng họp] từ danh sách thả xuống, nhập tên phòng họp, sức chứa, upload nội dung phòng họp/hình ảnh hướng dẫn.<br>・Chọn Chế độ đơn (Single mode) hoặc Chế độ đa thiết bị (Multi-device mode).<br>・"Mã QR chuyên dụng cho phòng họp" dùng để liên kết thiết bị với phòng họp sẽ được tự động cấp.<br>・Tại thời điểm hoàn tất đăng ký, hiển thị "Mã QR chuyên dụng cho phòng họp" để liên kết thiết bị với phòng họp (có thể download). |
+| Thiết lập phòng họp | ADMX-009 | Chi tiết phòng họp (Chỉnh sửa/Xóa) | Admin | ・Màn hình cho phép chọn [Tên tầng] từ danh sách thả xuống trong ADMX-010, chọn nhiều [Thiết bị phòng họp] từ danh sách thả xuống, chỉnh sửa/xóa tên phòng họp, sức chứa, thay thế nội dung phòng họp/hình ảnh hướng dẫn.<br>・Chọn Chế độ đơn hoặc Chế độ đa thiết bị.<br>・URL hình ảnh bản đồ đến phòng họp được hiển thị bằng mã QR (có thể download).<br>・Hiển thị "Mã QR chuyên dụng cho phòng họp" để liên kết thiết bị với phòng họp (có thể download). |
+| Thiết lập Master | ADMX-010 | Danh sách dữ liệu Master về Tên đơn vị đối tác, Tên bộ phận, Nội dung công việc, Tầng, Thiết bị phòng họp | Admin | Màn hình danh sách Tên đơn vị đối tác, Tên bộ phận, Nội dung công việc, Tầng, Thiết bị phòng họp dùng cho tablet lễ tân.<br>Có thể trực tiếp thêm/chỉnh sửa/xóa ngay trong danh sách (dạng bảng).<br>Có thể thiết lập flag từ chối tiếp đón và lời nhắn khi từ chối đối với đơn vị đối tác và nội dung công việc. |
+| Màn hình chờ lễ tân | ADMX-011 | Logo doanh nghiệp/Hình nền | Admin | Upload/Thay đổi logo doanh nghiệp, hình nền |
+| Màn hình chờ lễ tân | ADMX-012 | Thiết lập Screen Saver | Admin | Upload slide hình ảnh/file video, thiết lập khoảng thời gian phát |
+| Thiết lập chi tiết tablet lễ tân | ADMX-013 | Danh sách tablet lễ tân | Admin | Hiển thị danh sách các tablet lễ tân đã đăng ký |
+| Thiết lập chi tiết tablet lễ tân | ADMX-014 | Đăng ký tablet lễ tân mới | Admin | Có thể đăng ký bằng cách nhập ID & PASS của tablet lễ tân, chọn tên đơn vị đối tác, bộ phận, nội dung công việc, thiết bị, và thiết lập thông báo. |
+| Thiết lập chi tiết tablet lễ tân | ADMX-015 | Chi tiết tablet lễ tân | Admin | Màn hình hiển thị ID & PASS, tên đơn vị đối tác, bộ phận, nội dung công việc, thiết bị, thông báo của tablet lễ tân đã đăng ký.<br>Đặt các nút cập nhật/xóa, khi thực hiện cập nhật/xóa, hiển thị modal xác nhận cập nhật/xóa để tiếp tục hoặc hủy. |
+| Liên quan đến hóa đơn | ADMX-016 | Menu hóa đơn | Admin | Lựa chọn Thông tin doanh nghiệp/Thanh toán, Danh sách hóa đơn |
+| Liên quan đến hóa đơn | ADMX-017 | Thông tin doanh nghiệp/Thanh toán | Admin | Hiển thị thông tin doanh nghiệp/thanh toán hiện đang được đăng ký.<br>Xác nhận tên gói cước hiện tại, slot sử dụng (thời gian tóm tắt AI, v.v.), hiển thị các giảm giá đã áp dụng. |
+| Liên quan đến hóa đơn | ADMX-018 | Đăng ký/Cập nhật thông tin doanh nghiệp | Admin | Ngoài thông tin cơ bản như tên công ty, địa chỉ, thực hiện tùy chỉnh lời văn popup đồng ý ghi âm, thiết lập giới hạn sử dụng AI (Chế độ không giới hạn / Chế độ thiết lập hạn mức) và thiết lập thông báo cảnh báo quản trị viên khi đạt hạn mức. |
+| Liên quan đến hóa đơn | ADMX-019 | Đăng ký/Cập nhật thông tin thanh toán | Admin | Có thể đăng ký/chỉnh sửa/xác nhận phương thức thanh toán (Thẻ tín dụng/Nơi nhận hóa đơn) |
+| Liên quan đến hóa đơn | ADMX-020 | Danh sách hóa đơn | Admin | Hiển thị danh sách hóa đơn tháng này và quá khứ. |
+| Liên quan đến hóa đơn | ADMX-021 | Chi tiết hóa đơn | Admin | Click vào hóa đơn từng tháng để hiển thị chi tiết. |
 
-### 📂 Phân bổ lịch trình & Đặt chỗ (Visitor)
+| Liên quan đến hóa đơn | ADMX-022 | Màn hình thay đổi gói cước/Thực hiện thanh toán | Admin | Chọn gói cước mục tiêu, xác nhận nhập mã khuyến mãi và liên kết với hệ thống thanh toán (thanh toán bằng hóa đơn) |
+| Quản lý lịch sử đến thăm | ADMX-023 | Quản lý lịch sử đến thăm | Admin | Tìm kiếm/Lọc: Màn hình có thể lọc theo đơn vị Ngày/Tháng/Năm.<br>Thông tin chi tiết của danh sách kết quả được hiển thị bằng modal.<br>Xuất dữ liệu: Có thể xuất CSV các dữ liệu đã hiển thị (hoặc trong khoảng thời gian chỉ định). |
+| Quản lý sử dụng AI | ADMX-024 | Quản lý thời gian tóm tắt AI | Admin | Hiển thị danh sách tình trạng sử dụng thời gian tóm tắt AI của toàn doanh nghiệp, thời gian còn lại, slot trả trước, phần sử dụng trả sau. |
+| Quản lý sử dụng AI | ADMX-025 | Mua thêm thời gian AI | Admin | Màn hình mua thêm thời gian tóm tắt AI theo hình thức trả trước. Xác nhận thời gian mua, số tiền, ngày áp dụng để đăng ký. |
+| Quản lý sử dụng AI | ADMX-026 | Xác nhận mua thêm thời gian AI | Admin | Xác nhận nội dung mua thêm. Sau khi xác nhận, liên kết với hệ thống thanh toán. |
+| Quản lý sử dụng AI | ADMX-027 | Thiết lập giới hạn sử dụng AI | Admin | Thiết lập hành động khi vượt quá thời gian tóm tắt AI (Tự động tính phí theo lượng sử dụng hoặc Dừng sử dụng). Kiểm soát việc Bật/Tắt chức năng Limiter. |
+| Quản lý sử dụng AI | ADMX-028 | Thiết lập cảnh báo sử dụng AI | Admin | Thiết lập quy tắc thông báo cảnh báo về lượng sử dụng AI (trigger thông báo, nơi nhận thông báo, đối tượng, thời điểm, v.v.). |
+| Liên quan đến hóa đơn | ADMX-029 | Chi tiết sử dụng AI/Hóa đơn | Admin | Hiển thị chi tiết sử dụng AI trong tháng (slot miễn phí, trả trước, trả sau) và số tiền hóa đơn dự kiến vào cuối tháng. |
+| Quản lý template AI | ADMX-030 | Danh sách template AI | Admin | Hiển thị danh sách các template AI hiện đang được đăng ký (dùng cho biên bản cuộc họp/email) |
+| Quản lý template AI | ADMX-031 | Đăng ký/Chỉnh sửa template AI | Admin | Đăng ký/Chỉnh sửa prompt, định dạng, điều kiện áp dụng mặc định, v.v. của template AI |
+| Quản lý từ điển từ ngữ | ADMX-032 | Quản lý từ điển tổ chức | Admin | Màn hình cho phép đăng ký/chỉnh sửa/xóa từ điển các thuật ngữ chuyên môn, từ ngữ nội bộ, v.v. dùng chung cho tổ chức nhằm mục đích nâng cao độ chính xác nhận diện giọng nói của biên bản AI. Có chức năng Import/Export CSV. |
+| Quản lý từ điển từ ngữ | ADMX-033 | Phê duyệt hàng loạt đăng ký từ điển | Admin | Màn hình hiển thị gợi ý "Danh sách từ có tần suất sửa lỗi cao" trong biên bản cuộc họp, quản trị viên chọn từ danh sách bằng checkbox để thêm hàng loạt vào từ điển tổ chức. |
 
-| Phân loại | Screen ID | Tên màn hình | Role thao tác | Tổng quan màn hình |
+### 📂 Điều chỉnh lịch hẹn/Đặt chỗ cho khách đến thăm
+
+| Phân loại | ID Màn hình | Tên màn hình | Vai trò thao tác | Mô tả màn hình |
 | :--- | :--- | :--- | :--- | :--- |
-| Booking Regis | GRES-001 | Màn hình Select Date/Time | Visitor | Logo Corporate, hiển thị hình thức (Offline/Online - đã cố định từ OFX-003), nhập số lượng người tham gia (nếu Offline), Select Component Calendar (Auto AND logic tình trạng phòng và Tình trạng schedule user), Setup Timezone. |
-| Booking Regis | GRES-002 | Nhập thông tin Guest | Visitor | Nhập Tên doanh nghiệp, Tên, Email, Mobile.<br>Nếu có đồng hành (số lượng người ≥ 2), nhập thêm Tên, Email, Mobile của từng người đồng hành. |
-| Booking Regis | GRES-003 | Confirm Registration | Visitor | Confirm lại thông tin đã nhập có lỗi không |
-| Booking Regis | GRES-004 | Hoàn tất Regis | Visitor | Tự ghi vào lịch bên User Calendar. Nếu là offline: chọn phòng cho khớp, build QR Code/Booking Code tự động. Nếu là online: Auto-generate URL ON → hiển thị link Meet/Teams từ Calendar API; OFF → hiển thị tin nhắn hướng dẫn do Host thiết lập. Gửi Auto mail. |
+| Đăng ký đặt chỗ | GRES-001 | Màn hình chọn ngày giờ | Khách đến thăm | Hiển thị logo doanh nghiệp, hiển thị hình thức (Trực tiếp/Online) (đã thiết lập trong OFX-003), nhập số lượng người tham gia nếu là trực tiếp, hiển thị lịch ứng viên thông minh (liên kết điều kiện AND giữa người dự kiến tham gia và tình trạng trống của phòng họp), chọn múi giờ.<br>Có khung upload tài liệu, cho phép nộp tài liệu cuộc họp đồng thời với việc đặt chỗ. |
+| Đăng ký đặt chỗ | GRES-002 | Màn hình nhập thông tin khách (Guest) | Khách đến thăm | Nhập tên công ty, họ tên, email, số điện thoại.<br>Trường hợp có người đi cùng (2 người trở lên), nhập bổ sung họ tên, email, số điện thoại của người đi cùng. |
+| Đăng ký đặt chỗ | GRES-003 | Xác nhận nội dung đăng ký | Khách đến thăm | Xác nhận nội dung đã nhập xem có sai sót gì không |
+| Đăng ký đặt chỗ | GRES-004 | Hoàn tất đăng ký | Khách đến thăm | Sau khi đăng ký hoàn tất, tự động đăng ký vào lịch của người dùng. Trường hợp trực tiếp: Tự động đặt phòng họp & Tự động tạo mã QR/mã đặt chỗ. Trường hợp online: Khi BẬT tự động tạo URL, phát hành và hiển thị URL cuộc họp (Meet/Teams, v.v.) qua API lịch. Khi TẮT, hiển thị lời nhắn hướng dẫn do Host thiết lập. Gửi email.<br>Bằng cách truy cập lại URL sau khi đặt chỗ (cùng một URL), có thể upload thêm/thay đổi tài liệu vào ngày hôm sau mà không cần đăng nhập. |
 
-### 📂 Tablet Lễ Tân (Reception)
+### 📂 Tablet lễ tân
 
-| Phân loại | Screen ID | Tên màn hình | Role thao tác | Tổng quan màn hình |
+| Phân loại | ID Màn hình | Tên màn hình | Vai trò thao tác | Mô tả màn hình |
 | :--- | :--- | :--- | :--- | :--- |
-| Sign In | UKET-001 | Tablet ID & PASS input | User, Admin | System requirement bắt log in Tablet 1 tháng 1 lần. |
-| Standby | UKET-002 | Screensaver / Digital Signage | Visitor | Play các asset configure ở ADMX-011, ADMX-012.<br>Tap vào screen để Start. |
-| TOP Screen | UKET-003 | Lựa chọn Lễ Tân | Visitor | Các nút: "Đã có QR Code Booking" / "Chưa Appointment" / "Logistics Vendor" |
-| Quét QR Code | UKET-004 | Quét Booking QR Code | Visitor | Bật camera quyét QR Code (Sinh ra ở GRES-004) |
-| Nhập Booking code | UKET-005 | Input Booking Code | Visitor | Nhập PinCode sinh ra ở GRES-004 |
-| No-Appointment | UKET-006 | Visitor Info Input | Visitor | Khách nhập tay list field sau:<br>Company name<br>Tên<br>Department muốn gặp<br>Mục đích<br>Khác<br>Nếu mục đích bị từ chối được chọn, không gửi thông báo mà hiển thị màn hình từ chối kèm lời nhắn. |
-| Vendor Input | UKET-007 | Lựa chọn Vendor (Đơn vị Giao Vận) | Visitor | Lựa danh sách pre-configured (Yamato, Sagawa...)<br>Nếu Vendor bị từ chối được chọn, không gửi thông báo mà hiển thị màn hình từ chối kèm lời nhắn. |
-| Notification | UKET-008 | Standby màn hình (TH không có booking trước) | Visitor | Hệ thống trigger gọi sang thiết bị PIC (Slack/Team Webhook). Tablet hiện "Vui Lòng chờ Contact". |
-| Notification | UKET-009 | Màn hình WebRTC Gọi Điện (Voice Call) | Visitor | Nếu PIC muốn nói chuyện, Audio của Guest được truyền còn màn hình hiển thị live video của PIC. |
-| Notification | UKET-010 | Chỉ đường Map & QR Code | Visitor | Giao diện hiện Bản Đồ (Map) đường đi đến Meeting room + Render cái Image ra QR code cho guest sài quét qua đt đi tìm phòng riêng. |
-| Notification | UKET-011 | Noti Success | Visitor | Back to TOP HOẶC tự động 1 phút ko tap. |
+| Sign-in | UKET-001 | Nhập ID & PASS tablet | User, Admin | Thực hiện đăng nhập để xác định doanh nghiệp, cần đăng nhập 1 lần mỗi tháng |
+| Màn hình chờ | UKET-002 | Screen Saver/Digital Signage | Khách đến thăm | Hiển thị nội dung đã thiết lập trong ADMX-011, ADMX-012.<br>Chạm để bắt đầu. |
+| Xử lý tiếp đón | UKET-003 | Lựa chọn tiếp đón | Khách đến thăm | Chọn Tiếp đón bằng mã QR/Không đặt trước/Đơn vị đối tác |
+| Xử lý tiếp đón | UKET-004 | Đọc mã QR đặt chỗ | Khách đến thăm | Đọc mã QR đặt chỗ (mã QR đã phát hành tại GRES-004) |
+| Xử lý tiếp đón | UKET-005 | Nhập mã đặt chỗ | Khách đến thăm | Nhập mã đặt chỗ đã phát hành tại GRES-004 |
+| Xử lý tiếp đón | UKET-006 | Nhập thông tin khách đến thăm | Khách đến thăm | Nhập thông tin khách đến thăm:<br>Tên công ty<br>Họ tên<br>Chọn bộ phận<br>Chọn nội dung công việc<br>Khác<br>Trường hợp chọn nội dung công việc có flag Từ chối tiếp đón là ON, hiển thị lời nhắn từ chối mà không thực hiện thông báo. |
+| Xử lý tiếp đón | UKET-007 | Chọn đơn vị đối tác | Khách đến thăm | Chọn đơn vị đối tác (Yamato, Sagawa, Duskin...), có thể thiết lập trước<br>Trường hợp chọn đơn vị đối tác có flag Từ chối tiếp đón là ON, hiển thị lời nhắn từ chối mà không thực hiện thông báo. |
+| Xử lý tiếp đón | UKET-008 | Hiển thị tình trạng thông báo | Khách đến thăm | Thông báo cho người phụ trách và mở URL, hiển thị "Đang chờ phản hồi". Nếu không có phản hồi trong một thời gian nhất định (30-60 giây), sẽ tự động gửi lại thông báo liên tục cho đến khi người phụ trách nhấn nút "Tiếp đón". |
+| Xử lý tiếp đón | UKET-009 | Màn hình đàm thoại | Khách đến thăm | Màn hình kết nối với người phụ trách nếu có nguyện vọng gọi điện.<br>Khách đến thăm chỉ có tiếng, người phụ trách là video call |
+| Xử lý tiếp đón | UKET-010 | Hiển thị bản đồ hướng dẫn và mã QR | Khách đến thăm | Khi khách hoàn tất tiếp đón, hiển thị đồng thời "Bản đồ hướng dẫn" phòng họp và "Mã QR" trên màn hình tablet. Khách có thể xác nhận đường đi tại chỗ, ngoài ra có thể mang bản đồ hướng dẫn theo trên smartphone của mình bằng cách đọc mã QR. |
+| Xử lý tiếp đón | UKET-011 | Hoàn tất thông báo | Khách đến thăm | Quay lại TOP HOẶC tự động quay lại màn hình TOP sau 1 phút không thao tác |
 
-### 📂 Ra Vào (入退出) Phòng Họp
+### 📂 Ra vào phòng họp
 
-| Phân loại | Screen ID | Tên màn hình | Role thao tác | Tổng quan màn hình |
+| Phân loại | ID Màn hình | Tên màn hình | Vai trò thao tác | Mô tả màn hình |
 | :--- | :--- | :--- | :--- | :--- |
-| Setup Khởi Tạo | ENTR-001 | Link device vô Meeting Room | User | Quét QR Code để Bind cái tablet vô cái Database của phòng.<br>Trong Single-mode, max 1 tablet.<br>Trong Multi-device mode: Quét QR -> Select Slot/ Vị trí người ngồi cho host và list member. |
-| Confirm Book | ENTR-002 | Booking Data / Lịch | User, Visitor | ・Time hiện tại, Room name.<br>・Info Meeting kế tiếp (Title, thời gian, Host).<br>・Status nút cho phép "Enter" hoặc "Immediate Enter" (即入室 - Cho họp gấp). |
-| Immediate Enter (Họp gấp) | ENTR-003 | Đăng ký thông tin Meeting | User | Choose "Họp Khách Hàng" hay "Meeting nội bộ". Nhập Tên doanh nghiệp.<br>Setup Assignee.<br>Setup T/G (Duration) họp, kiểm tra Collision với booked schedule, nếu có lỗi thì block Submit. |
-| Pre-Enter | ENTR-004 | Màn hình Pre-Enter (Multi-device) | User | Render List list Guest/Assignee -> Tap vô "Join" để định danh |
-| Pre-Enter | ENTR-005 | Màn hình Parent Device (Chủ phòng / Host) | User | Màn hình host tô màu Bold ghi "**Ngài A (Host)**". Host confirm để navigate sang Routing Vị Trí Ghế. |
-| Pre-Enter | ENTR-006 | Final Seat Adjustment (Host) | User | Draw các seat trong phòng.<br>Kéo thả Seat -> Đổi tên người ngồi -> Click "Thực Hiện (Enter) " -> Accept cho phòng vào phiên làm việc. |
-| Pre-Enter | ENTR-007 | Màn hình Child Device (Khách/Chỗ khác) | Visitor, User | Chờ user confirm "Tham Gia / Join", khi nhấn -> Auth qua Seat -> Ready! |
-| Room Start | ENTR-008 | Room Start - Check record info | Visitor, User | Màn hình của Host cho bật tính năng Audio Recording (checkbox). <br>Ko recording: Vào meeting ngay.<br>Có recording: Show alert consent "Bắt Đầu Record", Child Device guest phải ấn agree. |
-| In-Meeting | ENTR-009 | Giao diện có Recording | Visitor, User | Tính năng: Voice Announcement.<br>Live text Transcription (Ghi âm sang text trực tiếp - Speech 2 Text).<br>Reaction emoji live vào text Speech.<br>Comment/Chat Live.<br>Pin text lên board.<br>Mention Function.<br>Memo Func.<br>Share màn/Laser pointer Mirror qua các Child Device sync mode.<br>Timeout 5 phút sau schedule -> Kick.<br><br>Giao diện Host (Parent) Only:<br>・Nút Extend (+15mins check limit)<br>・End Session. |
-| In-Meeting | ENTR-010 | Giao diện Không Recording | Visitor, User | Tính năng Basic:<br>Comment/Chat Live.<br>Mention Function.<br>Memo Func.<br>Share màn/Laser pointer Mirror qua các Child Device sync mode.<br>Timeout 5 phút sau schedule -> Kick.<br><br>Giao diện Host (Parent) Only:<br>・Nút Extend (+15mins check limit)<br>・End Session. |
-| Out-room | ENTR-011 | Exit Finish | Visitor, User | Hiển thị màn Exit, Auto reboot lại ENTR-002 |
+| Thiết lập ban đầu | ENTR-001 | Liên kết thiết bị với phòng họp | User | Liên kết thiết bị với phòng họp bằng cách đọc mã QR chuyên dụng của phòng họp.<br>Đối với phòng họp Chế độ đơn, tại một thời điểm chỉ có một thiết bị có thể liên kết.<br>Đối với Chế độ đa thiết bị, ngay sau khi scan, màn hình tablet sẽ hiển thị vị trí của người tổ chức và danh sách các chỗ ngồi khác. Tại đây, chọn một vị trí thích hợp (chỗ ngồi chưa được chọn). |
+| Xác nhận đặt chỗ | ENTR-002 | Xác nhận tình trạng đặt chỗ<br>Màn hình chờ/Lịch trình | User, Khách đến thăm | ・Thời gian hiện tại, tên phòng họp<br>・Thông tin đặt chỗ họp gần nhất (Tiêu đề, thời gian, tên người tổ chức)<br>・Tùy theo lịch trình, hiển thị nút "Vào phòng" hoặc "Vào phòng ngay" (Chỉ người tổ chức/Thiết bị chính mới có thể thao tác) |
+| Vào phòng ngay | ENTR-003 | Đăng ký thông tin cuộc họp | User | Chọn là "Họp khách hàng" hay "Họp nội bộ". Trường hợp "Họp khách hàng", phân nhánh giữa khách hàng mới và khách hàng cũ; nếu là khách hàng mới thì để nguyên, nếu là khách hàng cũ thì nhập tên công ty để liên kết với doanh nghiệp khách hàng cũ.<br>Chọn người tham gia.<br>Nhập thời gian sử dụng.<br>Nếu thời gian sử dụng và thời gian đã đặt chỗ không trùng nhau, nhấn [Tiếp theo] để tiến hành. Nếu trùng nhau, hiển thị lời nhắn lỗi & không thể nhấn nút Tiếp theo. |
+| Trước khi vào phòng | ENTR-004 | Trước khi vào phòng họp chế độ đa thiết bị | User | Hiển thị danh sách tên người tham gia cuộc họp đối tượng. Chọn tên mình và nhấn nút "Tham gia" để tiến hành. |
+| Trước khi vào phòng | ENTR-005 | Thiết bị của người tổ chức trước khi vào phòng | User | Trên thiết bị của người tổ chức sẽ hiển thị **"Ông/Bà ◎◎ (Người tổ chức)"**, thực hiện nhấn mạnh UI như thay đổi màu khung để có thể nhận biết ngay lập tức "Đây là vị trí của thiết bị chính".<br>Nhấn nút "Tiếp theo" để tiến hành màn hình điều chỉnh sơ đồ chỗ ngồi cuối cùng. |
+| Trước khi vào phòng | ENTR-006 | Điều chỉnh sơ đồ chỗ ngồi cuối cùng trước khi vào phòng | User | Hiển thị danh sách chỗ ngồi.<br>Trường hợp người tham gia ngồi vào vị trí khác với dự kiến, người tổ chức (thiết bị chính) có thể kéo & thả icon trên màn hình để hoán đổi hiển thị họ tên trên toàn bộ các thiết bị theo thời gian thực.<br>Nhấn nút "Vào phòng" để thực hiện vào phòng. |
+| Trước khi vào phòng | ENTR-007 | Thiết bị phụ trước khi vào phòng | Khách đến thăm, User | Chỗ ngồi đã được phân bổ tự động trước đó và hiển thị "Ông/Bà ◎◎". Khi ngồi vào chỗ, nhấn nút "Tham gia" để xác nhận có mặt và chính chủ, sau đó vào phòng. |
+| Sử dụng phòng họp | ENTR-008 | Vào phòng | Khách đến thăm, User | Trên màn hình người tổ chức có checkbox chọn có/không ghi âm và nút vào phòng.<br>Trường hợp không ghi âm, bắt đầu cuộc họp ngay (đến ENTR-010).<br>【Trường hợp Chế độ đơn】: Nếu chọn có ghi âm và vào phòng, sẽ bắt đầu ghi âm ngay (đến ENTR-009).<br>【Trường hợp Chế độ đa thiết bị】: Nếu chọn có ghi âm và vào phòng, sẽ hiển thị popup xác nhận "Bắt đầu ghi âm" trên màn hình của toàn bộ các thiết bị phụ. Áp dụng cơ chế đồng ý 100%, chỉ bắt đầu ghi âm khi nhận được sự đồng ý của tất cả mọi người. Nếu có ai đó từ chối hoặc không thao tác, sẽ tự động chuyển sang "Chế độ không ghi âm". (Do chính sách của trình duyệt không thể tự động bắt đầu ghi âm) |
+| Sử dụng phòng họp | ENTR-009 | Đang họp (Có ghi âm) | Khách đến thăm, User | Bắt đầu thương thảo khi có ghi âm.<br>【Cấu trúc UI chung Đơn/Đa thiết bị】:<br>・Phần trên (Header): Trạng thái LIVE (Icon người tham gia), thời gian đã trôi qua, tên cuộc họp, thông báo/tin báo bắt đầu ghi âm<br>・Phía trái ~ Giữa: Accordion theo từng Agenda (Tóm tắt thời gian thực + Điểm phát ngôn)<br>・Phía phải: Danh sách ToDo tự động trích xuất bởi AI<br>・Phần dưới (Footer): Trạng thái ghi âm (🔴) và nút "Rời phòng (Kết thúc)" (Chỉ thiết bị chính của người tổ chức)<br>・Xử lý cảnh báo khi ngắt kết nối mạng/Xử lý tự động rời phòng sau 5 phút quá thời gian rời phòng<br><br>【Bổ sung UI dành riêng cho Chế độ đa thiết bị】:<br>・Phía trên bên phải: Nút AI đối thoại (Cửa sổ riêng/Floating. Có thể tham chiếu nội dung "ngày hôm nay" hoặc "quá khứ" bằng nhập liệu giọng nói/văn bản)<br>・Phía dưới bên phải: Nút phản hồi (Stamp) đối với nội dung text chuyển từ giọng nói<br>・Hàng dưới (Footer/Thao tác nội dung):<br>　① Chuyển đổi hiển thị 【Tài liệu ⇔ Tóm tắt/ToDo】<br>　② 【Hiển thị/Chia sẻ tài liệu】 Chức năng Mirroring tài liệu (Có thể upload trước/trong cuộc họp, đồng bộ Laser Pointer)<br>　③ 【Chế độ xem tự chủ】 Có thể tự do xem trang khác trên thiết bị cá nhân ngay cả khi đang Mirroring<br><br>【Chức năng bổ sung chỉ dành cho người tổ chức】:<br>・Nút gia hạn (đơn vị 15 phút) |
+| Sử dụng phòng họp | ENTR-010 | Đang họp (Không ghi âm) | Khách đến thăm, User | Bắt đầu thương thảo khi không có ghi âm.<br>【Cấu trúc UI chung Đơn/Đa thiết bị】:<br>・Phần trên (Header): Trạng thái LIVE (Icon người tham gia), thời gian đã trôi qua, tên cuộc họp<br>・Phần dưới (Footer): Nút "Rời phòng (Kết thúc)" (Chỉ thiết bị chính của người tổ chức)<br>・Xử lý tự động rời phòng sau 5 phút quá thời gian rời phòng<br><br>【Bổ sung UI dành riêng cho Chế độ đa thiết bị】:<br>・Phía trên bên phải: Nút AI đối thoại (Cửa sổ riêng/Floating. Có thể tham chiếu nội dung "ngày hôm nay" hoặc "quá khứ" bằng nhập liệu giọng nói/văn bản)<br>・Phía dưới bên phải: Nút phản hồi (Stamp)<br>・Hàng dưới (Footer/Thao tác nội dung):<br>　① Chuyển đổi hiển thị 【Tài liệu ⇔ Chat...】<br>　② 【Hiển thị/Chia sẻ tài liệu】 Chức năng Mirroring tài liệu (Có thể upload trước/trong cuộc họp, đồng bộ Laser Pointer)<br>　③ 【Chế độ xem tự chủ】 Có thể tự do xem trang khác trên thiết bị cá nhân ngay cả khi đang Mirroring<br><br>【Chức năng bổ sung chỉ dành cho người tổ chức】:<br>・Nút gia hạn (đơn vị 15 phút) |
+| Rời phòng | ENTR-011 | Hoàn tất rời phòng | Khách đến thăm, User | Hiển thị màn hình hoàn tất rời phòng. Tự động quay lại màn hình TOP |
 
-### 📂 TNG Admin
+### 📂 Quản trị viên TNG
 
-| Phân loại | Screen ID | Tên màn hình | Role thao tác | Tổng quan màn hình |
+| Phân loại | ID Màn hình | Tên màn hình | Vai trò thao tác | Mô tả màn hình |
 | :--- | :--- | :--- | :--- | :--- |
 | Menu | - | Menu | - | - |
-| Quản lý Hợp Đồng| ADM-001 | Danh sách Công Ty Hợp Đồng | TNG Admin | Dashboard hiển thị info công ty (Tên, Trạng thái (Status), <br>Plan, Expiration, Quota số lượng user, AI Quota, Payment Status). |
-| Quản lý Hợp Đồng| ADM-002 | Cập Nhật Công Ty Hợp Đồng | TNG Admin | Cập nhật Name, Address, Incharge Person, Phone, Email, Method pay.<br>Overrive setup Free User/ AI summarization Time theo từng KH nếu cần. |
-| Quản lý Hợp Đồng| ADM-003 | Confirm Update | TNG Admin | Xác nhận các thay đổi |
-| Quản lý Hợp Đồng| ADM-004 | Danh sách Hóa Đơn (Billing List) | TNG Admin | Tất cả invoice của tất cả Công ty / Corp |
-| Quản lý Hợp Đồng| ADM-005 | Chi tiết Billing | TNG Admin | Các line item trong 1 hóa đơn |
-| Quản lý Plan | ADM-006 | Màn hình Master quản lý Plan | TNG Admin | Setup 4 Plan type (Chỉ Setting / Setting+Room / Full Single / Full Team). |
-| Quản lý Plan | ADM-007 | Chi tiết/Update Plan Cở Bản | TNG Admin | Update price / func allow của cái Plan cơ bản, có apply data propagation sang các Corp Account khác không. |
-| Quản lý Promo | ADM-008 | Quản lý Promotion Code | TNG Admin | Tạo coupon/promo discount cho new Corp. Tên (vd: WELCOME2026), Value Rate (%), Value Money ($), Date expired, Count usage. |
-| Quản lý Thiết Bị Tồn | ADM-009 | Device Master Control | TNG Admin | Thêm bớt Tên thiết bị vật lý cho thuê (Tablet, Chân kê, Mic). Configure Rate fee (Đơn giá cho/ bán). Propagation Price rules qua Corp accounts. |
-| Quản lý Thiết Bị Tồn | ADM-010 | Tổng Quát Phân Tích (Analytics) AI Usage | TNG Admin | Check toàn bộ corp usage data (Postpaid / Prepaid proportion) List company overdraft AI |
-| Quản lý Thiết Bị Tồn | ADM-011 | Cài đặt AI Limit Policy | TNG Admin | Tự động charge postpaid (Pay-as-you-go) HAY là Soft-lock cho mọi hệ thống Global |
-| Billing/Payment | ADM-012 | Quản lý hóa đơn Postpaid AI Usage | TNG Admin | Export data summary aggregate pay-as-you-go của các Corp bill. |
+| Quản lý hợp đồng | ADM-001 | Danh sách doanh nghiệp hợp đồng | Quản trị viên TNG | Hiển thị danh sách các doanh nghiệp đã đăng ký hợp đồng (Tên công ty, tình trạng hợp đồng (status)<br>・Gói hợp đồng・Ngày hết hạn hợp đồng・Số lượng slot người dùng còn lại・Thời gian tóm tắt AI còn lại, tình trạng hóa đơn) |
+| Quản lý hợp đồng | ADM-002 | Cập nhật doanh nghiệp hợp đồng | Quản trị viên TNG | Cập nhật tên công ty, địa chỉ, tên người phụ trách, số điện thoại, email, phương thức thanh toán.<br>Thiết lập tùy chỉnh "Slot người dùng miễn phí", "Hạn mức thời gian tóm tắt AI miễn phí", "Đơn giá tính phí theo lượng sử dụng cho phần vượt mức" cho từng doanh nghiệp. |
+| Quản lý hợp đồng | ADM-003 | Xác nhận cập nhật | Quản trị viên TNG | Xác nhận cập nhật Nhập thời gian sử dụng khi vào phòng ngay. Nếu thời gian sử dụng và thời gian đặt chỗ trong tháng không trùng nhau thì nhấn [Tiếp theo] để tiến hành. Nếu trùng nhau thì lời nhắn lỗi & không thể nhấn nút Tiếp theo |
+| Quản lý hợp đồng | ADM-004 | Danh sách hóa đơn | Quản trị viên TNG | Danh sách hóa đơn của từng doanh nghiệp |
+| Quản lý hợp đồng | ADM-005 | Chi tiết hóa đơn | Quản trị viên TNG | Hiển thị chi tiết hóa đơn của từng doanh nghiệp |
+| Quản lý gói cước | ADM-006 | Màn hình quản lý Master gói cước | Quản trị viên TNG | Gói cơ bản (4 loại) và thông tin quyền hạn chức năng.<br>【Chỉ Điều chỉnh lịch / Tiếp đón】 ※Không có đặt phòng họp<br>【Có Điều chỉnh lịch / Tiếp đón / Đặt phòng họp】<br>【Điều chỉnh lịch / Tiếp đón / Đặt phòng họp / Chuyển âm thanh thành văn bản / Biên bản cuộc họp / Phân tích thương thảo (Chỉ Đơn thiết bị)】<br>【Có thể sử dụng toàn bộ chức năng】 |
+| Quản lý gói cước | ADM-007 | Chi tiết/Thay đổi gói cơ bản | Quản trị viên TNG | Có thể xác nhận/thay đổi số tiền, quyền hạn chức năng cho từng gói cơ bản.<br>Trường hợp thay đổi, cần nhập ngày áp dụng.<br>Sau khi thực hiện thay đổi, áp dụng đồng loạt đơn giá mới cho toàn bộ các doanh nghiệp đang có hợp đồng hiện tại. |
+| Quản lý mã khuyến mãi | ADM-008 | Quản lý mã khuyến mãi | Quản trị viên TNG | Phát hành/Quản lý coupon giảm giá (mã khuyến mãi) dành cho khách hàng mới.<br>Phát hành mã (ví dụ: WELCOME2026), thiết lập tỷ lệ giảm (%) hoặc số tiền giảm, thiết lập hạn sử dụng/giới hạn số lần sử dụng.<br>Xóa/Vô hiệu hóa mã |
+| Quản lý Master thiết bị | ADM-009 | Màn hình quản lý Master thiết bị | Quản trị viên TNG | Màn hình thực hiện thêm/chỉnh sửa/thay đổi giá các mặt hàng cho thuê (tablet, bệ đứng, mic, v.v.) và sản phẩm bán. Có thể thiết lập quy tắc áp dụng giá cho các hợp đồng hiện tại (giữ nguyên/cập nhật đồng loạt). |
+| Quản lý Master thiết bị | ADM-010 | Thống kê/Phân tích sử dụng AI | Quản trị viên TNG | Hiển thị tình trạng sử dụng thời gian tóm tắt AI của toàn bộ các doanh nghiệp hợp đồng, tỷ lệ trả trước/trả sau, danh sách các doanh nghiệp vượt hạn mức. |
+| Quản lý Master thiết bị | ADM-011 | Thiết lập chính sách giới hạn sử dụng AI | Quản trị viên TNG | Thiết lập chính sách giới hạn sử dụng AI cho toàn hệ thống (Bật/Tắt chức năng Limiter, hành động khi vượt quá). |
+| Liên quan đến hóa đơn | ADM-012 | Quản lý hóa đơn sử dụng AI vượt hạn mức | Quản trị viên TNG | Tổng hợp phần sử dụng AI vượt hạn mức (trả sau) theo từng doanh nghiệp, xác nhận số tiền hóa đơn. |
 
-### 📂 Các chức năng khác (Error / Log)
+### 📂 Các chức năng khác (Lỗi / Log)
 
-| Phân loại | Screen ID | Tên màn hình | Role thao tác | Tổng quan màn hình |
+| Phân loại | ID Màn hình | Tên màn hình | Vai trò thao tác | Mô tả màn hình |
 | :--- | :--- | :--- | :--- | :--- |
-| Lỗi | ERR-001 | 403 Forbidden | Visitor, User, Admin, TNG Admin | Chặn theo Role quyền |
-| Lỗi | ERR-002 | 404 Not Found | Visitor, User, Admin, TNG Admin | Access UI/URL ko tồn tại. |
-| Lỗi | ERR-003 | 500 Internal Server Error | Visitor, User, Admin, TNG Admin | Render lỗi internal server cho user. |
-| Maintaince | ERR-004 | Maintenance (Bảo trì) | Visitor, User, Admin | Render splash bảo trì hệ thống và các chức năng tạm ngưng. |
-| System Log | LOG-001 | DS Access Log, Search, Export | TNG Admin | Track login, URI path data của Corp Users (IP, Date, Device type).<br>Range Max query = 90 days giới hạn.<br>Export to CSV allow. |
-| System Log | LOG-002 | DS Operation Log (Log Tha tác CRUD) | TNG Admin, Admin | Audit Log record lại Delete/Update/Create trên Corporate Data. Search User ID/ Date..<br>Range Query Max = 90 days giới hạn.<br>Export ra CSV allow. |
-| System Log | LOG-003 | Khai Báo Rules Alert Log Monitor | TNG Admin | Tạo Alert rules dựa trên Action Threshold (Ví dụ delete records > 5 requests trong 1s). Report Target channels. |
+| Lỗi | ERR-001 | 403 Forbidden | Khách đến thăm, User, Admin, Quản trị viên TNG | Hiển thị khi truy cập không có quyền hạn |
+| Lỗi | ERR-002 | 404 Not Found | Khách đến thăm, User, Admin, Quản trị viên TNG | Hiển thị khi truy cập màn hình hoặc URL không tồn tại |
+| Lỗi | ERR-003 | 500 Internal Server Error | Khách đến thăm, User, Admin, Quản trị viên TNG | Hiển thị khi phát sinh lỗi nội bộ server |
+| Bảo trì | ERR-004 | Bảo trì | Khách đến thăm, User, Admin | Hiển thị trong khoảng thời gian bảo trì |
+| System Log | LOG-001 | Danh sách log truy cập/Tìm kiếm log (filter)/Xuất dữ liệu | Quản trị viên TNG | Có thể xác nhận lịch sử đăng nhập của người dùng hay truy cập màn hình. Hiển thị Ngày giờ / IP / Thiết bị, v.v.<br>Nhập Ngày tháng / ID người dùng để lọc log tương ứng. Giới hạn phạm vi tối đa 90 ngày.<br>Xuất kết quả tìm kiếm ra CSV. Bao gồm ID người dùng / Ngày tháng, v.v. |
+| System Log | LOG-002 | Danh sách log thao tác/Tìm kiếm log (filter)/Xuất dữ liệu | Quản trị viên TNG, Admin | Hiển thị danh sách lịch sử thao tác trong hệ thống HOẶC trong doanh nghiệp như Đặt chỗ / Xóa / Chỉnh sửa. Có thể tìm kiếm/lọc.<br>Nhập Ngày tháng / ID người dùng / Loại thao tác, v.v. để lọc log tương ứng. Giới hạn phạm vi tối đa 90 ngày.<br>Xuất kết quả tìm kiếm ra CSV. Bao gồm ID người dùng / Ngày giờ thao tác / Loại thao tác / ID đối tượng, v.v. |
+| System Log | LOG-003 | Thiết lập thông báo giám sát log | Quản trị viên TNG | Thiết lập điều kiện để phát hiện và thông báo các thao tác bất thường (Xóa lượng lớn trong thời gian ngắn, thất bại liên tục). Quản lý ngưỡng (threshold) và nơi nhận thông báo. |
+

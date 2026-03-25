@@ -65,46 +65,50 @@ Screen Overview: Màn hình cho phép xem chi tiết thông tin của một ngư
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/users/:id
-      - Method: GET
-    ○ **If successful**:
-      - Populate all form fields with current user data.
-    ○ **If failed**:
-      - Show error: "User not found" and redirect to ADMX-003.
-    ○ Fetch Master Data for Departments (ADMX-010) to populate the dropdown.
+      ▪ Endpoint: /admin/users/:id
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate all form fields with current user data.
+    ○ If failed:
+      ▪ Show Error Message (SYS-000-ERR-03) and redirect to ADMX-003.
+    ○ Execute API request to fetch Master Data for Departments (ADMX-010):
+      ▪ Endpoint: /admin/master/DEPARTMENT
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate "Department" dropdown.
 
-画面更新時 / Interaction
+Interaction
   • Logic: Detect if any field value differs from its initial state to enable the "Update Button" (ID: 10).
 
-アクション発生時 / Action
-  • **Update Confirmation is accepted in Modal**:
+Action
+  • Update Confirmation is accepted in Modal:
     ○ Execute API request:
-      - Endpoint: /admin/users/:id
-      - Method: PATCH
-      - Payload: { "name": "...", "id": "...", "email": "...", "department_id": "...", "webhook_url": "..." }
-    ○ **If successful**:
-      - Show success toaster.
-      - Transition: Navigate to ADMX-003.
-    ○ **If failed**:
-      - Show error message detailing which field failed validation on server.
+      ▪ Endpoint: /admin/users/:id
+      ▪ Method: PATCH
+      ▪ Payload: { "name": "...", "id": "...", "email": "...", "department_id": "...", "webhook_url": "..." }
+    ○ If successful:
+      ▪ Show success toaster.
+      ▪ Transition: Navigate to ADMX-003.
+    ○ If failed:
+      ▪ Show Error Message (SYS-000-ERR-05).
 
-  • **Delete Confirmation is accepted in Modal**:
+  • Delete Confirmation is accepted in Modal:
     ○ Execute API request:
-      - Endpoint: /admin/users/:id
-      - Method: DELETE
-    ○ **If successful**:
-      - Show success toaster.
-      - Transition: Navigate to ADMX-003.
-    ○ **If failed**:
-      - Show error: "Unable to delete user".
+      ▪ Endpoint: /admin/users/:id
+      ▪ Method: DELETE
+    ○ If successful:
+      ▪ Show success toaster.
+      ▪ Transition: Navigate to ADMX-003.
+    ○ If failed:
+      ▪ Show Error Message (SYS-000-ERR-01).
 
-  • **Reset Password button is pressed**:
+  • Reset Password button is pressed:
     ○ Execute API request:
-      - Endpoint: /admin/users/:id/password-reset
-      - Method: POST
-    ○ **If successful**:
-      - Show success: "New password sent to user's email".
+      ▪ Endpoint: /admin/users/:id/password-reset
+      ▪ Method: POST
+    ○ If successful:
+      ▪ Show Success Message (ADMX-006-SUC-03).
 ```

@@ -50,21 +50,21 @@ Screen Overview: Màn hình hiển thị danh sách các hóa đơn từ quá kh
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/billing/invoices
-      - Method: GET
-    ○ **If successful**:
-      - Populate the "Invoice Table" (ID: 2) with historical and current invoice records.
+      ▪ Endpoint: /admin/billing/invoices
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate the "Invoice Table" (ID: 2) with historical and current invoice records.
 
-画面更新時 / Interaction
+Interaction
   • None.
 
-アクション発生時 / Action
-  • **Details Button is pressed**:
+Action
+  • Details Button is pressed:
     ○ Transition: Navigate to ADMX-021 with the selected month/invoice ID.
 
-  • **PDF Download is pressed**:
+  • PDF Download is pressed:
     ○ Trigger direct file download link from the secure storage (e.g. S3 Signed URL).
 ```

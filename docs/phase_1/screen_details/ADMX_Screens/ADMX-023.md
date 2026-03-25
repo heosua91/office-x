@@ -59,30 +59,30 @@ Screen Overview: Màn hình quản lý cho phép tìm kiếm, lọc và xem danh
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Default date range to "Past 30 days".
     ○ Execute API request:
-      - Endpoint: /admin/visit-history
-      - Method: GET
-      - Params: { "start": ..., "end": ... }
-    ○ **If successful**:
-      - Populate "History Table" (ID: 5).
+      ▪ Endpoint: /admin/visit-history
+      ▪ Method: GET
+      ▪ Params: { "start": ..., "end": ... }
+    ○ If successful:
+      ▪ Populate "History Table" (ID: 5).
 
-画面更新時 / Interaction
+Interaction
   • None.
 
-アクション発生時 / Action
-  • **Search Button is pressed**:
+Action
+  • Search Button is pressed:
     ○ Re-execute GET API with current filter inputs.
 
-  • **CSV Export is pressed**:
+  • CSV Export is pressed:
     ○ Execute API request:
-      - Endpoint: /admin/visit-history/export
-      - Method: GET
-      - Params: { "start": ..., "end": ..., "format": "csv" }
+      ▪ Endpoint: /admin/visit-history/export
+      ▪ Method: GET
+      ▪ Params: { "start": ..., "end": ..., "format": "csv" }
     ○ Browser triggers download of the resulting file.
 
-  • **Details Button is pressed**:
+  • Details Button is pressed:
     ○ Populate "Detail Modal" (ID: 11) with data for the specific visit ID.
 ```

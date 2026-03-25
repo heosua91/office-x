@@ -50,22 +50,22 @@ Screen Overview: Dashboard summarizing corporate-wide reservations, room utiliza
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/dashboard
-      - Method: GET
-    ○ **If successful**:
-      - Render "Today's Schedule Widget" with personal calendar data.
-      - Render "Meeting Room Status Widget" with real-time occupancy stats.
-      - Populate AI Usage and Remaining Time labels.
-    ○ **If failed**:
-      - Display generic data load error message.
+      ▪ Endpoint: /admin/dashboard
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Render "Today's Schedule Widget" with personal calendar data.
+      ▪ Render "Meeting Room Status Widget" with real-time occupancy stats.
+      ▪ Populate AI Usage and Remaining Time labels.
+    ○ If failed:
+      ▪ Display generic data load error message.
 
-画面更新時 / Interaction
+Interaction
   • None. (Consider periodic polling or WebSockets for room status updates if required by the design).
 
-アクション発生時 / Action
-  • **Schedule Detail Link is pressed**:
+Action
+  • Schedule Detail Link is pressed:
     ○ Transition: Navigate to the respective Meeting Detail screen.
 ```

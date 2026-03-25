@@ -52,20 +52,20 @@ Screen Overview: Màn hình hiển thị chi tiết các khoản mục trong hó
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/billing/invoices/:id
-      - Method: GET
-    ○ **If successful**:
-      - Populate "Breakdown Table" (ID: 3) with line items.
-      - Calculate and display "Total Amount" (ID: 6).
+      ▪ Endpoint: /admin/billing/invoices/:id
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate "Breakdown Table" (ID: 3) with line items.
+      ▪ Calculate and display "Total Amount" (ID: 6).
 
-画面更新時 / Interaction
+Interaction
   • None.
 
-アクション発生時 / Action
-  • **View/DL PDF Button is pressed**:
+Action
+  • View/DL PDF Button is pressed:
     ○ Obtain secure download URL via backend.
     ○ Browser opens the PDF or initiates download.
 ```

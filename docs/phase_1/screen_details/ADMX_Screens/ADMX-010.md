@@ -62,49 +62,55 @@ Screen Overview: Màn hình quản lý các danh mục dữ liệu dùng chung (
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Default to "Vendor" tab.
     ○ Execute API request:
-      - Endpoint: /admin/master/VENDOR
-      - Method: GET
-    ○ **If successful**:
-      - Populate table with vendor records.
+      ▪ Endpoint: /admin/master/VENDOR
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate table with vendor records.
 
-画面更新時 / Interaction
-  • **Switch Tab (ID: 2)**:
+Interaction
+  • Switch Tab (ID: 2):
     ○ Change local state and execute GET for the corresponding `:type` (DEPARTMENT, PURPOSE, FLOOR, EQUIPMENT).
     ○ Adjust visibility of Rejection Flag (ID: 10) and MSG (ID: 11).
 
-アクション発生時 / Action
-  • **Add Button is pressed**:
+Action
+  • Add Button is pressed:
     ○ Execute API request:
-      - Endpoint: /admin/master/:type
-      - Method: POST
-      - Body: { "name": "...", "reject_flag": ..., "reject_message": "..." }
-    ○ **If successful**:
-      - Append row to table and clear input fields.
+      ▪ Endpoint: /admin/master/:type
+      ▪ Method: POST
+      ▪ Body: { "name": "...", "reject_flag": ..., "reject_message": "..." }
+    ○ If successful:
+      ▪ Show Success Message (ADMX-010-SUC-01).
+      ▪ Append row to table and clear input fields.
 
-  • **In-place Edit (ID: 6)**:
+  • In-place Edit (ID: 6):
     ○ Upon loss of focus (Blur) or Enter key:
     ○ Execute API request:
-      - Endpoint: /admin/master/:type/:id
-      - Method: PATCH
-      - Body: { "name": "...", "reject_flag": ..., "reject_message": "..." }
+      ▪ Endpoint: /admin/master/:type/:id
+      ▪ Method: PATCH
+      ▪ Body: { "name": "...", "reject_flag": ..., "reject_message": "..." }
+    ○ If successful:
+      ▪ Show Success Message (ADMX-010-SUC-01).
 
-  • **Delete Button is pressed**:
+  • Delete Button is pressed:
     ○ Show Modal confirmation.
     ○ If confirmed:
-      - Execute API request:
+      ▪ Execute API request:
         - Endpoint: /admin/master/:type/:id
         - Method: DELETE
-      - **If successful**: Remove from table.
-      - **If failed (400 - Constraint check)**: Show error message (ID: 9) indicating the item is being used by users/rooms.
+      ▪ If successful:
+        - Show Success Message (ADMX-010-SUC-02).
+        - Remove from table.
+      ▪ If failed (400 - Constraint check):
+        - Show Error Message (ADMX-010-ERR-04).
 
-  • **Drag & Drop Reordering**:
+  • Drag & Drop Reordering:
     ○ Triggered after row movement completes.
     ○ Execute API request:
-      - Endpoint: /admin/master/:type/sort
-      - Method: PUT
-      - Body: { "ordered_ids": [...] }
+      ▪ Endpoint: /admin/master/:type/sort
+      ▪ Method: PUT
+      ▪ Body: { "ordered_ids": [...] }
 ```

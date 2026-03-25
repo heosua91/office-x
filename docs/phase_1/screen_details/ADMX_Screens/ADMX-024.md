@@ -52,23 +52,23 @@ Screen Overview: Màn hình quản trị hiển thị tình trạng sử dụng 
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/billing/ai-quota
-      - Method: GET
-    ○ **If successful**:
-      - Render "Usage Graph" (ID: 2) with percentage data.
-      - Display textual quota stats (ID: 3, 4, 5).
-      - Populate "Per-user Usage" (ID: 6) table.
+      ▪ Endpoint: /admin/billing/ai-quota
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Render "Usage Graph" (ID: 2) with percentage data.
+      ▪ Display textual quota stats (ID: 3, 4, 5).
+      ▪ Populate "Per-user Usage" (ID: 6) table.
 
-画面更新時 / Interaction
+Interaction
   • None.
 
-アクション発生時 / Action
-  • **Buy Credits is pressed**:
+Action
+  • Buy Credits is pressed:
     ○ Transition: Navigate to ADMX-025.
 
-  • **Settings Button is pressed**:
+  • Settings Button is pressed:
     ○ Transition: Navigate to ADMX-027.
 ```

@@ -55,23 +55,26 @@ Screen Overview: Màn hình hiển thị và quản lý danh sách các mẫu (T
 ## Processing Details
 
 ```plain
-初期表示 / Initial display
-  • **Immediately after screen load**:
+Initial display
+  • Immediately after screen load:
     ○ Execute API request:
-      - Endpoint: /admin/ai-templates
-      - Method: GET
-    ○ **If successful**:
-      - Populate "Template Table" (ID: 3) with custom and system templates.
+      ▪ Endpoint: /admin/ai-templates
+      ▪ Method: GET
+    ○ If successful:
+      ▪ Populate "Template Table" (ID: 3) with custom and system templates.
 
-画面更新時 / Interaction
+Interaction
   • None.
 
-アクション発生時 / Action
-  • **Delete Button is pressed**:
+Action
+  • Delete Button is pressed:
     ○ Prompt for confirmation.
     ○ Execute API request:
-      - Endpoint: /admin/ai-templates/:id
-      - Method: DELETE
-    ○ **If successful**:
-      - Remove the item from the list.
+      ▪ Endpoint: /admin/ai-templates/:id
+      ▪ Method: DELETE
+    ○ If successful:
+      ▪ Show Success Message (ADMX-030-SUC-01).
+      ▪ Remove the item from the list.
+    ○ If failed:
+      ▪ Show Error Message (SYS-000-ERR-01).
 ```
