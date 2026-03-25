@@ -16,13 +16,13 @@ Phiên bản này sử dụng mô hình **Virtual Machine (EC2)** truyền thố
 ### 2.1. Network & Security
 *   **VPC Layout:**
     *   **Public Subnet:** Bastion Host, ALB, NAT Gateway, **Media Server (Public)**.
-    *   **Private Subnet:** Web App Instances, Worker Instances, RDS, ElastiCache.
+    *   **Private Subnet:** Web App Instances, Worker Instances, RDS, ElastiCache, **Qdrant (Vector DB)**.
 *   **Security Groups:**
     *   **ALB SG:** Allow HTTPS (443) from Anywhere.
     *   **Bastion Host:** 1 EC2 instance (t3.nano) tại Public Subnet để SSH vào Private Subnet (Web/Worker/DB).
     *   **Web App SG:** Allow HTTP (80/3000) **only** from ALB SG.
     *   **Worker SG:** No Inbound needed (Outbound only).
-    *   **DB SG:** Allow Port 5432 from Web App SG & Worker SG.
+    *   **DB SG:** Allow Port 5432 (PostgreSQL), 6379 (Redis), 6333/6334 (Qdrant) from Web App SG & Worker SG.
     *   **IAM Roles:** Gán cho EC2 để truy cập S3/SQS mà không cần hardcode key.
     *   **KMS:** Mã hóa dữ liệu đĩa EBS và S3.
 
@@ -60,6 +60,7 @@ Phiên bản này sử dụng mô hình **Virtual Machine (EC2)** truyền thố
 
 ### 2.3. Data Storage
 *   **RDS & ElastiCache:** Tương tự các phương án trước (Managed Services vẫn được khuyến nghị để giảm tải quản trị DB).
+*   **Qdrant (Vector DB):** Lưu trữ embedding vector cho tính năng tìm kiếm ngữ nghĩa (Semantic Search) trên biên bản họp và từ điển. Có thể triển khai trên EC2 nội bộ hoặc Qdrant Cloud.
 *   **S3:** Lưu trữ Media.
 
 ---
