@@ -34,19 +34,19 @@ Your output MUST strictly follow this structure (using `REG-002.md` as the templ
 
 ---
 
-# [Screen ID] - [Screen Name]
+# [Screen ID] - [Translate Screen Name from Screens.md to English]
 
 ## History
 
 | No | In charge | Date | Version | Category | Content |
 |---|---|---|---|---|---|
-| 1 | ALB | [Current Date] | 1 | New | [Screen Name] |
+| 1 | ALB | [Current Date] | 1 | New | [Translate Screen Name from Screens.md to English] |
 
 ## Overview
 
-Screen Name: [Screen Name]
+Screen Name: [Translate Screen Name from Screens.md to English]
 URI: [Logical URI based on screen purpose, e.g., /auth/verify-email]
-Screen Overview: [Summary from Screens.md]
+Screen Overview: [Translate Screen Overview from Screens.md to English]
 
 ## Item Definition (JP)
 
@@ -102,5 +102,5 @@ Action
         - For every API call, you **MUST** specify technical details from `Api.md` (Endpoint, Method) and clarify the behavior for both **If successful** and **If failed** scenarios.
 
 6. **Language**: 
-    - **ALL sections EXCEPT "Item Definition" MUST be written in English** (History, Overview, Actions, Validations, Processing Details).
+    - **ALL sections EXCEPT "Item Definition" MUST be written in English** (History, Overview, Actions, Validations, Processing Details). **Crucially, translate any Vietnamese content from `Screens.md` (like Screen Name and Screen Overview) into English**.
     - The **"Item Definition"** table should retain the Item Names as they are provided in the source (e.g., Japanese), as these relate directly to the input definitions used by the team. However, try to provide English context in the "Note" or other descriptive sections if it enhances clarity.
