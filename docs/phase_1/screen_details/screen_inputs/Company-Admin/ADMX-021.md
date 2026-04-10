@@ -1,3 +1,7 @@
+# [DELETED] ADMX-021
+> [!WARNING]
+> 本機能（請求書詳細の内製画面）はStripe連携に伴い廃止されました。代わりに `ADMX-020` からStripe Customer Portalの請求履歴へリダイレクトします。
+
 | |
 |---|
 | ADMX-021  |
