@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   ApiErrorResponse,
@@ -6,139 +6,106 @@ import {
 } from 'src/common/response/decorators/response.decorator';
 import type { AppResponseSuccess } from 'src/common/response/dtos/response.dto';
 import { ResponseService } from 'src/common/response/services/response.service';
+import { AuthRegisterRequestCodeRequestDto } from '../dtos/request/auth.register-request-code.request.dto';
+import { AuthRegisterVerifyCodeRequestDto } from '../dtos/request/auth.register-verify-code.request.dto';
+import { AuthRegisterResendCodeRequestDto } from '../dtos/request/auth.register-resend-code.request.dto';
+import { AuthRegisterCheckoutRequestDto } from '../dtos/request/auth.register-checkout.request.dto';
+import { AuthRegisterStatusQueryDto } from '../dtos/request/auth.register-status.query.dto';
 import { AuthLoginRequestDto } from '../dtos/request/auth.login.request.dto';
-import { AuthPasswordResetConfirmRequestDto } from '../dtos/request/auth.password-reset-confirm.request.dto';
+import { AuthTngLoginRequestDto } from '../dtos/request/auth.tng-login.request.dto';
 import { AuthPasswordResetRequestDto } from '../dtos/request/auth.password-reset-request.request.dto';
-import { AuthProfileUpdateRequestDto } from '../dtos/request/auth.profile-update.request.dto';
-import { AuthRegisterCheckPromoRequestDto } from '../dtos/request/auth.register-check-promo.request.dto';
-import { AuthRegisterCompanyRequestDto } from '../dtos/request/auth.register-company.request.dto';
-import { AuthRegisterPaymentRequestDto } from '../dtos/request/auth.register-payment.request.dto';
-import { AuthVerifyCodeRequestDto } from '../dtos/request/auth.verify-code.request.dto';
-import { AuthVerifyEmailRequestDto } from '../dtos/request/auth.verify-email.request.dto';
-import { AuthLoginResponseDto } from '../dtos/response/auth.login.response.dto';
-import { AuthPlanResponseDto } from '../dtos/response/auth.plans.response.dto';
+import { AuthPasswordResetConfirmRequestDto } from '../dtos/request/auth.password-reset-confirm.request.dto';
+import { AuthConsentRequestDto } from '../dtos/request/auth.consent.request.dto';
+import { AuthResetPasswordFirstTimeRequestDto } from '../dtos/request/auth.reset-password-first-time.request.dto';
 import { AuthSuccessResponseDto } from '../dtos/response/auth.success.response.dto';
-import { AuthTermsResponseDto } from '../dtos/response/auth.terms.response.dto';
+import { AuthRegisterVerifyCodeResponseDto } from '../dtos/response/auth.register-verify-code.response.dto';
+import { AuthRegisterCheckoutResponseDto } from '../dtos/response/auth.register-checkout.response.dto';
+import { AuthRegisterStatusResponseDto, RegistrationStatus } from '../dtos/response/auth.register-status.response.dto';
+import { AuthLoginResponseDto } from '../dtos/response/auth.login.response.dto';
+import { PaymentMethod } from '../dtos/request/auth.register-checkout.request.dto';
 
 @ApiTags('[Public] Auth')
-@Controller({
-  path: '/auth',
-})
+@Controller({ path: '/auth' })
 export class AuthPublicController {
   constructor(private readonly responseService: ResponseService) {}
 
-  @Post('/register/verify-email')
+  @Post('/register/request-code')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Send 6-digit verification code to email' })
+  @ApiOperation({ summary: 'Request 6-digit verification code to email (REG-002)' })
   @ApiSuccessResponse(AuthSuccessResponseDto)
   @ApiErrorResponse()
-  async verifyEmail(
-    @Body() _body: AuthVerifyEmailRequestDto
+  async requestCode(
+    @Body() _body: AuthRegisterRequestCodeRequestDto
   ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
     return this.responseService.success({ success: true }, AuthSuccessResponseDto);
   }
 
   @Post('/register/verify-code')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Validate 6-digit code against DB' })
-  @ApiSuccessResponse(AuthSuccessResponseDto)
+  @ApiOperation({ summary: 'Validate 6-digit code (REG-004)' })
+  @ApiSuccessResponse(AuthRegisterVerifyCodeResponseDto)
   @ApiErrorResponse()
   async verifyCode(
-    @Body() _body: AuthVerifyCodeRequestDto
-  ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
-    return this.responseService.success({ success: true }, AuthSuccessResponseDto);
-  }
-
-  @Get('/register/terms')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Fetch Terms & Conditions and Privacy Policy' })
-  @ApiSuccessResponse(AuthTermsResponseDto)
-  @ApiErrorResponse()
-  async getTerms(): Promise<AppResponseSuccess<AuthTermsResponseDto>> {
+    @Body() _body: AuthRegisterVerifyCodeRequestDto
+  ): Promise<AppResponseSuccess<AuthRegisterVerifyCodeResponseDto>> {
     return this.responseService.success(
       {
-        termsContent: 'Terms and Conditions content...',
-        privacyPolicyContent: 'Privacy Policy content...',
-        version: 'v1.0.0',
+        verificationToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.verify_token',
+        expiresInSeconds: 900,
       },
-      AuthTermsResponseDto
+      AuthRegisterVerifyCodeResponseDto
     );
   }
 
-  @Post('/register/company')
-  @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Initial company & first admin registration' })
+  @Post('/register/resend-code')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Resend 6-digit verification code (REG-004)' })
   @ApiSuccessResponse(AuthSuccessResponseDto)
   @ApiErrorResponse()
-  async registerCompany(
-    @Body() _body: AuthRegisterCompanyRequestDto
+  async resendCode(
+    @Body() _body: AuthRegisterResendCodeRequestDto
   ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
     return this.responseService.success({ success: true }, AuthSuccessResponseDto);
   }
 
-  @Get('/register/plans')
+  @Post('/register/checkout')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Fetch available subscription plans' })
-  @ApiSuccessResponse(AuthPlanResponseDto, true)
+  @ApiOperation({ summary: 'Commit registration + Stripe Checkout/Invoice (REG-008)' })
+  @ApiSuccessResponse(AuthRegisterCheckoutResponseDto)
   @ApiErrorResponse()
-  async getPlans(): Promise<AppResponseSuccess<AuthPlanResponseDto[]>> {
+  async checkout(
+    @Body() _body: AuthRegisterCheckoutRequestDto
+  ): Promise<AppResponseSuccess<AuthRegisterCheckoutResponseDto>> {
     return this.responseService.success(
-      [
-        {
-          id: 1,
-          name: 'Starter',
-          description: 'Best for small teams',
-          price: 0,
-          currency: 'USD',
-          features: ['Up to 5 users', 'Basic AI summaries'],
-        },
-        {
-          id: 2,
-          name: 'Pro',
-          description: 'Best for growing businesses',
-          price: 49,
-          currency: 'USD',
-          features: ['Up to 20 users', 'Advanced AI analytics', 'Priority support'],
-        },
-      ],
-      AuthPlanResponseDto
+      {
+        redirectUrl: 'https://checkout.stripe.com/pay/cs_test_mock_session_id',
+        registrationToken: 'reg_token_mock_abc123',
+      },
+      AuthRegisterCheckoutResponseDto
     );
   }
 
-  @Post('/register/check-promo')
+  @Get('/register/status')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Validate promotion code during registration' })
-  @ApiSuccessResponse(AuthSuccessResponseDto)
+  @ApiOperation({ summary: 'Fetch registration completion status after Stripe redirect (REG-009)' })
+  @ApiSuccessResponse(AuthRegisterStatusResponseDto)
   @ApiErrorResponse()
-  async checkPromo(
-    @Body() _body: AuthRegisterCheckPromoRequestDto
-  ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
-    return this.responseService.success({ success: true }, AuthSuccessResponseDto);
-  }
-
-  @Post('/register/payment')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Register payment method via service (Paid)' })
-  @ApiSuccessResponse(AuthSuccessResponseDto)
-  @ApiErrorResponse()
-  async registerPayment(
-    @Body() _body: AuthRegisterPaymentRequestDto
-  ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
-    return this.responseService.success({ success: true }, AuthSuccessResponseDto);
-  }
-
-  @Post('/register/finalize')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Finalize registration & trigger onboarding email' })
-  @ApiSuccessResponse(AuthSuccessResponseDto)
-  @ApiErrorResponse()
-  async finalizeRegistration(): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
-    return this.responseService.success({ success: true }, AuthSuccessResponseDto);
+  async getRegisterStatus(
+    @Query() _query: AuthRegisterStatusQueryDto
+  ): Promise<AppResponseSuccess<AuthRegisterStatusResponseDto>> {
+    return this.responseService.success(
+      {
+        status: RegistrationStatus.ACTIVE,
+        paymentMethod: PaymentMethod.CREDIT_CARD,
+        nextBillingDate: '2025-05-25T00:00:00.000Z',
+      },
+      AuthRegisterStatusResponseDto
+    );
   }
 
   @Post('/login')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'User/Admin login' })
+  @ApiOperation({ summary: 'User/Admin login — returns JWT (AUTH-001)' })
   @ApiSuccessResponse(AuthLoginResponseDto)
   @ApiErrorResponse()
   async login(
@@ -146,28 +113,39 @@ export class AuthPublicController {
   ): Promise<AppResponseSuccess<AuthLoginResponseDto>> {
     return this.responseService.success(
       {
-        accessToken: 'mock-jwt-token',
+        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.access_token',
         tokenType: 'Bearer',
         expiresIn: 3600,
+        requireConsent: false,
+        requirePasswordReset: false,
       },
       AuthLoginResponseDto
     );
   }
 
-  @Patch('/profile')
+  @Post('/tng/login')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Update user profile details and password' })
-  @ApiSuccessResponse(AuthSuccessResponseDto)
+  @ApiOperation({ summary: 'TNG Super-Admin login (AUTH-002)' })
+  @ApiSuccessResponse(AuthLoginResponseDto)
   @ApiErrorResponse()
-  async updateProfile(
-    @Body() _body: AuthProfileUpdateRequestDto
-  ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
-    return this.responseService.success({ success: true }, AuthSuccessResponseDto);
+  async tngLogin(
+    @Body() _body: AuthTngLoginRequestDto
+  ): Promise<AppResponseSuccess<AuthLoginResponseDto>> {
+    return this.responseService.success(
+      {
+        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.tng_access_token',
+        tokenType: 'Bearer',
+        expiresIn: 3600,
+        requireConsent: false,
+        requirePasswordReset: false,
+      },
+      AuthLoginResponseDto
+    );
   }
 
   @Post('/password-reset/request')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Request reset link via email' })
+  @ApiOperation({ summary: 'Request password reset email (AUTH-003)' })
   @ApiSuccessResponse(AuthSuccessResponseDto)
   @ApiErrorResponse()
   async requestPasswordReset(
@@ -178,12 +156,43 @@ export class AuthPublicController {
 
   @Post('/password-reset/confirm')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Set new password using token' })
+  @ApiOperation({ summary: 'Confirm password reset with token + new password (AUTH-005)' })
   @ApiSuccessResponse(AuthSuccessResponseDto)
   @ApiErrorResponse()
   async confirmPasswordReset(
     @Body() _body: AuthPasswordResetConfirmRequestDto
   ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
     return this.responseService.success({ success: true }, AuthSuccessResponseDto);
+  }
+
+  @Post('/consent')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Record consent to latest Terms/Privacy version (AUTH-007)' })
+  @ApiSuccessResponse(AuthSuccessResponseDto)
+  @ApiErrorResponse()
+  async recordConsent(
+    @Body() _body: AuthConsentRequestDto
+  ): Promise<AppResponseSuccess<AuthSuccessResponseDto>> {
+    return this.responseService.success({ success: true }, AuthSuccessResponseDto);
+  }
+
+  @Post('/reset-password-first-time')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Force first-time password reset for proxy-created accounts (AUTH-008)' })
+  @ApiSuccessResponse(AuthLoginResponseDto)
+  @ApiErrorResponse()
+  async resetPasswordFirstTime(
+    @Body() _body: AuthResetPasswordFirstTimeRequestDto
+  ): Promise<AppResponseSuccess<AuthLoginResponseDto>> {
+    return this.responseService.success(
+      {
+        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.new_access_token',
+        tokenType: 'Bearer',
+        expiresIn: 3600,
+        requireConsent: false,
+        requirePasswordReset: false,
+      },
+      AuthLoginResponseDto
+    );
   }
 }

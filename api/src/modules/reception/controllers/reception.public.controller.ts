@@ -6,112 +6,174 @@ import {
 } from 'src/common/response/decorators/response.decorator';
 import type { AppResponseSuccess } from 'src/common/response/dtos/response.dto';
 import { ResponseService } from 'src/common/response/services/response.service';
-import { ReceptionVendorCheckInRequestDto, ReceptionWalkInCheckInRequestDto } from '../dtos/request/reception.check-in.request.dto';
-import {
-  ReceptionAuthRequestDto,
-  ReceptionCheckInRequestDto,
-  ReceptionNotifyHostRequestDto,
-} from '../dtos/request/reception.request.dto';
-import {
-  ReceptionMapResponseDto,
-  ReceptionSignageResponseDto,
-} from '../dtos/response/reception.response.dto';
-import { ReceptionSuccessResponseDto } from '../dtos/response/reception.success.response.dto';
+
+import { ReceptionAuthLoginRequestDto } from '../dtos/request/reception.auth-login.request.dto';
+import { ReceptionVisitCheckInRequestDto } from '../dtos/request/reception.visit-check-in.request.dto';
+import { ReceptionVisitQuickNoticeRequestDto } from '../dtos/request/reception.visit-quick-notice.request.dto';
+import { ReceptionAiAnalyzeRequestDto } from '../dtos/request/reception.ai-analyze.request.dto';
+import { ReceptionVisitNotifyDepartmentRequestDto } from '../dtos/request/reception.visit-notify-department.request.dto';
+
+import { ReceptionAuthLoginResponseDto, DevicePurpose } from '../dtos/response/reception.auth-login.response.dto';
+import { ReceptionSignageResponseDto, SignageSlideType } from '../dtos/response/reception.settings-signage.response.dto';
+import { ReceptionVisitCheckInResponseDto } from '../dtos/response/reception.visit-check-in.response.dto';
+import { ReceptionVisitQuickNoticeResponseDto } from '../dtos/response/reception.visit-quick-notice.response.dto';
+import { ReceptionAiAnalyzeResponseDto } from '../dtos/response/reception.ai-analyze.response.dto';
+import { ReceptionVisitNotifyDepartmentResponseDto } from '../dtos/response/reception.visit-notify-department.response.dto';
+import { ReceptionVisitStatusResponseDto, VisitStatus } from '../dtos/response/reception.visit-status.response.dto';
 
 @ApiTags('[Public] Reception')
-@Controller({
-  path: '/reception',
-})
+@Controller({ path: '/reception' })
 export class ReceptionPublicController {
   constructor(private readonly responseService: ResponseService) {}
 
-  @Post('/auth')
+  @Post('/auth/login')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Device authentication for Tablet foyer' })
-  @ApiSuccessResponse(ReceptionSuccessResponseDto)
+  @ApiOperation({ summary: 'Device auth for Foyer Tablet (UKET-001)' })
+  @ApiSuccessResponse(ReceptionAuthLoginResponseDto)
   @ApiErrorResponse()
-  async authenticateDevice(
-    @Body() _body: ReceptionAuthRequestDto
-  ): Promise<AppResponseSuccess<ReceptionSuccessResponseDto>> {
-    return this.responseService.success({ success: true }, ReceptionSuccessResponseDto);
-  }
-
-  @Get('/signage')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Fetch media slides for digital signage' })
-  @ApiSuccessResponse(ReceptionSignageResponseDto, true)
-  @ApiErrorResponse()
-  async getSignage(): Promise<AppResponseSuccess<ReceptionSignageResponseDto[]>> {
+  async login(
+    @Body() _body: ReceptionAuthLoginRequestDto,
+  ): Promise<AppResponseSuccess<ReceptionAuthLoginResponseDto>> {
     return this.responseService.success(
-      [{ id: 1, mediaUrl: 'https://media.com/1', type: 'IMAGE' }],
-      ReceptionSignageResponseDto
+      {
+        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.device_access_token',
+        tokenType: 'Bearer',
+        expiresIn: 86400,
+        deviceId: '550e8400-e29b-41d4-a716-446655440000',
+        companyId: '550e8400-e29b-41d4-a716-446655440001',
+        purpose: DevicePurpose.RECEPTION,
+      },
+      ReceptionAuthLoginResponseDto,
     );
   }
 
-  @Post('/check-in/qr')
+  @Get('/settings/signage')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Validate guest QR/Code and trigger notifications' })
-  @ApiSuccessResponse(ReceptionSuccessResponseDto)
+  @ApiOperation({ summary: 'Fetch media slides for digital signage (UKET-002)' })
+  @ApiSuccessResponse(ReceptionSignageResponseDto)
+  @ApiErrorResponse()
+  async getSignage(): Promise<AppResponseSuccess<ReceptionSignageResponseDto>> {
+    return this.responseService.success(
+      {
+        items: [
+          {
+            id: '550e8400-e29b-41d4-a716-446655440010',
+            type: SignageSlideType.SLIDE_IMAGE,
+            url: 'https://cdn.example.com/signage/slide1.jpg',
+            displayOrder: 1,
+            playIntervalSeconds: 10,
+            durationSeconds: null,
+          },
+          {
+            id: '550e8400-e29b-41d4-a716-446655440011',
+            type: SignageSlideType.SLIDE_VIDEO,
+            url: 'https://cdn.example.com/signage/promo.mp4',
+            displayOrder: 2,
+            playIntervalSeconds: 30,
+            durationSeconds: 28,
+          },
+        ],
+      },
+      ReceptionSignageResponseDto,
+    );
+  }
+
+  @Post('/visit/check-in')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Validate guest QR/PIN and trigger notify (UKET-004)' })
+  @ApiSuccessResponse(ReceptionVisitCheckInResponseDto)
   @ApiErrorResponse()
   async checkIn(
-    @Body() _body: ReceptionCheckInRequestDto
-  ): Promise<AppResponseSuccess<ReceptionSuccessResponseDto>> {
-    return this.responseService.success({ success: true }, ReceptionSuccessResponseDto);
-  }
-
-  @Post('/check-in/no-appointment')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Manual check-in for walk-in visitors' })
-  @ApiSuccessResponse(ReceptionSuccessResponseDto)
-  @ApiErrorResponse()
-  async checkInNoAppointment(
-    @Body() _body: ReceptionWalkInCheckInRequestDto
-  ): Promise<AppResponseSuccess<ReceptionSuccessResponseDto>> {
-    return this.responseService.success({ success: true }, ReceptionSuccessResponseDto);
-  }
-
-  @Post('/check-in/vendor')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Log-in for contractors/vendor visits' })
-  @ApiSuccessResponse(ReceptionSuccessResponseDto)
-  @ApiErrorResponse()
-  async checkInVendor(
-    @Body() _body: ReceptionVendorCheckInRequestDto
-  ): Promise<AppResponseSuccess<ReceptionSuccessResponseDto>> {
-    return this.responseService.success({ success: true }, ReceptionSuccessResponseDto);
-  }
-
-  @Post('/notify-host')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Send Slack/Teams/Email alert to host' })
-  @ApiSuccessResponse(ReceptionSuccessResponseDto)
-  @ApiErrorResponse()
-  async notifyHost(
-    @Body() _body: ReceptionNotifyHostRequestDto
-  ): Promise<AppResponseSuccess<ReceptionSuccessResponseDto>> {
-    return this.responseService.success({ success: true }, ReceptionSuccessResponseDto);
-  }
-
-  @Post('/calls/signal')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'WebRTC signaling for Audio/Video calls' })
-  @ApiSuccessResponse(ReceptionSuccessResponseDto)
-  @ApiErrorResponse()
-  async signal(): Promise<AppResponseSuccess<ReceptionSuccessResponseDto>> {
-    return this.responseService.success({ success: true }, ReceptionSuccessResponseDto);
-  }
-
-  @Get('/map/:room_id')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Fetch guiding map for visitor path' })
-  @ApiSuccessResponse(ReceptionMapResponseDto)
-  @ApiErrorResponse()
-  async getMap(
-    @Param('room_id') _roomId: string
-  ): Promise<AppResponseSuccess<ReceptionMapResponseDto>> {
+    @Body() _body: ReceptionVisitCheckInRequestDto,
+  ): Promise<AppResponseSuccess<ReceptionVisitCheckInResponseDto>> {
     return this.responseService.success(
-      { imageUrl: 'https://map.com/1', roomName: 'Room A', floor: '1F' },
-      ReceptionMapResponseDto
+      {
+        visitId: '550e8400-e29b-41d4-a716-446655440020',
+        meetingId: '550e8400-e29b-41d4-a716-446655440021',
+        hostName: 'Nguyen Van A',
+        roomName: 'Horizon Room',
+        status: 'notifying',
+      },
+      ReceptionVisitCheckInResponseDto,
+    );
+  }
+
+  @Post('/visit/quick-notice')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Walk-in visitor registration (UKET-006)' })
+  @ApiSuccessResponse(ReceptionVisitQuickNoticeResponseDto)
+  @ApiErrorResponse()
+  async quickNotice(
+    @Body() _body: ReceptionVisitQuickNoticeRequestDto,
+  ): Promise<AppResponseSuccess<ReceptionVisitQuickNoticeResponseDto>> {
+    return this.responseService.success(
+      {
+        visitId: '550e8400-e29b-41d4-a716-446655440030',
+        status: 'notifying',
+      },
+      ReceptionVisitQuickNoticeResponseDto,
+    );
+  }
+
+  @Post('/ai/analyze')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'AI Analysis for delivery/vendor slips (UKET-007)' })
+  @ApiSuccessResponse(ReceptionAiAnalyzeResponseDto)
+  @ApiErrorResponse()
+  async aiAnalyze(
+    @Body() _body: ReceptionAiAnalyzeRequestDto,
+  ): Promise<AppResponseSuccess<ReceptionAiAnalyzeResponseDto>> {
+    return this.responseService.success(
+      {
+        matchedDepartmentId: '550e8400-e29b-41d4-a716-446655440040',
+        matchedDepartmentName: 'Engineering',
+        isReject: false,
+        rejectMessage: undefined,
+        transcript: 'Package delivery for the engineering team from Shopee Express',
+        confidence: 0.93,
+      },
+      ReceptionAiAnalyzeResponseDto,
+    );
+  }
+
+  @Post('/visit/notify-department')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Notify department of delivery arrival (UKET-007)' })
+  @ApiSuccessResponse(ReceptionVisitNotifyDepartmentResponseDto)
+  @ApiErrorResponse()
+  async notifyDepartment(
+    @Body() _body: ReceptionVisitNotifyDepartmentRequestDto,
+  ): Promise<AppResponseSuccess<ReceptionVisitNotifyDepartmentResponseDto>> {
+    return this.responseService.success(
+      {
+        visitId: '550e8400-e29b-41d4-a716-446655440050',
+        dispatchCount: 3,
+        status: 'notifying',
+      },
+      ReceptionVisitNotifyDepartmentResponseDto,
+    );
+  }
+
+  @Get('/visit/:id/status')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Polling/WebSocket fallback for host response status (UKET-008)' })
+  @ApiSuccessResponse(ReceptionVisitStatusResponseDto)
+  @ApiErrorResponse()
+  async getVisitStatus(
+    @Param('id') _id: string,
+  ): Promise<AppResponseSuccess<ReceptionVisitStatusResponseDto>> {
+    return this.responseService.success(
+      {
+        visitId: '550e8400-e29b-41d4-a716-446655440020',
+        status: VisitStatus.NOTIFYING,
+        hostName: 'Nguyen Van A',
+        departmentName: 'Engineering',
+        meetingRoomName: 'Horizon Room',
+        elapsedSeconds: 42,
+        timeoutExceeded: false,
+        websocketChannel: 'ws://app.example.com/visit/550e8400-e29b-41d4-a716-446655440020',
+      },
+      ReceptionVisitStatusResponseDto,
     );
   }
 }
