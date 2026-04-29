@@ -27,7 +27,6 @@ import { AdminMeetingRoomsListResponseDto } from '../dtos/response/admin-meeting
 import { AdminMeetingRoomsImportResponseDto } from '../dtos/response/admin-meeting-rooms.import.response.dto';
 import { AdminMeetingRoomCreateResponseDto } from '../dtos/response/admin-meeting-rooms.create.response.dto';
 import { AdminMeetingRoomDetailResponseDto } from '../dtos/response/admin-meeting-rooms.detail.response.dto';
-import { AdminStandbyScreenResponseDto } from '../dtos/response/admin-standby-screens.response.dto';
 import { AdminSuccessResponseDto } from '../dtos/response/admin.success.response.dto';
 
 @ApiTags('[Public] Admin Meeting Rooms')
@@ -99,31 +98,6 @@ export class AdminMeetingRoomsPublicController {
     );
   }
 
-  @Get('/standby-screens')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Fetch available signage presets for room (ADMX-009)' })
-  @ApiSuccessResponse(AdminStandbyScreenResponseDto, true)
-  @ApiErrorResponse()
-  async listStandbyScreens(): Promise<AppResponseSuccess<AdminStandbyScreenResponseDto[]>> {
-    return this.responseService.success(
-      [
-        {
-          id: 'f6a7b8c9-d0e1-2345-f012-456789012345',
-          name: 'Welcome Screen Pack',
-          description: 'Default standby screen for main reception tablets',
-          mediaCount: 4,
-        },
-        {
-          id: 'f7a8b9c0-d1e2-3456-f012-567890123456',
-          name: 'Corporate Branding Pack',
-          description: 'Slides showcasing company values and news',
-          mediaCount: 6,
-        },
-      ],
-      AdminStandbyScreenResponseDto,
-    );
-  }
-
   @Get('/meeting-rooms/:id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'View room details (ADMX-009)' })
@@ -142,8 +116,6 @@ export class AdminMeetingRoomsPublicController {
         calendarResourceId: 'calendar-resource-id-abc123',
         mapImageUrl: 'https://storage.example.com/maps/3f-east.png',
         isMultiDevice: false,
-        presetId: 'f6a7b8c9-d0e1-2345-f012-456789012345',
-        presetName: 'Welcome Screen Pack',
         isActive: true,
       },
       AdminMeetingRoomDetailResponseDto,

@@ -34,14 +34,6 @@ export class AdminMeetingRoomDetailResponseDto {
   @Expose()
   isMultiDevice: boolean;
 
-  @ApiPropertyOptional({ example: 'f6a7b8c9-d0e1-2345-f012-456789012345' })
-  @Expose()
-  presetId?: string;
-
-  @ApiPropertyOptional({ example: 'Welcome Screen Pack' })
-  @Expose()
-  presetName?: string;
-
   @ApiProperty({ example: true })
   @Expose()
   isActive: boolean;

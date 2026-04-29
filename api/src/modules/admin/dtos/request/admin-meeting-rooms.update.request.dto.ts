@@ -40,11 +40,6 @@ export class AdminMeetingRoomUpdateRequestDto {
   @IsBoolean()
   isMultiDevice?: boolean;
 
-  @ApiPropertyOptional({ example: 'f6a7b8c9-d0e1-2345-f012-456789012345' })
-  @IsOptional()
-  @IsUUID()
-  presetId?: string;
-
   @ApiPropertyOptional({ example: true })
   @IsOptional()
   @IsBoolean()

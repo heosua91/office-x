@@ -24,7 +24,6 @@ import { AdminDictionaryPublicController } from 'src/modules/admin/controllers/a
 import { AdminHistoryPublicController } from 'src/modules/admin/controllers/admin-history.public.controller';
 import { AdminMasterDataPublicController } from 'src/modules/admin/controllers/admin-master-data.public.controller';
 import { AdminMeetingRoomsPublicController } from 'src/modules/admin/controllers/admin-meeting-rooms.public.controller';
-import { AdminPresetsPublicController } from 'src/modules/admin/controllers/admin-presets.public.controller';
 import { AdminTabletsPublicController } from 'src/modules/admin/controllers/admin-tablets.public.controller';
 import { AdminUsersPublicController } from 'src/modules/admin/controllers/admin-users.public.controller';
 
@@ -73,7 +72,6 @@ import { PublicStatusPublicController } from 'src/modules/system-health/controll
     AdminMasterDataPublicController,
     AdminMeetingRoomsPublicController,
     AdminTabletsPublicController,
-    AdminPresetsPublicController,
     AdminBrandingPublicController,
     AdminCompanyPublicController,
     AdminBillingPublicController,

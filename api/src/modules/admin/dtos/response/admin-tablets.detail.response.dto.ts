@@ -10,6 +10,10 @@ export class AdminTabletDetailResponseDto {
   @Expose()
   deviceIdentifier: string;
 
+  @ApiProperty({ example: '********', description: 'Password is hashed; always returned as masked value' })
+  @Expose()
+  passwordMasked: string;
+
   @ApiProperty({ example: 'Main Lobby Tablet' })
   @Expose()
   name: string;

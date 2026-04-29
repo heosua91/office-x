@@ -93,7 +93,7 @@ export class AdminTabletsPublicController {
 
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Retrieve config for specific tablet (ADMX-014)' })
+  @ApiOperation({ summary: 'Retrieve detail for a specific reception tablet (ADMX-015)' })
   @ApiSuccessResponse(AdminTabletDetailResponseDto)
   @ApiErrorResponse()
   async getTablet(
@@ -103,6 +103,7 @@ export class AdminTabletsPublicController {
       {
         id: 'e5f6a7b8-c9d0-1234-ef01-345678901234',
         deviceIdentifier: 'TAB-00001',
+        passwordMasked: '********',
         name: 'Main Lobby Tablet',
         location: 'Ground Floor, Reception Area',
         purpose: 'reception',
@@ -119,7 +120,10 @@ export class AdminTabletsPublicController {
 
   @Put('/:id')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Update tablet config (ADMX-014)' })
+  @ApiOperation({
+    summary:
+      'Update tablet credentials/configuration (ADMX-015). Logs out the target device when ID/PASS changes.',
+  })
   @ApiSuccessResponse(AdminSuccessResponseDto)
   @ApiErrorResponse()
   async updateTablet(
@@ -131,7 +135,7 @@ export class AdminTabletsPublicController {
 
   @Delete('/:id')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'De-register and remove tablet (ADMX-013)' })
+  @ApiOperation({ summary: 'De-register and remove a reception tablet (ADMX-013, ADMX-015)' })
   @ApiSuccessResponse(AdminSuccessResponseDto)
   @ApiErrorResponse()
   async deleteTablet(
